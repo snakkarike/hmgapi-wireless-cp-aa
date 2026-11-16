@@ -54,6 +54,11 @@
       "features": [
         "hmgapi.wifi"
       ]
+    },
+    {
+      "model": "SU2IFL",
+      "region": "IND",
+      "firmware": "260430"
     }
   ],
   "parts": [
@@ -93,7 +98,6 @@
     "entry": "hmgapi.mods.wireless.Wireless",
     "points": {
       "framework.context_impl.start_service": "replace",
-      "btsettings.projection_helper.open_wireless_page": "replace",
       "framework.navigation_cluster.update_tbt_info": "replace",
       "framework.navigation_cluster.update_tbt_sub_info": "replace",
       "framework.navigation_cluster.update_tbt_sub_info_b": "replace",

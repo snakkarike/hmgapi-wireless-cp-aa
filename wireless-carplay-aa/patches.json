@@ -5,7 +5,8 @@
     "NEEV.USA.": "neev",
     "NEEV.CAN.": "neev_ca",
     "NEEV23.USA.": "neev",
-    "CEEV.CAN.0000.V015.011.260206": "ceev_ca"
+    "CEEV.CAN.0000.V015.011.260206": "ceev_ca",
+    "SU2IFL.IND.": "su2ifl_in"
   },
   "stock": "patches/{set}/stock",
   "expect": "patches/{set}/expect",

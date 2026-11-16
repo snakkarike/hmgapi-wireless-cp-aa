@@ -40,6 +40,7 @@ in-memory patches; disk changes appear in the app's plan.
 | Kia EV6 (`CVEV`) | Canada | 260206 |
 | Hyundai Ioniq 5 (`NEEV`) | Canada | 260206 |
 | Hyundai Ioniq 6 (`CEEV`) — owner confirmed wireless AA and dash TBT | Canada | CEEV.CAN.0000.V015.011.260206 |
+| Hyundai Creta (`SU2IFL`) — owner confirmed wireless CarPlay | India | SU2IFL.IND.0000.V010.001.260430 |
 
 The Ioniq 6 addition requires the matching HMG-API hook map. On November 9, 2026,
 the owner confirmed wireless Android Auto and Google Maps directions on the dash
