@@ -2,9 +2,9 @@
 
 This change targets `CEEV.CAN.0000.V015.011.260206` (`ceev_ca`, tcc803x).
 On November 9, 2026, the owner confirmed **wireless Android Auto and Google Maps
-directions on the dash** with private build `2.2.0-beta.101`. The earlier build had
-confirmed projection/UI operation with the firewall setting enabled but deliberately
-disabled AA TBT. The beta.101 native port completes the owner's reported AA use case.
+directions on the dash**, on a test build of this mod with the native turn-by-turn
+port below. An earlier test build had confirmed projection and the UI with the
+firewall setting on, with AA turn-by-turn turned off.
 
 This is one owner report on one firmware, not independent coverage of every feature: CarPlay, HUD/AR, detailed audio, all maneuver types, route cancellation and stock-navigation restoration have not
 been separately confirmed. The head unit was not connected for an additional
@@ -73,29 +73,12 @@ captured after that success; future diagnosis should check it rather than inferr
 activation from the disk fingerprint alone. Stock-navigation arbitration still
 requires a separately reported end-of-guidance test.
 
-## Package identity
-
-The first private test reused upstream `2.2.0-beta.1`. HMG-API's NEMESIS sync can
-retain the older compatibility descriptor when the numeric version is unchanged.
-The private builder now stages a distinct version and visible Ioniq 6 test name,
-and verifies that both package formats accept this car. Source release metadata
-stays unchanged. See [private test packaging](private-test-packages.md).
-
-The initial CI signing key was disposable. Moving to the retained private key
-requires normal mod removal/reinstallation once; later private builds reuse that
-key. Do not bypass signature checks. Keep the known-working projection package
-and record settings before the transition. HMG-API itself and the checked map
-stay installed.
-
 ## Setup and additional validation
 
-Finalization changes documentation and publishes the tested archive; it does not
-modify the car. The steps below apply to a new installation or additional testing,
-not an already-working beta.101 installation. Once parked:
+For a new installation or more testing, once parked:
 
-1. Confirm the distinct test name/version and exact firmware compatibility before
-   installation. Use the plain signed ZIP in `HMGAPI/updates/` with HMG-API's
-   **Check USB updates**, following the signing transition above if necessary.
+1. Install a release from this repository (README, Installing). A test build signed
+   with another key has to be removed first: releases here can't update it.
 2. Confirm `aa_firewall=true` and `tbt=true`. Keep `tbt_standard=false` for the first
    test; the alternative AR HUD format has only been checked on a US Ioniq 5.
 3. Let the main-screen status refresh finish, Apply once, and restart only after

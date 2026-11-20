@@ -121,24 +121,35 @@ typedef struct {
 } Conv;
 #define CONV_MAGIC 0x4c464143u  /* LFAC */
 
+/* 0: untried, 1: loading, 2: ready (atomic CAS so concurrent streams never read half-loaded pointers) */
+static volatile int fdk_state;
+static volatile int opus_state;
+
 static int load_fdk(void)
 {
     static const char *libs[] = { "libstagefright_soft_aacdec.so", "libbt-codec_aac_dec.so" };
     unsigned i;
-    if (F.tried) return F.ok;
-    F.tried = 1;
-    for (i = 0; i < 2 && !F.ok; i++) {
-        void *h = dlopen(libs[i], 0);
-        if (!h) continue;
-        F.open = (fOpen)dlsym(h, "aacDecoder_Open");
-        F.configRaw = (fConfigRaw)dlsym(h, "aacDecoder_ConfigRaw");
-        F.fill = (fFill)dlsym(h, "aacDecoder_Fill");
-        F.decode = (fDecode)dlsym(h, "aacDecoder_DecodeFrame");
-        F.info = (fInfo)dlsym(h, "aacDecoder_GetStreamInfo");
-        F.setParam = (fSetParam)dlsym(h, "aacDecoder_SetParam");
-        F.close = (fClose)dlsym(h, "aacDecoder_Close");
-        F.ok = F.open && F.configRaw && F.fill && F.decode && F.info && F.close;
-        LOGI("FDK from %s: %s", libs[i], F.ok ? "ok" : "missing symbols");
+    if (__sync_fetch_and_add(&fdk_state, 0) == 2) return F.ok;
+    if (__sync_val_compare_and_swap(&fdk_state, 0, 1) == 0) {
+        F.tried = 1;
+        for (i = 0; i < 2 && !F.ok; i++) {
+            void *h = dlopen(libs[i], 0);
+            if (!h) continue;
+            F.open = (fOpen)dlsym(h, "aacDecoder_Open");
+            F.configRaw = (fConfigRaw)dlsym(h, "aacDecoder_ConfigRaw");
+            F.fill = (fFill)dlsym(h, "aacDecoder_Fill");
+            F.decode = (fDecode)dlsym(h, "aacDecoder_DecodeFrame");
+            F.info = (fInfo)dlsym(h, "aacDecoder_GetStreamInfo");
+            F.setParam = (fSetParam)dlsym(h, "aacDecoder_SetParam");
+            F.close = (fClose)dlsym(h, "aacDecoder_Close");
+            F.ok = F.open && F.configRaw && F.fill && F.decode && F.info && F.close;
+            LOGI("FDK from %s: %s", libs[i], F.ok ? "ok" : "missing symbols");
+        }
+        __sync_synchronize();
+        fdk_state = 2;
+        return F.ok;
+    }
+    while (__sync_fetch_and_add(&fdk_state, 0) != 2) {
     }
     return F.ok;
 }
@@ -146,20 +157,32 @@ static int load_fdk(void)
 static int load_opus(void)
 {
     void *h;
-    if (O.tried) return O.ok;
-    O.tried = 1;
-    h = dlopen("libopus.so", 0);
-    if (!h) { LOGW("libopus.so not found"); return 0; }
-    O.decCreate = (oDecCreate)dlsym(h, "opus_decoder_create");
-    O.decode = (oDecode)dlsym(h, "opus_decode");
-    O.decDestroy = (oDestroy)dlsym(h, "opus_decoder_destroy");
-    O.decCtl = (oCtl)dlsym(h, "opus_decoder_ctl");
-    O.encCreate = (oEncCreate)dlsym(h, "opus_encoder_create");
-    O.encode = (oEncode)dlsym(h, "opus_encode");
-    O.encDestroy = (oDestroy)dlsym(h, "opus_encoder_destroy");
-    O.encCtl = (oCtl)dlsym(h, "opus_encoder_ctl");
-    O.ok = O.decCreate && O.decode && O.decDestroy && O.encCreate && O.encode && O.encDestroy;
-    LOGI("libopus: %s", O.ok ? "ok" : "missing symbols");
+    if (__sync_fetch_and_add(&opus_state, 0) == 2) return O.ok;
+    if (__sync_val_compare_and_swap(&opus_state, 0, 1) == 0) {
+        O.tried = 1;
+        h = dlopen("libopus.so", 0);
+        if (!h) {
+            LOGW("libopus.so not found");
+            __sync_synchronize();
+            opus_state = 2;
+            return 0;
+        }
+        O.decCreate = (oDecCreate)dlsym(h, "opus_decoder_create");
+        O.decode = (oDecode)dlsym(h, "opus_decode");
+        O.decDestroy = (oDestroy)dlsym(h, "opus_decoder_destroy");
+        O.decCtl = (oCtl)dlsym(h, "opus_decoder_ctl");
+        O.encCreate = (oEncCreate)dlsym(h, "opus_encoder_create");
+        O.encode = (oEncode)dlsym(h, "opus_encode");
+        O.encDestroy = (oDestroy)dlsym(h, "opus_encoder_destroy");
+        O.encCtl = (oCtl)dlsym(h, "opus_encoder_ctl");
+        O.ok = O.decCreate && O.decode && O.decDestroy && O.encCreate && O.encode && O.encDestroy;
+        LOGI("libopus: %s", O.ok ? "ok" : "missing symbols");
+        __sync_synchronize();
+        opus_state = 2;
+        return O.ok;
+    }
+    while (__sync_fetch_and_add(&opus_state, 0) != 2) {
+    }
     return O.ok;
 }
 
@@ -187,6 +210,15 @@ static int sr_index(u32 sr)
     return -1;
 }
 
+static int lpcm_16_ok(const ASBD *a)
+{
+    u32 bpf = a->channelsPerFrame * 2u;
+    if (a->formatID != FMT_LPCM) return 0;
+    if (a->bitsPerChannel != 16u && a->bitsPerChannel != 0u) return 0;
+    if (a->bytesPerFrame != 0u && a->bytesPerFrame != bpf) return 0;
+    return 1;
+}
+
 static Conv *conv_alloc(const ASBD *in, const ASBD *out, int kind)
 {
     Conv *c = (Conv *)calloc(1, sizeof(Conv));
@@ -197,6 +229,14 @@ static Conv *conv_alloc(const ASBD *in, const ASBD *out, int kind)
     c->kind = kind;
     c->in = *in;
     c->out = *out;
+    if (c->in.formatID == FMT_LPCM) {
+        c->in.bitsPerChannel = 16;
+        c->in.bytesPerFrame = c->in.channelsPerFrame * 2;
+    }
+    if (c->out.formatID == FMT_LPCM) {
+        c->out.bitsPerChannel = 16;
+        c->out.bytesPerFrame = c->out.channelsPerFrame * 2;
+    }
     return c;
 }
 
@@ -273,11 +313,11 @@ s32 LeafiaAudioConverterNew(const ASBD *in, const ASBD *out, void **outConv)
              in->channelsPerFrame, out->formatID, out->sampleRate, out->channelsPerFrame);
         return kUnsupportedErr;
     }
-    if (in->formatID == FMT_AAC && out->formatID == FMT_LPCM && out->bitsPerChannel == 16)
+    if (in->formatID == FMT_AAC && lpcm_16_ok(out))
         return new_aac_dec(in, out, outConv);
-    if (in->formatID == FMT_OPUS && out->formatID == FMT_LPCM && out->bitsPerChannel == 16)
+    if (in->formatID == FMT_OPUS && lpcm_16_ok(out))
         return new_opus_dec(in, out, outConv);
-    if (in->formatID == FMT_LPCM && out->formatID == FMT_OPUS && in->bitsPerChannel == 16)
+    if (lpcm_16_ok(in) && out->formatID == FMT_OPUS)
         return new_opus_enc(in, out, outConv);
     LOGW("unsupported conversion %08x -> %08x", in->formatID, out->formatID);
     return kUnsupportedErr;

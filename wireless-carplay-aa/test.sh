@@ -17,7 +17,7 @@ R=$T/root
 . "${HMGAPI_SDK:?set HMGAPI_SDK to the unpacked HMG-API mod SDK}/test/lib.sh"
 # its NEMESIS package refuses the NEMESIS packages that change what it changes (mod.json "nemesis_conflicts")
 d=$(HMGAPI_NEMESIS_CONFLICTS=/dev/null python3 "$HMGAPI_SDK/bin/nemesis-meta.py" depends hmgapi.wireless-carplay-aa 'hmgapi@>=1.0' --mod "$M/mod.json")
-if [ "$d" = "hmgapi@>=1.0,!wireless.projection,!projection.tbt" ]; then echo "ok    NEMESIS package refuses wireless.projection and projection.tbt"
+if [ "$d" = "hmgapi@>=1.0,!wireless.projection,!projection.tbt,!enhanced.projection" ]; then echo "ok    NEMESIS package refuses wireless.projection, projection.tbt and enhanced.projection"
 else echo "FAIL  NEMESIS package depends: [$d]"; exit 1; fi
 python3 "$M/tools/ioniq6/integration.py"
 [ -d "$S/app" ] || { echo "no stock tree at $S (skipped)"; exit 0; }
@@ -40,12 +40,25 @@ check "apply (every part)" 0 $rc
 check "turn-by-turn GPM is hooks now: GPM untouched" "" "$(echo "$out" | grep HKMC_GPM)"
 check "AA and CarPlay libraries are patched in memory now: files untouched" "" "$(echo "$out" | grep 'libautoreceiver\|libCarPlay')"
 has "audio converter added" "/system/lib/libleafiaaac.so" "$out"
+has "CarPlay identity serializer added" "/system/lib/libcarplayidentity.so" "$out"
+has "CarPlay log switch added" "/system/lib/libcarplaylog.so" "$out"
 check "menu fix is a hook now: BtSettings untouched" "" "$(echo "$out" | grep HKMC_BtSettings)"
 has "props live" "prop/persist.ium.support=carplay" "$(cat $R/settings.txt)"
 has "bridge props live" "prop/persist.iap2.iden.wireless=t" "$(cat $R/settings.txt)"
 check "build.prop untouched" "persist.ium.support=none" "$(grep persist.ium $R/system/build.prop)"
 has "feature flag: CarPlay wireless file" '<feature name="com.hkmc.software.connectivity.carplay_wireless" />' "$(cat $R/system/etc/permissions/com.hkmc.software.connectivity.carplay_wireless.xml 2>/dev/null)"
-has "featurexml: AA wireless line commented" "#-/system/etc/permissions/com.hkmc.software.connectivity.androidauto_wireless.xml" "$(cat $R/system/onebin/$ONEBIN/featurexml.cfg)"
+# AA wireless: a build whose featurexml.cfg drops the stock file (the EV6) gets that line
+# commented; a build with neither the line nor the file (the older Hyundai models) gets
+# HMG-API's own file, as for CarPlay
+if grep -q 'connectivity.androidauto_wireless.xml' $S/onebin/$ONEBIN/featurexml.cfg; then
+    has "featurexml: AA wireless line commented" "#-/system/etc/permissions/com.hkmc.software.connectivity.androidauto_wireless.xml" "$(cat $R/system/onebin/$ONEBIN/featurexml.cfg)"
+else
+    has "feature flag: AA wireless file" '<feature name="com.hkmc.software.connectivity.androidauto_wireless" />' "$(cat $R/system/etc/permissions/com.hkmc.software.connectivity.androidauto_wireless.xml 2>/dev/null)"
+fi
+# the hotspot feature, asked of HMG-API ("wifi": {"hotspot": true}): this test's /system has
+# no stock file, so HMG-API's own goes in (on a car with the stock file, only its line changes)
+has "hotspot feature: HMG-API's file" '<feature name="com.hkmc.software.wifihotspot" />' "$(cat $R/system/etc/permissions/com.hkmc.software.wifihotspot.xml 2>/dev/null)"
+check "featurexml: hotspot line not live" "" "$(grep -x -- '-/system/etc/permissions/com.hkmc.software.wifihotspot.xml' $R/system/onebin/$ONEBIN/featurexml.cfg || true)"
 check "turn-by-turn and bridge are hooks now: DiPO untouched" "" "$(echo "$out" | grep HKMC_DiPO)"
 
 printf '{"bridge": false}\n' > $R/data/hmgapi/settings/wireless-carplay-aa.json

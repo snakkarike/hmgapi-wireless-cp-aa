@@ -4,7 +4,7 @@
 `dbfe7bd2e36152a50f97fed612cf6326`, observed on
 `CEEV.CAN.0000.V015.011.260206`. It patches process memory, not the library on disk.
 On November 9, 2026, the owner confirmed wireless AA and Google Maps directions on
-the dash with private package `2.2.0-beta.101`. This is a reported result on one car;
+the dash, on a test build of this mod. This is a reported result on one car;
 the off-car checks alone do not prove phone negotiation or physical display behavior.
 
 ## Derivation

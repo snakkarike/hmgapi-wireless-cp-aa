@@ -1,0 +1,6 @@
+# The Elantra (CN7PE) on US 260507 (CN7PE.USA.0000.V015.012.260507), app fingerprints from HMG-API's map
+# (hyundai/cn7pe/usa/260507, the owner's rc.5 Car Report, Open-HMG/HMG-API#252); no app files are replaced.
+HKMC_BtSettings.odex 07ed4f7000090774940e4d4258d844f3
+HKMC_DiPO.odex 81def5c61f14a564f10ab832a08b02ff
+HKMC_GPM.odex 84936b06b0cf2e23c06e64cc50735a81
+Iap2ServerApp.odex 4a3900199eb0ce5f11eff03b9afc46b2

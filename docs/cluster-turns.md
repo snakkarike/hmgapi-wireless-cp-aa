@@ -29,6 +29,7 @@ main display:
 |---|---|---|
 | straight, turn, slight, sharp | `TURN` 13 | 0; slight 45/315; turn 90/270; sharp 135/225 |
 | U-turn | `U_TURN` 31 | 270 (90 for left-hand traffic) |
+| on-ramp (Android Auto's ON_RAMP; the car's navigation has no ramp type, it's a turn point) | `TURN` 13 | 45 / 315 (0 with no side) |
 | fork | `FORK_2` 25 | 90 / 270 |
 | highway exit right / left | `EXIT_RIGHT` 17 / `EXIT_LEFT` 18 (`*_COMBI_1` 19/20 when another maneuver follows) | 90 / 270 |
 | roundabout | `EXIT_ROUNDABOUT_TRS_RIGHT` 32 (33 for left-hand traffic) | the exit's direction |
@@ -53,6 +54,8 @@ turn of the drive. `dumpsys` prints 0 as every index "0 1 ... 15" and 65535 as "
 its check is inverted. 65535 is what the projection icons always carried, and with a
 `TURN` type it draws a road in every direction, so the mod sends 0 with the car's own
 types and 65535 with the icons.
+
+CarPlay's turns follow the same format with the setting on; [ar-hud.md](ar-hud.md#carplay) has its mapping from iAP2 maneuvers.
 
 ## Roundabouts
 

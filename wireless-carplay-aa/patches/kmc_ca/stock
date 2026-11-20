@@ -1,0 +1,7 @@
+# The Canadian Kia build on 260206 (system image KMC.USA.1000.V015.011.260206; K5, Sorento,
+# Telluride and others, 23 products), app fingerprints from the stock files.
+# No app files are replaced; the library recipes check their own library's md5.
+HKMC_BtSettings.odex db369ae8cad94d05e842a36034644d3e
+HKMC_DiPO.odex f1e82132c19c3a14478cb99a9dfd7560
+HKMC_GPM.odex 13de3ed57622c3006d50a48b5469285d
+Iap2ServerApp.odex ca77dff5d8aa9a0720ad9f86cd1fab73

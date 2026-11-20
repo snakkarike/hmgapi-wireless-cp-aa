@@ -20,6 +20,9 @@ at the OS boundary. It covers:
 - No firewall change by default on CEEV or the previously supported models.
 - Opting in to exactly one IPv4 TCP 40515 NEW ingress rule, limited to `wlan0`
   and the hotspot subnet, without `overrides.allow_network`.
+- Opting in to the CarPlay rules on the US CEEV 260507: the CarPlay ports over TCP and
+  UDP, both ways, on IPv4 and IPv6 from the hotspot, plus ICMPv6 (57 rules), again
+  without `overrides.allow_network`, and their removal on toggle-off.
 - Insertion before the stock whitelist, repair after a stock drop moves ahead,
   removal on toggle-off or disable, and preservation of another mod's rule.
 - No IPv6, routing or forwarding changes.

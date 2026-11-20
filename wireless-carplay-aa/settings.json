@@ -13,9 +13,9 @@
       "key": "tbt_standard",
       "type": "toggle",
       "default": false,
-      "title": "Android Auto turns in the car's own format (AR HUD arrow, distance bar)",
+      "title": "Turns in the car's own format (AR HUD arrow, distance bar)",
       "apply": "restart",
-      "description": "Near each maneuver (about 1,500 ft), Android Auto's turns go to the cluster and HUD as the car's own navigation sends them: turn, U-turn, fork, exit and roundabout types with their angle and the distance bar counting down, which the AR HUD animates; destinations as left, right or ahead; \"Recalculating...\" during a reroute longer than a second. Off: the projection icons, as before. Checked on a US Ioniq 5 with the AR HUD. Takes effect when the head unit restarts."
+      "description": "Near each maneuver (about 1,500 ft), Android Auto's and CarPlay's turns go to the cluster and HUD as the car's own navigation sends them: turn, U-turn, fork, exit and roundabout types with their angle and the distance bar counting down, which the AR HUD animates; destinations as left, right or ahead; with Android Auto, \"Recalculating...\" during a reroute longer than a second. Off: the projection icons, as before. Checked with Android Auto on a US Ioniq 5 and with CarPlay on a Korean EV6, both with the AR HUD. Takes effect when the head unit restarts."
     },
     {
       "key": "bridge",
@@ -25,6 +25,14 @@
       "apply": "rebuild"
     },
     {
+      "key": "shared_identity",
+      "type": "toggle",
+      "default": true,
+      "title": "Shared CarPlay identity",
+      "apply": "restart",
+      "description": "Allow installed mods to contribute vehicle and appearance information to CarPlay's identification message. Takes effect when the head unit restarts."
+    },
+    {
       "key": "audio",
       "type": "toggle",
       "default": true,
@@ -32,12 +40,20 @@
       "apply": "rebuild"
     },
     {
+      "key": "now_playing",
+      "type": "toggle",
+      "default": true,
+      "title": "Song, artist and album art on wireless CarPlay",
+      "apply": "restart",
+      "description": "A hook in the CarPlay app (no files changed): asks the phone for Now Playing again once wireless CarPlay's session is up, for the cluster, the split screen and album art apps."
+    },
+    {
       "key": "menu",
       "type": "toggle",
       "default": true,
-      "title": "Settings > Phone Projection opens Device Connections",
+      "title": "Phone Projection settings open Device Connections",
       "apply": "restart",
-      "description": "A hook in the Settings app (no files changed). US/Canada only; other regions keep the stock choice."
+      "description": "Settings > Phone Projection, and the Settings button of the car's \"connect a phone\" popup, open Device Connections as on a stock car. With the wireless features on, the first would open the wireless page and the second an app these builds don't have (it crashed). Hooks only (no files changed). Settings > Phone Projection: US/Canada only; other regions keep the stock choice."
     },
     {
       "key": "usb_drives",
@@ -48,12 +64,36 @@
       "description": "A hook in the Android Auto app (no files changed). Without it, a USB drive can block wireless Android Auto until the head unit restarts."
     },
     {
+      "key": "park",
+      "type": "toggle",
+      "default": true,
+      "apply": "restart",
+      "title": "End wireless CarPlay and Android Auto when you park and leave",
+      "description": "When HMG-API says the car is parked (off, in P, and by your rule in HMG-API's Settings > Vehicle; by default once you get out and close the door) and before the head unit shuts down, the phone's wireless session ends the way CarPlay and Android Auto end one, so the phone takes its audio and calls back at once. Switch the car on again and the phone is asked back. USB sessions are never ended. Needs an HMG-API with car events. Takes effect when the head unit restarts."
+    },
+    {
       "key": "aa_firewall",
       "type": "toggle",
       "default": false,
       "title": "Allow wireless Android Auto through the hotspot firewall",
       "apply": "rebuild",
       "description": "Experimental for Ioniq 6 CAN 260206. Allows new IPv4 TCP connections to port 40515 only from the car's hotspot subnet. HMG-API manages the rule and removes it when this setting or the mod is disabled. Leave off on cars that connect without it."
+    },
+    {
+      "key": "cp_firewall",
+      "type": "toggle",
+      "default": false,
+      "title": "Allow wireless CarPlay through the hotspot firewall",
+      "apply": "rebuild",
+      "description": "Needed on the Ioniq 6 USA 260507 and the Elantra N (CN7NPE) USA 260903, whose stock firewalls allow the CarPlay ports only on the wired link. Accepts CarPlay's ports from the hotspot's own addresses, TCP and UDP, as destination or source: 5000-5001, 5020, 5353, 6000-6003, 6011, 6020, 6030 and 7000 on IPv4 and IPv6, 6031 on IPv6, and ICMPv6 (neighbor discovery). HMG-API manages the rules and removes them when this setting or the mod is disabled. Leave off on cars that connect without it."
+    },
+    {
+      "key": "carplay_log",
+      "type": "toggle",
+      "default": false,
+      "title": "CarPlay's own log (troubleshooting)",
+      "apply": "restart",
+      "description": "For finding out why wireless CarPlay disconnects: the CarPlay system logs each session in detail (as TccCarPlay), so Record a problem or a log capture shows why it ended. Its lines name your phone (model and name). Leave it off unless someone helping you asks for it. Takes effect when the head unit restarts."
     }
   ]
 }

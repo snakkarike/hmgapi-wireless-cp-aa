@@ -38,6 +38,17 @@ import hmgapi.hook.Points;
  *
  * persist.ev6.cpwl.enable=0 turns it off; persist.ev6.cpwl.handover=created moves iAP2
  * into the CarPlay channel as soon as the session is created (default: on its first data).
+ *
+ * Re-attach (Reattach): when the CarPlay channel's iAP2 link fails while the CarPlay
+ * session is up (the server's ACTION_IAP2_CONNECTFAIL after LimitMaxResend, its session
+ * ending, or a CarPlay-channel send blocked in the library for STUCK_MS), the handover is
+ * asked for again with a backoff; a re-attach counts only once the server reports the new
+ * session ready (ACTION_IAP2_CONNECTSUCCESS / identification accepted), then route guidance
+ * and Now Playing are asked for again. persist.ev6.cpwl.reattach=0 turns that off;
+ * persist.ev6.cpwl.stuck_ms=0 turns off only the blocked-send trigger.
+ * CarPlay-channel sends (CpTx): a sender thread + queue per link; a re-attach or the
+ * session's end abandons the current one (never waits for a blocked native call) and the
+ * next link gets a fresh one. Every send that blocks more than 2 s is logged.
  */
 final class Bridge {
     static final String ACTION_ATTACH = "com.ev6.cpwl.BT_ATTACHED", ACTION_DETACH = "com.ev6.cpwl.BT_DETACHED";
@@ -51,6 +62,14 @@ final class Bridge {
     static final int MAX_PENDING = 64;
     static final long SPP_CONNECT_DELAY_MS = 3000;
     static final int SPP_DISCONNECTED = 0, SPP_CONNECTED = 2, EVENT_BTCM_CONNECTED = 2;
+    /** the iAP2 server's broadcast when a session's link fails (Iap2Const.ACTION_IAP2_CONNECTFAIL), and its component extra */
+    static final String ACTION_IAP2_CONNECTFAIL = "com.tcc.iap2.connectedfail", EXTRA_IAP2_COMPONENT = "com.telechips.android.iap2.component";
+    /** the iAP2 server's broadcast once a session is identified and authenticated (Iap2Authentication.sendAfterAuthenticationSuccess) */
+    static final String ACTION_IAP2_CONNECTSUCCESS = "com.tcc.iap2.connectedsuccess";
+    /** a CarPlay-channel send blocked longer than this is logged */
+    static final long SEND_SLOW_MS = 2000;
+    /** ... and longer than this (default) counts as the link lost: re-attach (persist.ev6.cpwl.stuck_ms, 0 = off) */
+    static final long STUCK_MS = 5000;
 
     static volatile String sAddr;
     static volatile HfDeviceBTCMManager sBtcm;
@@ -59,14 +78,21 @@ final class Bridge {
     static volatile IIap2Service sIap2;
     /** the phone's Bluetooth address from its last iAP2 session (DiPO's first-connect notice) */
     static volatile String sLastBtId;
+    /** the serial the CarPlay channel's session was handed over with (a re-attach asks with the same) */
+    static volatile String sCpSerial;
+    static final Reattach sReattach = new Reattach(new ReattachHost());
     static ClassLoader cl;
     static Context context;
-    private static int sCpFail, sCpSent;
-    private static Handler sHandler, sCpTx;
+    private static Handler sHandler;
     private static Method sNativeSend;
     private static final ArrayList<byte[]> sPendingIn = new ArrayList<byte[]>();
     private static BtListener sBt;
     private static TxListener sTx;
+    /** CarPlay-channel sends: one sender thread + queue per link (a re-attach abandons the dead link's) */
+    static final CpTx sCpTx = new CpTx(new TxHost(), new NativeSink(), "hmgapi-cp-tx");
+    /** the blocked send last logged, and last treated as a lost link (its start time) */
+    private static volatile long sTxReported, sTxStuck;
+    private static boolean sTxWatch;
 
     private Bridge() {}
 
@@ -173,6 +199,12 @@ final class Bridge {
 
     static void onSppUp(final String addr) {
         if (addr == null || sSession) return;
+        Context cx = context;
+        if (cx != null && !Choice.allowed(cx.getContentResolver(), Choice.CARPLAY, addr)) {   // the projection manager: another phone is chosen, or one is on
+            log("iPhone " + addr + " on Bluetooth: not starting CarPlay (" + (Choice.busy(cx.getContentResolver()) ? "a session is starting or on"
+                    : "the chosen phone is another: " + Choice.describe(cx.getContentResolver())) + ")");
+            return;
+        }
         sAddr = addr;
         if (sCpClient || sCpWireless || !enabled() || sUsb) return;
         sSession = true;
@@ -257,6 +289,9 @@ final class Bridge {
     static void onCpSessionFinalized(int type) {
         try {
             log("CarPlay session finalized type=" + type + " cpClient=" + sCpClient);
+            sReattach.sessionEnd();
+            Dipo.rgSessionEnd();
+            if (sCpClient) sCpTx.reset("CarPlay session ended", false);
             boolean client = sCpClient, wireless = sCpWireless;
             sCpWireless = false;
             sCpClient = false;
@@ -280,6 +315,11 @@ final class Bridge {
 
     /** DiPO's iAP2 listener: the CarPlay-channel session's identification isn't a new phone */
     static boolean dipoDropNoti(int what) {
+        // the server sends identification accepted to the listeners only once the session is identified and authenticated
+        if (what == NOTI_IDENTIFICATION_ACCEPTED && sCpClient && !sUsb) {
+            // a re-attach under way counts; RgWatch only takes it once the channel's link is up (comp 5's, not comp 4's)
+            comp5Ready("identification accepted", sCpConnected);
+        }
         boolean drop = sCpClient && (what == NOTI_IDENTIFICATION_ACCEPTED || what == NOTI_TRANSPORT_IDENTIFIER);
         if (drop) log("DiPO: dropping iAP2 noti " + what + " from the CarPlay-channel session");
         return drop;
@@ -290,6 +330,10 @@ final class Bridge {
         sCpClient = true;
         sCpConnected = false;
         final String addr = sAddr;
+        sCpSerial = addr;
+        if (reattachEnabled()) sReattach.sessionUp();
+        Dipo.rgSessionUp();
+        txWatch();
         handler().post(new Runnable() {
             @Override
             public void run() {
@@ -333,43 +377,198 @@ final class Bridge {
         log("flushed " + all.size() + " buffered CarPlay-channel packets");
     }
 
-    private static synchronized Handler cpTx() {
-        if (sCpTx == null) {
-            HandlerThread t = new HandlerThread("hmgapi-cp-tx");
-            t.start();
-            sCpTx = new Handler(t.getLooper());
-        }
-        return sCpTx;
-    }
-
     private static Method nativeSend() {
         if (sNativeSend == null) sNativeSend = Points.method(cl, "dipo.carplay.native_iap_send");
         return sNativeSend;
     }
 
-    /** iAP2 bytes from the server for the CarPlay channel: out through the CarPlay library */
+    /** iAP2 bytes from the server for the CarPlay channel: out through the CarPlay library (CpTx, the current link's sender) */
     static void writeCp(byte[] data) {
         final Object cp = sCp;
         if (cp == null || data == null || data.length == 0 || !sCpClient) return;
-        final byte[] b = data.clone();
-        cpTx().post(new Runnable() {
+        sCpTx.send(cp, data.clone());
+    }
+
+    /** CpTx's native send: TccCarPlay_iAPSendMessage through DiPO's CarPlay class */
+    static final class NativeSink implements CpTx.Sink {
+        @Override
+        public int send(Object cp, byte[] b, int len) throws Throwable {
+            Object r = nativeSend().invoke(cp, b, len);
+            return r instanceof Integer ? (Integer) r : -1;
+        }
+    }
+
+    static final class TxHost implements CpTx.Host {
+        @Override
+        public long now() {
+            return Bridge.now();
+        }
+
+        @Override
+        public int tid() {
+            return android.os.Process.myTid();
+        }
+
+        @Override
+        public void log(String m) {
+            Bridge.log(m);
+        }
+    }
+
+    static long now() {
+        return android.os.SystemClock.elapsedRealtime();
+    }
+
+    static long stuckMs() {
+        try {
+            return Long.parseLong(prop("persist.ev6.cpwl.stuck_ms", String.valueOf(STUCK_MS)).trim());
+        } catch (Throwable t) {
+            return STUCK_MS;
+        }
+    }
+
+    /**
+     * while the CarPlay channel's session is ours: a send still in the library after 2 s is
+     * logged once, as it happens; after STUCK_MS the link counts as lost (re-attach, which
+     * abandons that sender) instead of waiting for the server's LimitMaxResend
+     */
+    private static void txWatch() {
+        synchronized (Bridge.class) {
+            if (sTxWatch) return;
+            sTxWatch = true;
+        }
+        handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Object r = nativeSend().invoke(cp, b, b.length);
-                    int rc = r instanceof Integer ? (Integer) r : -1;
-                    if (rc == 0) {
-                        sCpSent++;
-                        if (sCpSent <= 3 || sCpSent % 200 == 0) log("CarPlay-channel iAP2 sent " + b.length + " bytes (#" + sCpSent + ")");
-                    } else {
-                        sCpFail++;
-                        if (sCpFail <= 5 || sCpFail % 50 == 0) log("CarPlay-channel iAP2 send failed rc=" + rc + " len=" + b.length);
+                    long since = sCpTx.blockedSince();
+                    long ms = since == 0 ? 0 : now() - since;
+                    if (since != 0 && since != sTxReported && ms > SEND_SLOW_MS) {
+                        sTxReported = since;
+                        log("CarPlay-channel iAP2 send blocked for " + ms + " ms so far (" + sCpTx.describe() + ")");
+                    }
+                    long stuck = stuckMs();
+                    if (since != 0 && since != sTxStuck && stuck > 0 && ms > stuck && sCpClient && !sUsb && sReattach.active()) {
+                        sTxStuck = since;
+                        log("CarPlay-channel iAP2 send blocked " + ms + " ms: the link counts as lost (tx thread " + sCpTx.threadNumber() + ")");
+                        Dipo.rgLinkDown("send blocked");
+                        sReattach.lost("CarPlay-channel send blocked " + ms + " ms");
                     }
                 } catch (Throwable t) {
-                    error("writeCp native", t);
+                    error("txWatch", t);
+                }
+                if (sCpClient) {
+                    handler().postDelayed(this, 1000);
+                } else {
+                    synchronized (Bridge.class) {
+                        sTxWatch = false;
+                    }
+                }
+            }
+        }, 1000);
+    }
+
+    static boolean reattachEnabled() {
+        return !"0".equals(prop("persist.ev6.cpwl.reattach", "1"));
+    }
+
+    /** the iAP2 server's ACTION_IAP2_CONNECTFAIL (on DiPO's main thread) */
+    static void onIap2ConnectFail(int component) {
+        try {
+            if (component == COMPONENT_CARPLAY_CLIENT && sCpClient && !sUsb) Dipo.rgLinkDown("ACTION_IAP2_CONNECTFAIL");
+            if (component != COMPONENT_CARPLAY_CLIENT || !sCpClient || sUsb || !sReattach.active()) {
+                log("iAP2 connect fail comp=" + component + " (cpClient=" + sCpClient + " usb=" + sUsb + "): not the CarPlay channel's, left alone");
+                return;
+            }
+            sReattach.lost("ACTION_IAP2_CONNECTFAIL / LimitMaxResend");
+        } catch (Throwable t) {
+            error("onIap2ConnectFail", t);
+        }
+    }
+
+    /** the iAP2 server's ACTION_IAP2_CONNECTSUCCESS (on DiPO's main thread): the session is identified and authenticated */
+    static void onIap2ConnectSuccess(int component) {
+        try {
+            log("iAP2 connect success comp=" + component);
+            if (component == COMPONENT_CARPLAY_CLIENT && sCpClient && !sUsb) comp5Ready("ACTION_IAP2_CONNECTSUCCESS", true);
+        } catch (Throwable t) {
+            error("onIap2ConnectSuccess", t);
+        }
+    }
+
+    /**
+     * comp 5 is ready while the channel session is the bridge's: a re-attach under way counts (Reattach, which asks for
+     * route guidance 1 s later); any other ready (the first handover) has RgWatch ask 1 s later. One ask per ready.
+     */
+    static void comp5Ready(String how, boolean linkUp) {
+        RgWatch.ready(sReattach, Dipo.rgWatch, how, linkUp);
+    }
+
+    /** Reattach's host: ask for the CarPlay channel's session again, as startCpClient did */
+    static void reattachCpClient(final int attempt) {
+        if (!sCpClient || sUsb) {
+            log("re-attach #" + attempt + " skipped (cpClient=" + sCpClient + " usb=" + sUsb + ")");
+            return;
+        }
+        sCpConnected = false;
+        Dipo.rgLinkDown("re-attach #" + attempt);
+        synchronized (sPendingIn) {
+            sPendingIn.clear();
+        }
+        // the dead link's sender is abandoned (a native call blocked in it is never waited for); the new link gets a fresh thread and queue
+        sCpTx.reset("re-attach #" + attempt, true);
+        final String addr = sCpSerial != null ? sCpSerial : sAddr;
+        handler().post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Context c = context;
+                    if (c == null) return;
+                    Intent i = new Intent(ACTION_ATTACH);
+                    i.setPackage(IAP2_PKG);
+                    i.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+                    i.putExtra("component", COMPONENT_CARPLAY_CLIENT);
+                    i.putExtra("serial", addr);
+                    c.sendBroadcast(i);
+                    log("iAP2 handover to CarPlay channel requested again (re-attach #" + attempt + ")");
+                } catch (Throwable t) {
+                    error("reattachCpClient", t);
                 }
             }
         });
+    }
+
+    static final class ReattachHost implements Reattach.Host {
+        @Override
+        public long now() {
+            return Bridge.now();
+        }
+
+        @Override
+        public Object schedule(Runnable r, long delayMs) {
+            handler().postDelayed(r, delayMs);
+            return r;
+        }
+
+        @Override
+        public void cancel(Object token) {
+            handler().removeCallbacks((Runnable) token);
+        }
+
+        @Override
+        public void handover(int attempt) {
+            reattachCpClient(attempt);
+        }
+
+        @Override
+        public void askAgain() {
+            Dipo.rgAsk("re-attach");
+        }
+
+        @Override
+        public void log(String m) {
+            Bridge.log(m);
+        }
     }
 
     static void onSppDown(String addr) {
@@ -508,7 +707,10 @@ final class Bridge {
             // what DiPO keeps as the current device (setCurrentIapDeviceName): a Bluetooth address is the notice's key
             if ((component == COMPONENT_USB || component == COMPONENT_BT_CARPLAY) && serial != null && serial.contains(":")) sLastBtId = serial;
             if (component == COMPONENT_USB) sUsb = true;
-            else if (component == COMPONENT_CARPLAY_CLIENT) onCpClientConnected();
+            else if (component == COMPONENT_CARPLAY_CLIENT) {
+                onCpClientConnected();
+                sReattach.connected();
+            }
         }
 
         @Override
@@ -521,6 +723,8 @@ final class Bridge {
                 sSession = false;
             } else if (component == COMPONENT_CARPLAY_CLIENT) {
                 sCpConnected = false;
+                if (sCpClient && !sUsb) Dipo.rgLinkDown("iAP2 disconnected comp=5");
+                if (sCpClient && !sUsb && sReattach.active() && !sReattach.busy()) sReattach.lost("iAP2 disconnected comp=5");
             }
         }
 

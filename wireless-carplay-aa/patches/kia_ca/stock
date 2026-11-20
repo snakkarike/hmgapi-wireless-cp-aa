@@ -1,0 +1,6 @@
+# The newer Canadian Kia build on 260206 (Niro, Sportage, Carnival, Telluride, Forte, Soul, Seltos 2024;
+# 12 products), app fingerprints from HMG-API's map (kia/sg2ev/can/260206); no app files are replaced.
+HKMC_BtSettings.odex 10499006defefddd6cd375620dfbdce8
+HKMC_DiPO.odex 49e892b7790c19548a2e1f7141987ca3
+HKMC_GPM.odex c4f751a36be916e72cf93df0436d63c2
+Iap2ServerApp.odex f3e22d94150de40f4ed603798358b0e3

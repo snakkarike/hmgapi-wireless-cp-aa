@@ -1,0 +1,6 @@
+# The US Ioniq 6 on 260206 (CEEV.USA.0000.V015.011.260206): the same system image as the Canadian one
+# (all 18 stock files HMG-API checks match, #319 and #354), app fingerprints from it; no app files are replaced.
+HKMC_BtSettings.odex 49c47080d12feff1c0c304cff6888509
+HKMC_DiPO.odex 70854adde7ecac266cbec28b41aaa233
+HKMC_GPM.odex d9720ba9ca280d3c5e3d768c193a2ad4
+Iap2ServerApp.odex 43c40662352937dd2c25a154dfa60b9d

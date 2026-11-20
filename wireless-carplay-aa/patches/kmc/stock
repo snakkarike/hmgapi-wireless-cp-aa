@@ -1,0 +1,7 @@
+# The US Kia build on 260507 (system image KMC.USA.1000; K5, Sorento, Telluride and
+# others, 24 products), app fingerprints from the stock files.
+# No app files are replaced; the library recipes check their own library's md5.
+HKMC_BtSettings.odex 97d0a9b4aa5e98dd7eb1435fc81d85cb
+HKMC_DiPO.odex edc6f75f5ccf79b63dc85a0902b63d91
+HKMC_GPM.odex 684183c9d0ef4c5b87f8ba42c94962c8
+Iap2ServerApp.odex 381b49afb7d28e03b390e2a220602252

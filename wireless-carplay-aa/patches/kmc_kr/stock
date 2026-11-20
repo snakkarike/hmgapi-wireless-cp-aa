@@ -1,0 +1,8 @@
+# The Korean Kia build on 260902 (K5, Sorento, Carnival and others, 33 products), app
+# fingerprints from the stock files. These units have the Wi-Fi chip but no hotspot feature
+# file; HMG-API adds it for this mod ("wifi": {"hotspot": true}).
+# No app files are replaced; the library recipes check their own library's md5.
+HKMC_BtSettings.odex 3d4b71befa08eb8294b070f96a5c2e1d
+HKMC_DiPO.odex b6c36634ebf49b45d84798b89cbfbf67
+HKMC_GPM.odex def8588772f648a6acedbed8ecdcd5d8
+Iap2ServerApp.odex 1252fd62faecba96941f2177bf36eb8b

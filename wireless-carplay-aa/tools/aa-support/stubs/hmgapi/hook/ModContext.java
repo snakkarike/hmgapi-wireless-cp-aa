@@ -20,6 +20,7 @@ public final class ModContext {
         return null;
     }
     public void nativePatch(LoadedApp app, String library) { natives.add(library); }
+    public void publish(String service, Object value) {}
     public Class<?> appPart(LoadedApp app, String name) {
         if (!"hmgapi.mods.wireless.dipo.Dipo".equals(name)) throw new AssertionError(name);
         return CarPlayPart.class;

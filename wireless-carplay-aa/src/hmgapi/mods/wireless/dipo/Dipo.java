@@ -43,6 +43,9 @@ import hmgapi.hook.Points;
  * for it: its own wireless CarPlay off (that's Hyundai's, not this one), its iAP2
  * listener ignoring the bridge's sessions, the reconnect crash fix and the first-connect
  * notice fix.
+ *
+ * Now Playing ("now_playing", with the bridge): song, artist and album art on wireless
+ * CarPlay, which DiPO only asks the phone for on USB (nowPlaying).
  */
 public final class Dipo {
     private Dipo() {}
@@ -57,10 +60,18 @@ public final class Dipo {
     static ModContext mod;
     static LoadedApp app;
     static volatile IIap2Service iap2;
-    static boolean tbt, bridge;
+    static boolean tbt, bridge, nowPlaying;
+    /** Now Playing asked again this long after the CarPlay channel session comes up */
+    static final long NP_DELAY = 1500;
+    static Handler npHandler;
+    /** DiPO's iAP2 manager from the CarPlay channel session's connect (Now Playing asked again through it after a re-attach) */
+    static volatile Object npManager;
     static Handler turnsHandler;
     static CpTurns turns;
     static RgListener rg;
+    /** asks for route guidance after every comp-5 ready, and the watchdog after each Start (RgWatch) */
+    static RgWatch rgWatch;
+    private static Handler rgHandler;
     /** set while HMG-API itself calls the iAP2 server (its own route guidance restart) */
     static final ThreadLocal<Boolean> OWN = new ThreadLocal<Boolean>();
     /** onSessionDetails' device id while it runs, and whether its address lookup came back empty */
@@ -81,6 +92,9 @@ public final class Dipo {
         app = a;
         tbt = m.settingBoolean("tbt", true);
         bridge = m.settingBoolean("bridge", true);
+        nowPlaying = bridge && m.settingBoolean("now_playing", true);
+        CarPlayLog.on = m.settingBoolean("carplay_log", false);
+        CarPlayLog.apply("start");
         // the CarPlay libraries, patched in memory once DiPO loads them (files stay stock)
         if (bridge) m.nativePatch(a, "libCarPlayCore.so");   // AirPlay sessions over Wi-Fi
         if (m.settingBoolean("audio", true)) {
@@ -88,8 +102,16 @@ public final class Dipo {
             m.nativePatch(a, "libCarPlayUtils.so");   // its AudioConverter calls go to libleafiaaac.so
         }
         if (tbt) turnByTurn();
-        if (bridge) bridge();
+        if (bridge && m.settingBoolean("park", true)) {
+            try {
+                ParkCp.start(m, a);   // ends wireless CarPlay when you park and leave (HMG-API's car events)
+            } catch (Throwable t) {   // an HMG-API without car events
+                error("CarPlay: no teardown when you park", t);
+            }
+        }
         if (!tbt && !bridge) return;
+        rgWatch();
+        if (bridge) bridge();
         Intent i = new Intent(IAP2_ACTION);
         boolean bound = a.context.bindService(i, new ServiceConnection() {
             @Override
@@ -126,14 +148,20 @@ public final class Dipo {
         turns = new CpTurns(app.context, c, new Runnable() {
             @Override
             public void run() {
+                RgWatch w = rgWatch;
+                if (w != null) w.started();   // a Start of ours: watched
                 restartRouteGuidance();
             }
         });
+        turns.standardTurns = mod.settingBoolean("tbt_standard", false);
+        if (turns.standardTurns) log("CarPlay: turns in the car's own format near a maneuver (standard turns)");
         rg = new RgListener();
         mod.hook(app.classLoader, "dipo.iap2_proxy.stop_route_guidance", new MethodHook() {
             @Override
             protected void beforeHookedMethod(Param p) {
                 if (OWN.get() != null) return;
+                RgWatch w = rgWatch;
+                if (w != null) w.stopped();
                 post(new Runnable() {
                     @Override
                     public void run() {
@@ -206,6 +234,8 @@ public final class Dipo {
         @Override
         public void notify(final int what, int a1, int a2, final Iap2NotiMsg msg) {
             if ((what != RG_UPDATE && what != RG_MANEUVER && what != RG_LANES) || msg == null) return;
+            RgWatch w = rgWatch;
+            if (w != null && what != RG_LANES) w.update();
             post(new Runnable() {
                 @Override
                 public void run() {
@@ -232,6 +262,7 @@ public final class Dipo {
         mod.hook(cl, "dipo.carplay.session_created", new MethodHook() {
             @Override
             protected void beforeHookedMethod(Param p) {
+                CarPlayLog.apply("session");
                 Bridge.onCpSessionCreated(p.thisObject);
             }
         });
@@ -287,6 +318,8 @@ public final class Dipo {
                 if (c == Bridge.COMPONENT_CARPLAY_CLIENT) {
                     Object manager = Points.get(cl, "dipo.iap2_client.manager", Points.get(cl, "dipo.iap2_listener.owner", p.thisObject));
                     Points.call(cl, "dipo.iap2.set_notify_on", null, manager, true);
+                    npManager = manager;
+                    if (nowPlaying) nowPlaying(manager, true);
                     p.setResult(null);
                 } else if (c == Bridge.COMPONENT_BT_CARPLAY) {
                     p.args[0] = Bridge.COMPONENT_USB;
@@ -296,7 +329,11 @@ public final class Dipo {
         mod.hook(cl, "dipo.iap2_listener.disconnected", new MethodHook() {
             @Override
             protected void beforeHookedMethod(Param p) {
-                if (Bridge.dipoIgnoreDisconnect((Integer) p.args[0])) p.setResult(null);
+                int c = (Integer) p.args[0];
+                if (nowPlaying && c == Bridge.COMPONENT_CARPLAY_CLIENT) {
+                    nowPlaying(Points.get(cl, "dipo.iap2_client.manager", Points.get(cl, "dipo.iap2_listener.owner", p.thisObject)), false);
+                }
+                if (Bridge.dipoIgnoreDisconnect(c)) p.setResult(null);
             }
         });
         mod.hook(cl, "dipo.iap2_listener.notify", new MethodHook() {
@@ -307,7 +344,165 @@ public final class Dipo {
         });
         reconnectFix(cl);
         firstConnectNotice();
+        {
+            // the iAP2 server's word that a session's link failed (the CarPlay channel's is attached again), or that a
+            // session is identified and authenticated (a re-attach counts only then, and route guidance is asked for
+            // again after every one: Bridge, Reattach, RgWatch). Always on now: RgWatch needs it with re-attach off too.
+            IntentFilter f = new IntentFilter(Bridge.ACTION_IAP2_CONNECTFAIL);
+            f.addAction(Bridge.ACTION_IAP2_CONNECTSUCCESS);
+            app.context.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context c, Intent i) {
+                    int comp = i.getIntExtra(Bridge.EXTRA_IAP2_COMPONENT, -1);
+                    if (Bridge.ACTION_IAP2_CONNECTSUCCESS.equals(i.getAction())) Bridge.onIap2ConnectSuccess(comp);
+                    else Bridge.onIap2ConnectFail(comp);
+                }
+            }, f);
+        }
+        if (nowPlaying) {
+            HandlerThread t = new HandlerThread("hmgapi-cp-np");
+            t.start();
+            npHandler = new Handler(t.getLooper());
+        }
         log("bridge: wireless CarPlay Bluetooth bridge in DiPO");
+    }
+
+    /**
+     * Now Playing on wireless CarPlay. DiPO asks the phone for Now Playing (Iap2SvcNowPlayingStart)
+     * only when a USB CarPlay session starts. On wireless, iAP2 then moves from the Bluetooth
+     * session to the CarPlay channel, whose identification the bridge keeps from DiPO, so a
+     * subscription made before the move gets one update, then nothing. Once the channel
+     * session is up: stop and start Now Playing again, NP_DELAY later and on its own thread (a
+     * binder call into the iAP2 server from its own callback could deadlock); stopped when the
+     * channel session ends. Through DiPO's own iAP2 connection, so its listener gets the
+     * updates as on USB: the manager's one IIap2Service field (EV6 and Ioniq 6 260507), or
+     * HMG-API's own binding when there isn't one.
+     */
+    private static void nowPlaying(final Object manager, final boolean start) {
+        npHandler.removeCallbacksAndMessages(null);
+        npHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                IIap2Service s = dipoIap2(manager);
+                if (s == null) {
+                    log("Now Playing: no iAP2 connection");
+                    return;
+                }
+                try {
+                    s.Iap2SvcNowPlayingStop();
+                    if (start) s.Iap2SvcNowPlayingStart();
+                    log(start ? "Now Playing: CarPlay channel session up, asking the phone again" : "Now Playing: CarPlay channel session ended, stopped");
+                } catch (Throwable t) {
+                    error("Now Playing", t);
+                }
+            }
+        }, start ? NP_DELAY : 0);
+    }
+
+    /**
+     * After a re-attach of the CarPlay channel's iAP2 session (Bridge, Reattach): the phone is
+     * asked for route guidance (Stop, then Start, as a source change does) and Now Playing again.
+     */
+    static void askAgain() {
+        if (tbt && turnsHandler != null) {
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    restartRouteGuidance();
+                }
+            });
+        }
+        if (nowPlaying && npHandler != null) nowPlaying(npManager, true);
+    }
+
+    private static void rgWatch() {
+        HandlerThread t = new HandlerThread("hmgapi-cp-rg");
+        t.start();
+        rgHandler = new Handler(t.getLooper());
+        rgWatch = new RgWatch(new RgWatch.Host() {
+            @Override
+            public long now() {
+                return android.os.SystemClock.elapsedRealtime();
+            }
+
+            @Override
+            public Object schedule(Runnable r, long delayMs) {
+                rgHandler.postDelayed(r, delayMs);
+                return r;
+            }
+
+            @Override
+            public void cancel(Object token) {
+                rgHandler.removeCallbacks((Runnable) token);
+            }
+
+            @Override
+            public void askAgain() {
+                Dipo.askAgain();
+            }
+
+            @Override
+            public void restart() {
+                if (tbt && turnsHandler != null) {
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            restartRouteGuidance();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void log(String m) {
+                Dipo.log("CarPlay: " + m);
+            }
+        }, tbt);
+    }
+
+    /** Bridge: the CarPlay channel's session (RgWatch) */
+    static void rgSessionUp() {
+        RgWatch w = rgWatch;
+        if (w != null) w.sessionUp();
+    }
+
+    static void rgSessionEnd() {
+        RgWatch w = rgWatch;
+        if (w != null) w.sessionEnd();
+    }
+
+    static void rgLinkDown(String why) {
+        RgWatch w = rgWatch;
+        if (w != null) w.linkDown(why);
+    }
+
+    /** Reattach's ask after a re-attach is ready: through RgWatch (logged, watched) */
+    static void rgAsk(String how) {
+        RgWatch w = rgWatch;
+        if (w != null) w.ask(how);
+        else askAgain();
+    }
+
+    /** DiPO's iAP2 connection: the one IIap2Service field of its iAP2 manager (else HMG-API's) */
+    private static IIap2Service dipoIap2(Object manager) {
+        if (manager != null) {
+            for (Class<?> c = manager.getClass(); c != null && c != Object.class; c = c.getSuperclass()) {
+                for (java.lang.reflect.Field f : c.getDeclaredFields()) {
+                    if (f.getType() != IIap2Service.class) continue;
+                    try {
+                        f.setAccessible(true);
+                        Object s;
+                        synchronized (manager) {
+                            s = f.get(manager);
+                        }
+                        if (s != null) return (IIap2Service) s;
+                    } catch (Throwable t) {
+                        error("Now Playing: DiPO's iAP2 connection", t);
+                    }
+                }
+            }
+        }
+        return iap2;
     }
 
     /**

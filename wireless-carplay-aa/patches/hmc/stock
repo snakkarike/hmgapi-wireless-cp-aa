@@ -1,0 +1,14 @@
+# The older Hyundai models (one system image per region and version: US 260507,
+# Canada 260206, US and Canada 260903), app fingerprints from the stock files.
+# No app files are replaced; the library recipes check their own library's md5.
+HKMC_BtSettings.odex 7e5cc22943bdb580a3bfe0308b3764a4
+HKMC_BtSettings.odex bda250d3073d1e1a0823dccfbc2561b1
+HKMC_BtSettings.odex 767b8f30a53656a3702988555ebde622
+HKMC_DiPO.odex a2661eab1a6800761e825eb87d68f140
+HKMC_DiPO.odex a557538824192f1658b1a17a2b319e87
+HKMC_DiPO.odex 5567d79675608df812d8fda862705bb2
+HKMC_GPM.odex 3288dc674e8c69e3250351eb2d9c812c
+HKMC_GPM.odex 5570e3bb1e6d0cb6f4799aba16a9e96a
+HKMC_GPM.odex d40e4fa38a91b03c824c40169f0905da
+Iap2ServerApp.odex ca77dff5d8aa9a0720ad9f86cd1fab73
+Iap2ServerApp.odex 49afa7e1da630a9b280d89526d963e63

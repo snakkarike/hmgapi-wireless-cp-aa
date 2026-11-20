@@ -32,7 +32,9 @@ if op == "-N":
 elif key not in rules and not builtin:
     sys.exit(1)
 elif op == "-X":
-    if any("-j " + chain in value for value in rules.values()):
+    if any(" -j " + chain + " " in " " + rule + " "
+           for rule_key, values in rules.items() if rule_key.startswith(version + "/" + table + "/")
+           for rule in values):
         sys.exit(1)
     del rules[key]
 elif op == "-F":
