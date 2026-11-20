@@ -118,6 +118,12 @@
       "region": "CAN",
       "firmware": "260206",
       "features": ["hmgapi.wifi"]
+    },
+    {
+      "model": "SU2IFL",
+      "region": "IND",
+      "firmware": "260430",
+      "features": ["hmgapi.wifi"]
     }
   ],
   "parts": [

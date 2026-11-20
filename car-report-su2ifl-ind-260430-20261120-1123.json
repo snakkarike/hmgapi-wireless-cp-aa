@@ -1,0 +1,2826 @@
+{
+  "report": "hmgapi car report 1",
+  "date": "20261120-1123",
+  "hmgapi": "1.1.0-rc.7",
+  "build": "5732e26 2026-11-20",
+  "unit": {
+    "product": "SU2IFL.IND.0000.V010.001.260430",
+    "make": "hyundai",
+    "name": "Creta",
+    "model": "SU2IFL",
+    "region": "IND",
+    "firmware": "260430",
+    "platform": "tcc803x",
+    "android": "4.4.2",
+    "onebin": "su2ifl_in",
+    "wifi_chip": true,
+    "wifi": "seen",
+    "features": [
+      "android.hardware.bluetooth",
+      "android.hardware.bluetooth_le",
+      "android.hardware.camera",
+      "android.hardware.camera.any",
+      "android.hardware.camera.autofocus",
+      "android.hardware.camera.flash",
+      "android.hardware.camera.front",
+      "android.hardware.faketouch",
+      "android.hardware.location",
+      "android.hardware.location.gps",
+      "android.hardware.location.network",
+      "android.hardware.microphone",
+      "android.hardware.screen.landscape",
+      "android.hardware.screen.portrait",
+      "android.hardware.sensor.accelerometer",
+      "android.hardware.sensor.compass",
+      "android.hardware.telephony",
+      "android.hardware.telephony.gsm",
+      "android.hardware.touchscreen",
+      "android.hardware.touchscreen.multitouch",
+      "android.hardware.touchscreen.multitouch.distinct",
+      "android.hardware.touchscreen.multitouch.jazzhand",
+      "android.hardware.usb.accessory",
+      "android.hardware.usb.host",
+      "android.software.app_widgets",
+      "android.software.device_admin",
+      "android.software.home_screen",
+      "android.software.input_methods",
+      "android.software.sip",
+      "android.software.sip.voip",
+      "com.hkmc.hardware.ev",
+      "com.hkmc.hardware.gps",
+      "com.hkmc.hardware.hev",
+      "com.hkmc.hardware.modem.lte",
+      "com.hkmc.hardware.phev",
+      "com.hkmc.permission.telematics.AUTO_DETECT",
+      "com.hkmc.permission.telematics.EV_ENABLE",
+      "com.hkmc.permission.telematics.HEV_ENABLE",
+      "com.hkmc.permission.telematics.PANIC_NOTI_SUPPORT",
+      "com.hkmc.permission.telematics.PHEV_ENABLE",
+      "com.hkmc.permission.telematics.STOLEN_NOTI_SUPPORT",
+      "com.hkmc.permission.telematics.SUPPORT_VCRM",
+      "com.hkmc.permission.telematics.can_option.TEMPER_OFFSET_VALUE",
+      "com.hkmc.permission.telematics.support.mof.security",
+      "com.hkmc.software.audio.systemalarmdefault",
+      "com.hkmc.software.button.knobswap",
+      "com.hkmc.software.can_support.only_support_mm_can",
+      "com.hkmc.software.climate",
+      "com.hkmc.software.connectivity.androidauto",
+      "com.hkmc.software.connectivity.androidauto_wireless",
+      "com.hkmc.software.connectivity.carplay",
+      "com.hkmc.software.connectivity.carplay_wireless",
+      "com.hkmc.software.engineermode.adb_hide",
+      "com.hkmc.software.favorite.song",
+      "com.hkmc.software.hyundai.new.emblem",
+      "com.hkmc.software.kr.soundhound",
+      "com.hkmc.software.location_sharing",
+      "com.hkmc.software.media.video",
+      "com.hkmc.software.music.streaming.in",
+      "com.hkmc.software.naturesound",
+      "com.hkmc.software.radio.drm",
+      "com.hkmc.software.rear.climate",
+      "com.hkmc.software.rear.notice",
+      "com.hkmc.software.rear.sleep",
+      "com.hkmc.software.rearcamera.maintain",
+      "com.hkmc.software.splitscreen.floating",
+      "com.hkmc.software.splitscreen.fullsize",
+      "com.hkmc.software.ss.climate",
+      "com.hkmc.software.ssearch",
+      "com.hkmc.software.telematics.calendar",
+      "com.hkmc.software.telematics.can_type.2A.2G_2C",
+      "com.hkmc.software.telematics.can_type.2B.2G_1C",
+      "com.hkmc.software.telematics.driving_screen_new_spec",
+      "com.hkmc.software.telematics.icp",
+      "com.hkmc.software.telematics.sop",
+      "com.hkmc.software.telematics.valetmode",
+      "com.hkmc.software.theme.settings",
+      "com.hkmc.software.user.profile",
+      "com.hkmc.software.user.profile.ccs",
+      "com.hkmc.software.vcrm",
+      "com.hkmc.software.vehiclesetting",
+      "com.hkmc.software.voicehandler",
+      "com.hkmc.software.wifi.module",
+      "com.mobis.hardware.driverwatch",
+      "com.mobis.hardware.key.custom",
+      "com.mobis.hardware.key.no_seekkey",
+      "com.mobis.hardware.key.no_tunekey",
+      "com.mobis.hardware.key.scroll_tunekey",
+      "com.mobis.software.findmyvehicle",
+      "com.mobis.software.navigation",
+      "com.mobis.welcome",
+      "hmgapi.wifi"
+    ]
+  },
+  "map": {
+    "summary": "hook map: probed for Creta (ind 260430), hooks on, 48 point(s) mapped on this car (reads and observe hooks), 5 point(s) not mapped (their features and mods are off) (map checked on this car (not yet marked verified))",
+    "status": "probed",
+    "folder": "hyundai/su2ifl/ind/260430",
+    "hooks_on": true,
+    "missing": {
+      "btsettings.projection_helper": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.device_connections_available": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.open_device_connections": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.open_other_page": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.open_wireless_page": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)"
+    },
+    "mapped_here": [
+      "dipo.carplay.decode_failure",
+      "dipo.carplay.disable_bluetooth",
+      "dipo.carplay.disconnect",
+      "dipo.carplay.force_key_frame",
+      "dipo.carplay.restart_bonjour",
+      "dipo.carplay.screen_timeout",
+      "framework.bcm_listener_stub.doors",
+      "framework.car_services.power",
+      "framework.hscan_service.battery_12v_saver",
+      "framework.hscan_service.battery_12v_sensor_error",
+      "framework.hscan_service.battery_12v_sensor_invalid",
+      "framework.hscan_service.battery_12v_sensor_state",
+      "framework.network_management_service",
+      "framework.network_management_service.start_access_point",
+      "framework.power_listener",
+      "framework.power_listener_stub",
+      "framework.power_listener_stub.as_interface",
+      "framework.power_listener_stub.power_status_changed",
+      "framework.power_listener_stub.system_off",
+      "framework.power_service",
+      "framework.power_service.confirm_system_off",
+      "framework.power_service.power_status",
+      "framework.power_service.register_system_off_responder",
+      "framework.power_service.unregister_system_off_responder",
+      "framework.power_service_stub",
+      "framework.power_service_stub.as_interface",
+      "framework.pp_service",
+      "framework.pp_service.aa_connected_address",
+      "framework.pp_service.cancel_connection_pp",
+      "framework.pp_service.connect_pp",
+      "framework.pp_service.cp_connected_address",
+      "framework.pp_service.disconnect_pp",
+      "framework.pp_service.on_wireless_connected",
+      "framework.pp_service.on_wireless_disconnected",
+      "framework.pp_service.send_connect_pp_from_bt",
+      "framework.wifi_configuration",
+      "framework.wifi_configuration.ap_mode",
+      "framework.wifi_configuration.connectivity_psk",
+      "framework.wifi_configuration.connectivity_ssid",
+      "framework.wifi_configuration.is_24ghz_band",
+      "gpm.connection_manager",
+      "gpm.connection_manager.send_byebye",
+      "gpm.receiver_service.connect_wireless_session",
+      "gpm.receiver_service.connection_manager",
+      "gpm.receiver_service.on_create",
+      "gpm.receiver_service.wireless_explorer",
+      "gpm.wireless_explorer",
+      "gpm.wireless_explorer.connected_device"
+    ]
+  },
+  "map_car": {
+    "found": 393,
+    "by_reference": [
+      "btsettings.projection_helper",
+      "btsettings.projection_helper.device_connections_available",
+      "btsettings.projection_helper.open_device_connections",
+      "btsettings.projection_helper.open_other_page",
+      "btsettings.projection_helper.open_wireless_page",
+      "dipo.iap2.bt_address",
+      "dipo.iap2.set_notify_on",
+      "panel.home.build_views",
+      "panel.home.test_page",
+      "panel.test_gate",
+      "panel.test_gate.on",
+      "panel.test_page",
+      "themesettings.split_item.type"
+    ],
+    "not_found": {},
+    "apps_absent": {},
+    "files": {
+      "/system/app/ButtonSettings.odex": "691f0deafb81ee31086b49da8abe12a1",
+      "/system/app/HKMC_BtSettings.odex": "1cba77f67a5827a75fcd3ce633311748",
+      "/system/app/HKMC_DiPO.odex": "1e035512e2898702f1d00c8fccac6b2f",
+      "/system/app/HKMC_GPM.odex": "97252c2c839bcd2088eaf6120565c231",
+      "/system/app/HKMC_HomeSetting_WP.odex": "a3bbacb8510dd885c467d0830e10d22e",
+      "/system/app/Iap2ServerApp.odex": "2a6e98df322951aa194041a56e3e5356",
+      "/system/app/Launcher_WP3.odex": "d23e799f8b657eddca5345ba1301fa9d",
+      "/system/app/RightScreenHome.odex": "fd8b01dda305a1943c653e49adf80697",
+      "/system/app/Settings_W.odex": "6d92cb709c7f16690919003d341b179a",
+      "/system/app/ThemeSettings.odex": "5ccdd053e956aa75d03f7aff7b65ae22",
+      "/system/framework/automotive-service.odex": "e8fdf415a255bf1f47ace8b269a5fa0d",
+      "/system/framework/automotive.odex": "1eda44002b70be8bd693cbe9cb2d6742",
+      "/system/framework/com.broadcom.bt.jar": "dbf374aa8bde80fad95746a67719ce51",
+      "/system/framework/com.hkmc.ext.hcan.odex": "761dbe6387e035c41018bc85059c63e2",
+      "/system/framework/com.tcc.iap2.odex": "0d89f8a54dae365317ae4c749263ff6f",
+      "/system/framework/core.odex": "320993719ef525d0c34b1c4073cbcd4b",
+      "/system/framework/framework.odex": "7a768570d936eda87eee7e6aeafa6628",
+      "/system/framework/framework2.odex": "98203dd15f44fa0a290b0065d7f8fcd1"
+    },
+    "app_files": {
+      "btsettings": {
+        "package": "com.android.btsettings",
+        "files": [
+          "/system/app/HKMC_BtSettings.odex"
+        ]
+      },
+      "buttonsettings": {
+        "package": "com.android.buttonsettings",
+        "files": [
+          "/system/app/ButtonSettings.odex"
+        ]
+      },
+      "dipo": {
+        "package": "com.daudio.app.dipo",
+        "files": [
+          "/system/app/HKMC_DiPO.odex",
+          "/system/framework/com.tcc.iap2.odex",
+          "/system/framework/com.broadcom.bt.jar"
+        ]
+      },
+      "framework": {
+        "package": null,
+        "files": [
+          "/system/framework/framework.odex",
+          "/system/framework/core.odex",
+          "/system/framework/framework2.odex",
+          "/system/framework/automotive.odex",
+          "/system/framework/com.hkmc.ext.hcan.odex",
+          "/system/framework/automotive-service.odex"
+        ]
+      },
+      "gpm": {
+        "package": "com.google.android.projection.sink",
+        "files": [
+          "/system/app/HKMC_GPM.odex"
+        ]
+      },
+      "homesetting": {
+        "package": "com.hkmc.system.app.homesetting",
+        "files": [
+          "/system/app/HKMC_HomeSetting_WP.odex"
+        ]
+      },
+      "iap2": {
+        "package": "com.tcc.iap2server",
+        "files": [
+          "/system/app/Iap2ServerApp.odex"
+        ]
+      },
+      "launcher": {
+        "package": "com.android.launcher3",
+        "files": [
+          "/system/app/Launcher_WP3.odex"
+        ]
+      },
+      "panel": {
+        "package": "com.mobis.splitscreen.right",
+        "files": [
+          "/system/app/RightScreenHome.odex"
+        ]
+      },
+      "settings": {
+        "package": "com.android.settings",
+        "files": [
+          "/system/app/Settings_W.odex"
+        ]
+      },
+      "themesettings": {
+        "package": "com.android.themesettings",
+        "files": [
+          "/system/app/ThemeSettings.odex"
+        ]
+      }
+    },
+    "points": {
+      "btsettings.projection_helper": {
+        "class": "com.android.settings2.bluetooth.iO"
+      },
+      "btsettings.projection_helper.device_connections_available": {
+        "method": "ih",
+        "params": [],
+        "ret": "boolean",
+        "static": true,
+        "sig": "78dd9126b1e70d24"
+      },
+      "btsettings.projection_helper.open_device_connections": {
+        "method": "a",
+        "params": [
+          "android.content.Context",
+          "int"
+        ],
+        "ret": "void",
+        "static": true,
+        "sig": "3992e4b2185762b2"
+      },
+      "btsettings.projection_helper.open_other_page": {
+        "method": "aj",
+        "params": [
+          "android.content.Context"
+        ],
+        "ret": "void",
+        "static": true,
+        "sig": "188748786200352d"
+      },
+      "btsettings.projection_helper.open_wireless_page": {
+        "method": "aQ",
+        "params": [
+          "android.content.Context"
+        ],
+        "ret": "void",
+        "static": true,
+        "sig": "4c117e3a11d56395"
+      },
+      "buttonsettings.adapter": {
+        "class": "com.android.buttonsettings.util.IconTextListAdapter"
+      },
+      "buttonsettings.adapter.set_boolean_list": {
+        "method": "setBooleanList",
+        "params": [
+          "boolean[]"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.adapter.set_list_items": {
+        "method": "setListItems",
+        "params": [
+          "java.util.List"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.head_screen": {
+        "class": "com.android.buttonsettings.CustomButtonSetting"
+      },
+      "buttonsettings.head_screen.adapter": {
+        "field": "adapter",
+        "type": "com.android.buttonsettings.util.IconTextListAdapter",
+        "static": false
+      },
+      "buttonsettings.head_screen.checked_list": {
+        "field": "mCheckedList",
+        "type": "boolean[]",
+        "static": false
+      },
+      "buttonsettings.head_screen.cur_list": {
+        "field": "mCurList",
+        "type": "java.util.List",
+        "static": false
+      },
+      "buttonsettings.head_screen.init_custom_key": {
+        "method": "initCustomKey",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.head_screen.init_list": {
+        "method": "initList",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.head_screen.keycode": {
+        "field": "mKeycode",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "buttonsettings.head_screen.list_item": {
+        "method": "getListItem",
+        "params": [
+          "int",
+          "java.lang.String",
+          "int"
+        ],
+        "ret": "com.android.buttonsettings.util.IconTextItem",
+        "static": false
+      },
+      "buttonsettings.head_screen.menu_list": {
+        "field": "mMenuList",
+        "type": "java.util.ArrayList",
+        "static": false
+      },
+      "buttonsettings.head_screen.set_selected": {
+        "method": "setSelectedIdem",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.head_screen.title_list": {
+        "field": "mCustomKeyTitleList",
+        "type": "int[]",
+        "static": false
+      },
+      "buttonsettings.item": {
+        "class": "com.android.buttonsettings.customviews.CustomItem"
+      },
+      "buttonsettings.item.get_shortcut": {
+        "method": "getShortCut",
+        "params": [],
+        "ret": "java.lang.String",
+        "static": false
+      },
+      "buttonsettings.item.new": {
+        "ctor": [
+          "int",
+          "int",
+          "int",
+          "java.lang.String"
+        ]
+      },
+      "buttonsettings.row": {
+        "class": "com.android.buttonsettings.util.IconTextItem"
+      },
+      "buttonsettings.row.is_check": {
+        "method": "isCheck",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "buttonsettings.row.set_check": {
+        "method": "setCheck",
+        "params": [
+          "boolean"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.wheel_screen": {
+        "class": "com.android.buttonsettings.CustomButtonSettingSWRC"
+      },
+      "buttonsettings.wheel_screen.adapter": {
+        "field": "adapter",
+        "type": "com.android.buttonsettings.util.IconTextListAdapter",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.checked_list": {
+        "field": "mCheckedList",
+        "type": "boolean[]",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.cur_list": {
+        "field": "mCurList",
+        "type": "java.util.List",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.init_custom_key": {
+        "method": "initCustomKey",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.init_list": {
+        "method": "initList",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.keycode": {
+        "field": "mKeycode",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "buttonsettings.wheel_screen.list_item": {
+        "method": "getListItem",
+        "params": [
+          "int",
+          "java.lang.String",
+          "int"
+        ],
+        "ret": "com.android.buttonsettings.util.IconTextItem",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.menu_list": {
+        "field": "mMenuList",
+        "type": "java.util.ArrayList",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.set_selected": {
+        "method": "setSelectedIdem",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "buttonsettings.wheel_screen.title_list": {
+        "field": "mCustomKeyTitleList",
+        "type": "int[]",
+        "static": false
+      },
+      "dipo.bt": {
+        "class": "com.daudio.app.dipo.f.c"
+      },
+      "dipo.bt.set_carplay_bt_address": {
+        "method": "o",
+        "params": [
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.btcm": {
+        "class": "com.broadcom.bt.hfdevice.hfbtcm.HfDeviceBTCMManager"
+      },
+      "dipo.btcm.register_listener": {
+        "method": "registerHfDeviceStatusListener",
+        "params": [
+          "com.broadcom.bt.hfdevice.hfbtcm.HfDeviceStatusListener"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.carplay": {
+        "class": "com.daudio.app.dipo.telechips.CarPlayService"
+      },
+      "dipo.carplay.decode_failure": {
+        "method": "onNotifyDecodeFailure",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.carplay.disable_bluetooth": {
+        "method": "onDisableBluetooth",
+        "params": [
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.carplay.disconnect": {
+        "method": "disconnectCarPlay",
+        "params": [],
+        "ret": "com.daudio.app.dipo.telechips.CarPlayReturn",
+        "static": false
+      },
+      "dipo.carplay.force_key_frame": {
+        "method": "forceKeyFrame",
+        "params": [],
+        "ret": "com.daudio.app.dipo.telechips.CarPlayReturn",
+        "static": false
+      },
+      "dipo.carplay.iap_message": {
+        "method": "oniAPSendMessage",
+        "params": [
+          "byte[]",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.carplay.native_iap_send": {
+        "method": "TccCarPlayNativeMethod_iAPSendMessage",
+        "params": [
+          "byte[]",
+          "int"
+        ],
+        "ret": "int",
+        "static": false
+      },
+      "dipo.carplay.restart_bonjour": {
+        "method": "restartBonjour",
+        "params": [],
+        "ret": "com.daudio.app.dipo.telechips.CarPlayReturn",
+        "static": false
+      },
+      "dipo.carplay.screen_timeout": {
+        "method": "onScreenTimeout",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.carplay.session_created": {
+        "method": "onSessionCreated",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.carplay.session_finalized": {
+        "method": "onSessionFinalized",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.carplay.session_started": {
+        "method": "onSessionStarted",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.iap2": {
+        "class": "com.daudio.app.dipo.e.b"
+      },
+      "dipo.iap2.bt_address": {
+        "method": "K",
+        "params": [],
+        "ret": "java.lang.String",
+        "static": false,
+        "sig": "2edc49e8aa876db7"
+      },
+      "dipo.iap2.set_notify_on": {
+        "method": "a",
+        "params": [
+          "com.daudio.app.dipo.e.b",
+          "boolean"
+        ],
+        "ret": "boolean",
+        "static": true,
+        "sig": "094ff907b5dded7c"
+      },
+      "dipo.iap2_client": {
+        "class": "com.daudio.app.dipo.e.a"
+      },
+      "dipo.iap2_client.manager": {
+        "field": "Q",
+        "type": "com.daudio.app.dipo.e.b",
+        "static": false
+      },
+      "dipo.iap2_listener": {
+        "class": "com.daudio.app.dipo.e.g"
+      },
+      "dipo.iap2_listener.connected": {
+        "method": "connected",
+        "params": [
+          "int",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.iap2_listener.disconnected": {
+        "method": "disconnected",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.iap2_listener.notify": {
+        "method": "notify",
+        "params": [
+          "int",
+          "int",
+          "int",
+          "com.tcc.iap2.Iap2NotiMsg"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.iap2_listener.owner": {
+        "field": "mM",
+        "type": "com.daudio.app.dipo.e.a",
+        "static": false
+      },
+      "dipo.iap2_proxy": {
+        "class": "com.tcc.iap2.IIap2Service$Stub$Proxy"
+      },
+      "dipo.iap2_proxy.stop_route_guidance": {
+        "method": "Iap2SvcStopRouteGuidanceUpdate",
+        "params": [
+          "java.lang.String[]"
+        ],
+        "ret": "boolean",
+        "static": false
+      },
+      "dipo.session_listener": {
+        "class": "com.daudio.app.dipo.service.q"
+      },
+      "dipo.session_listener.session_details": {
+        "method": "a",
+        "params": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "dipo.utils": {
+        "class": "com.daudio.app.dipo.i.e"
+      },
+      "dipo.utils.is_support_wireless_carplay": {
+        "method": "isSupportWirelessCarPlay",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.activity": {
+        "class": "android.app.Activity"
+      },
+      "framework.activity.start_activity_for_result": {
+        "method": "startActivityForResult",
+        "params": [
+          "android.content.Intent",
+          "int",
+          "android.os.Bundle"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.activity_thread": {
+        "class": "android.app.ActivityThread"
+      },
+      "framework.activity_thread.handle_bind_application": {
+        "method": "handleBindApplication",
+        "params": [
+          "android.app.ActivityThread$AppBindData"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.activity_thread.initial_application": {
+        "field": "mInitialApplication",
+        "type": "android.app.Application",
+        "static": false
+      },
+      "framework.app_bind_data": {
+        "class": "android.app.ActivityThread$AppBindData"
+      },
+      "framework.app_bind_data.app_info": {
+        "field": "appInfo",
+        "type": "android.content.pm.ApplicationInfo",
+        "static": false
+      },
+      "framework.app_bind_data.process_name": {
+        "field": "processName",
+        "type": "java.lang.String",
+        "static": false
+      },
+      "framework.bcm_listener": {
+        "class": "com.hkmc.bcm.IBCMListener"
+      },
+      "framework.bcm_listener_stub": {
+        "class": "com.hkmc.bcm.IBCMListener$Stub"
+      },
+      "framework.bcm_listener_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.bcm.IBCMListener",
+        "static": true
+      },
+      "framework.bcm_listener_stub.doors": {
+        "field": "TRANSACTION_onDoorAllStateChanged",
+        "type": "int",
+        "static": true
+      },
+      "framework.bcm_listener_stub.heating": {
+        "field": "TRANSACTION_onRemoteTeleHeatingStatusChanged",
+        "type": "int",
+        "static": true
+      },
+      "framework.bcm_service": {
+        "class": "com.hkmc.bcm.IBCMService"
+      },
+      "framework.bcm_service.ast_seat_heat_option": {
+        "method": "getAstSeatHeatOption",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.ast_seat_heat_state": {
+        "method": "getAstSeatHeatState",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.batt_cond_indicator": {
+        "method": "getBattCondIndSta",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.charge_door": {
+        "method": "requestChargeLockDoor",
+        "params": [
+          "boolean"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.bcm_service.drv_seat_heat_option": {
+        "method": "getDrvSeatHeatOption",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.drv_seat_heat_state": {
+        "method": "getDrvSeatHeatState",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.register_listener": {
+        "method": "registerBCMListener",
+        "params": [
+          "com.hkmc.bcm.IBCMListener",
+          "android.os.IBinder"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.bcm_service.rl_seat_heat_option": {
+        "method": "getRLSeatHeatOption",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.rl_seat_heat_state": {
+        "method": "getRLSeatHeatState",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.rr_seat_heat_option": {
+        "method": "getRRSeatHeatOption",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service.rr_seat_heat_state": {
+        "method": "getRRSeatHeatState",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.bcm_service_stub": {
+        "class": "com.hkmc.bcm.IBCMService$Stub"
+      },
+      "framework.bcm_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.bcm.IBCMService",
+        "static": true
+      },
+      "framework.build_info": {
+        "class": "com.hkmc.BuildInfo"
+      },
+      "framework.build_info.region": {
+        "field": "REGION",
+        "type": "int",
+        "static": true
+      },
+      "framework.car_services": {
+        "class": "com.hkmc.Service"
+      },
+      "framework.car_services.bcm": {
+        "field": "BCM_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.cluster": {
+        "field": "CLUSTER_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.datc": {
+        "field": "DATC_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.factory": {
+        "field": "FACTORY_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.hev": {
+        "field": "HEV_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.micom_data": {
+        "field": "MICOMDATA_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.pgs": {
+        "field": "PGS_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.power": {
+        "field": "POWER_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.regulation": {
+        "field": "REGULATION_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.system": {
+        "field": "SYSTEM_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.usm": {
+        "field": "USM_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.car_services.vr": {
+        "field": "VR_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.cluster_listener": {
+        "class": "com.hkmc.cluster.INavigationClusterListener"
+      },
+      "framework.cluster_listener_stub": {
+        "class": "com.hkmc.cluster.INavigationClusterListener$Stub"
+      },
+      "framework.cluster_listener_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.cluster.INavigationClusterListener",
+        "static": true
+      },
+      "framework.cluster_listener_stub.battery_info": {
+        "field": "TRANSACTION_onHandleBatteryInfoResp",
+        "type": "int",
+        "static": true
+      },
+      "framework.cluster_service": {
+        "class": "com.hkmc.cluster.IClusterService"
+      },
+      "framework.cluster_service.add_listener": {
+        "method": "addNavigationClusterListener",
+        "params": [
+          "com.hkmc.cluster.INavigationClusterListener"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.cluster_service.battery_info": {
+        "method": "requestBatteryInfoReq",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "framework.cluster_service_stub": {
+        "class": "com.hkmc.cluster.IClusterService$Stub"
+      },
+      "framework.cluster_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.cluster.IClusterService",
+        "static": true
+      },
+      "framework.context_impl": {
+        "class": "android.app.ContextImpl"
+      },
+      "framework.context_impl.start_service": {
+        "method": "startService",
+        "params": [
+          "android.content.Intent"
+        ],
+        "ret": "android.content.ComponentName",
+        "static": false
+      },
+      "framework.crossroad_name": {
+        "class": "com.hkmc.cluster.NavigationCluster$CrossroadName"
+      },
+      "framework.crossroad_name.name": {
+        "field": "name",
+        "type": "java.lang.String",
+        "static": false
+      },
+      "framework.crossroad_name.new": {
+        "ctor": []
+      },
+      "framework.datc_listener": {
+        "class": "com.hkmc.datc.IDATCListener"
+      },
+      "framework.datc_listener_stub": {
+        "class": "com.hkmc.datc.IDATCListener$Stub"
+      },
+      "framework.datc_listener_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.datc.IDATCListener",
+        "static": true
+      },
+      "framework.datc_listener_stub.status": {
+        "field": "TRANSACTION_onDatcStatus",
+        "type": "int",
+        "static": true
+      },
+      "framework.datc_service": {
+        "class": "com.hkmc.datc.IDATCService"
+      },
+      "framework.datc_service.register_listener": {
+        "method": "registerDATCListener",
+        "params": [
+          "com.hkmc.datc.IDATCListener",
+          "android.os.IBinder"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.datc_service_stub": {
+        "class": "com.hkmc.datc.IDATCService$Stub"
+      },
+      "framework.datc_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.datc.IDATCService",
+        "static": true
+      },
+      "framework.datc_status": {
+        "class": "com.hkmc.datc.DatcStatus"
+      },
+      "framework.datc_status.ambient_c": {
+        "method": "getAmbientTempC",
+        "params": [],
+        "ret": "float",
+        "static": false
+      },
+      "framework.datc_status.ambient_f": {
+        "method": "getAmbientTempF",
+        "params": [],
+        "ret": "float",
+        "static": false
+      },
+      "framework.datc_status.ambient_state_c": {
+        "method": "getAmbientTempStateC",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.datc_status.creator": {
+        "field": "CREATOR",
+        "type": "android.os.Parcelable$Creator",
+        "static": true
+      },
+      "framework.destination_name": {
+        "class": "com.hkmc.cluster.NavigationCluster$DestinationName"
+      },
+      "framework.destination_name.name": {
+        "field": "name",
+        "type": "java.lang.String",
+        "static": false
+      },
+      "framework.destination_name.new": {
+        "ctor": []
+      },
+      "framework.destination_name.type": {
+        "field": "type",
+        "type": "int",
+        "static": false
+      },
+      "framework.dipo_manager": {
+        "class": "android.dipo.DiPOManager"
+      },
+      "framework.dipo_manager.current_mode": {
+        "method": "getCurrentDiPOMode",
+        "params": [],
+        "ret": "android.dipo.DiPOMode",
+        "static": false
+      },
+      "framework.dipo_manager.current_stat": {
+        "method": "getCurrentDiPOStat",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.dipo_manager.is_turn_by_turn": {
+        "method": "isDiPOTurnByTurnMode",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.dipo_mode": {
+        "class": "android.dipo.DiPOMode"
+      },
+      "framework.dipo_mode.phone_call": {
+        "method": "getPhoneCall",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.dipo_mode.speech": {
+        "method": "getSpeech",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.factory_service": {
+        "class": "com.hkmc.factory.IMicomFactoryService"
+      },
+      "framework.factory_service.hide_consent_screen": {
+        "method": "hideConsentScreen",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "framework.factory_service_stub": {
+        "class": "com.hkmc.factory.IMicomFactoryService$Stub"
+      },
+      "framework.factory_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.factory.IMicomFactoryService",
+        "static": true
+      },
+      "framework.gpm_manager": {
+        "class": "com.hkmc.gpm.GpmManager"
+      },
+      "framework.gpm_manager.is_activated": {
+        "method": "isGpmActivated",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.gpm_manager.is_call": {
+        "method": "isGpmCall",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.gpm_manager.is_navi_guidance": {
+        "method": "isGpmNaviGuidance",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.gpm_manager.is_vr": {
+        "method": "isGpmVR",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.gpm_manager.new": {
+        "ctor": [
+          "android.content.Context"
+        ]
+      },
+      "framework.hev_flag": {
+        "class": "com.hkmc.hev.HEVManager$HEVFlag"
+      },
+      "framework.hev_flag.batt_cond_failure": {
+        "field": "BMS_BATTCONDFAILPOPUP",
+        "type": "int",
+        "static": true
+      },
+      "framework.hev_flag.battery_conditioning": {
+        "field": "EV_BATTERYCONDITIONING",
+        "type": "int",
+        "static": true
+      },
+      "framework.hev_flag.display_soc": {
+        "field": "DISPLAY_SOC",
+        "type": "int",
+        "static": true
+      },
+      "framework.hev_flag.ev_ready": {
+        "field": "EV_RDY",
+        "type": "int",
+        "static": true
+      },
+      "framework.hev_flag.odometer": {
+        "field": "ODOMETER",
+        "type": "int",
+        "static": true
+      },
+      "framework.hev_service": {
+        "class": "com.hkmc.hev.IHEVService"
+      },
+      "framework.hev_service.batt_cond_remain_time": {
+        "method": "setBattCondRemainTime",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.hev_service.batt_cond_route_distance": {
+        "method": "setBattCondRouteDis",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.hev_service.batt_cond_station": {
+        "method": "setBattCondEvStation",
+        "params": [
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.hev_service.hev_status": {
+        "method": "getHEVStatus",
+        "params": [
+          "int"
+        ],
+        "ret": "int",
+        "static": false
+      },
+      "framework.hev_service_stub": {
+        "class": "com.hkmc.hev.IHEVService$Stub"
+      },
+      "framework.hev_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.hev.IHEVService",
+        "static": true
+      },
+      "framework.hkmc_loader": {
+        "class": "com.hkmc.internal.Loader"
+      },
+      "framework.hkmc_loader.automotive_service": {
+        "method": "getAutomotiveServiceJar",
+        "params": [
+          "android.content.Context"
+        ],
+        "ret": "com.hkmc.internal.Loader",
+        "static": true
+      },
+      "framework.hkmc_loader.class_loader": {
+        "field": "mClassLoader",
+        "type": "java.lang.ClassLoader",
+        "static": false
+      },
+      "framework.hscan_adapter": {
+        "class": "com.hkmc.telematics.hscan.tm_interface.TM_HSCANAdapter"
+      },
+      "framework.hscan_adapter.service_name": {
+        "field": "TM_HSCAN_SERVICE",
+        "type": "java.lang.String",
+        "static": true
+      },
+      "framework.hscan_service": {
+        "class": "com.hkmc.telematics.hscan.tm_interface.ITM_HSCANService"
+      },
+      "framework.hscan_service.accel_pedal": {
+        "method": "getAccelPdlVal",
+        "params": [],
+        "ret": "float",
+        "static": false
+      },
+      "framework.hscan_service.battery_12v_saver": {
+        "method": "get_BAT_AuxBattOpt",
+        "params": [],
+        "ret": "byte",
+        "static": false
+      },
+      "framework.hscan_service.battery_12v_sensor_error": {
+        "method": "getBATSNSRError",
+        "params": [],
+        "ret": "byte",
+        "static": false
+      },
+      "framework.hscan_service.battery_12v_sensor_invalid": {
+        "method": "getBATSNSRInvalid",
+        "params": [],
+        "ret": "byte",
+        "static": false
+      },
+      "framework.hscan_service.battery_12v_sensor_state": {
+        "method": "getBATSNSRState",
+        "params": [],
+        "ret": "byte",
+        "static": false
+      },
+      "framework.hscan_service.battery_12v_soc": {
+        "method": "getBatSoc",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.hscan_service.brake_pressure": {
+        "method": "getCylPrsrVal",
+        "params": [],
+        "ret": "float",
+        "static": false
+      },
+      "framework.hscan_service.car_speed": {
+        "method": "getCarSpeed",
+        "params": [
+          "byte"
+        ],
+        "ret": "float",
+        "static": false
+      },
+      "framework.hscan_service.charging_status": {
+        "method": "getChargingStatus",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.hscan_service.hv_health": {
+        "method": "getXEV_Bms_GDS_SOH",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.hscan_service.moving": {
+        "method": "IsCarMoving",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.hscan_service.steering_angle": {
+        "method": "navi_getSasAngleVal",
+        "params": [],
+        "ret": "float",
+        "static": false
+      },
+      "framework.hscan_service_stub": {
+        "class": "com.hkmc.telematics.hscan.tm_interface.ITM_HSCANService$Stub"
+      },
+      "framework.hscan_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.telematics.hscan.tm_interface.ITM_HSCANService",
+        "static": true
+      },
+      "framework.io_bridge": {
+        "class": "libcore.io.IoBridge"
+      },
+      "framework.io_bridge.connect": {
+        "method": "connect",
+        "params": [
+          "java.io.FileDescriptor",
+          "java.net.InetAddress",
+          "int"
+        ],
+        "ret": "boolean",
+        "static": true
+      },
+      "framework.io_bridge.connect_timeout": {
+        "method": "connect",
+        "params": [
+          "java.io.FileDescriptor",
+          "java.net.InetAddress",
+          "int",
+          "int"
+        ],
+        "ret": "boolean",
+        "static": true
+      },
+      "framework.micomdata_callback_stub": {
+        "class": "com.hkmc.micom.IMicomDataCallback$Stub"
+      },
+      "framework.micomdata_service": {
+        "class": "com.hkmc.micom.IMicomDataService"
+      },
+      "framework.micomdata_service.register": {
+        "method": "registerCallback",
+        "params": [
+          "java.lang.String",
+          "byte",
+          "com.hkmc.micom.IMicomDataCallback"
+        ],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.micomdata_service.unregister": {
+        "method": "unregisterCallback",
+        "params": [
+          "java.lang.String",
+          "byte",
+          "com.hkmc.micom.IMicomDataCallback"
+        ],
+        "ret": "boolean",
+        "static": false
+      },
+      "framework.micomdata_service_stub": {
+        "class": "com.hkmc.micom.IMicomDataService$Stub"
+      },
+      "framework.micomdata_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.micom.IMicomDataService",
+        "static": true
+      },
+      "framework.mode_key_dispatcher": {
+        "class": "com.hkmc.micom.ModeKeyDispatcher"
+      },
+      "framework.mode_key_dispatcher.intercept_key": {
+        "method": "interceptKeyFromAndroid",
+        "params": [
+          "android.view.InputChannel",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "int",
+        "static": false
+      },
+      "framework.mode_manager_service": {
+        "class": "com.hkmc.micom.ModeManagerService"
+      },
+      "framework.mode_manager_service.intercept_key_dispatching": {
+        "method": "interceptKeyBeforeDispatching",
+        "params": [
+          "android.view.InputChannel",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "int",
+        "static": false
+      },
+      "framework.mode_manager_service.intercept_key_queueing": {
+        "method": "interceptKeyBeforeQueueing",
+        "params": [
+          "android.view.InputChannel",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "int",
+        "static": false
+      },
+      "framework.navigation_cluster": {
+        "class": "com.hkmc.cluster.NavigationCluster"
+      },
+      "framework.navigation_cluster.new": {
+        "ctor": [
+          "android.content.Context"
+        ]
+      },
+      "framework.navigation_cluster.update_lane_info": {
+        "method": "updateLaneInfo",
+        "params": [
+          "byte[]"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_remain_dis": {
+        "method": "updateRemainDis",
+        "params": [
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tbt_info": {
+        "method": "updateTBTInfo",
+        "params": [
+          "int",
+          "int",
+          "float",
+          "float",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tbt_sub_info": {
+        "method": "updateTBTSubInfo",
+        "params": [
+          "float",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "float",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tbt_sub_info2": {
+        "method": "updateTBTSubInfo2",
+        "params": [
+          "float",
+          "int",
+          "float",
+          "int",
+          "float",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tbt_sub_info2_b": {
+        "method": "updateTBTSubInfo2",
+        "params": [
+          "float",
+          "int",
+          "int",
+          "float",
+          "int",
+          "int",
+          "float",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tbt_sub_info_2c": {
+        "method": "updateTBTSubInfo2C",
+        "params": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tbt_sub_info_b": {
+        "method": "updateTBTSubInfo",
+        "params": [
+          "float",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "float",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tp_crossroad_name": {
+        "method": "updateTPCrossroadName",
+        "params": [
+          "com.hkmc.cluster.NavigationCluster$CrossroadName"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tp_destination_name": {
+        "method": "updateTPFlexibleDestinationName",
+        "params": [
+          "com.hkmc.cluster.NavigationCluster$DestinationName"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tp_lane_info": {
+        "method": "updateTPLaneInfo",
+        "params": [
+          "com.hkmc.cluster.NavigationCluster$LaneInformation"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tp_turn_list": {
+        "method": "updateTPTurnList",
+        "params": [
+          "com.hkmc.cluster.NavigationCluster$TurnList[]"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.navigation_cluster.update_tp_turn_list_new": {
+        "method": "updateTPTurnListNew",
+        "params": [
+          "byte[]"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.network_management_service": {
+        "class": "com.android.server.NetworkManagementService"
+      },
+      "framework.network_management_service.start_access_point": {
+        "method": "startAccessPoint",
+        "params": [
+          "android.net.wifi.WifiConfiguration",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.pgs_service": {
+        "class": "com.hkmc.pgs.IPgsService"
+      },
+      "framework.pgs_service.guide_lines": {
+        "method": "getRvmGuideLineState",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.pgs_service.request_guide_lines": {
+        "method": "requestGuideLineState",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.pgs_service_stub": {
+        "class": "com.hkmc.pgs.IPgsService$Stub"
+      },
+      "framework.pgs_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.pgs.IPgsService",
+        "static": true
+      },
+      "framework.power_listener": {
+        "class": "com.hkmc.power.IMicomPowerStatusListener"
+      },
+      "framework.power_listener_stub": {
+        "class": "com.hkmc.power.IMicomPowerStatusListener$Stub"
+      },
+      "framework.power_listener_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.power.IMicomPowerStatusListener",
+        "static": true
+      },
+      "framework.power_listener_stub.power_status_changed": {
+        "field": "TRANSACTION_onPowerStatusChanged",
+        "type": "int",
+        "static": true
+      },
+      "framework.power_listener_stub.system_off": {
+        "field": "TRANSACTION_onSystemOff",
+        "type": "int",
+        "static": true
+      },
+      "framework.power_service": {
+        "class": "com.hkmc.power.IMicomPowerService"
+      },
+      "framework.power_service.confirm_system_off": {
+        "method": "confirmSystemOff",
+        "params": [
+          "com.hkmc.power.IMicomPowerStatusListener",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.power_service.power_status": {
+        "method": "getPowerStatus",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.power_service.register_system_off_responder": {
+        "method": "registerSystemOffResponder",
+        "params": [
+          "com.hkmc.power.IMicomPowerStatusListener",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.power_service.unregister_system_off_responder": {
+        "method": "unregisterSystemOffResponder",
+        "params": [
+          "com.hkmc.power.IMicomPowerStatusListener",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.power_service_stub": {
+        "class": "com.hkmc.power.IMicomPowerService$Stub"
+      },
+      "framework.power_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.power.IMicomPowerService",
+        "static": true
+      },
+      "framework.pp_service": {
+        "class": "com.android.server.phoneprojection.PPService"
+      },
+      "framework.pp_service.aa_connected_address": {
+        "method": "getAAConnectedBTAddress",
+        "params": [],
+        "ret": "java.lang.String",
+        "static": false
+      },
+      "framework.pp_service.cancel_connection_pp": {
+        "method": "cancelConnectionPP",
+        "params": [
+          "int",
+          "java.lang.String",
+          "java.lang.String",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.pp_service.connect_pp": {
+        "method": "connectPP",
+        "params": [
+          "int",
+          "java.lang.String",
+          "java.lang.String",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.pp_service.cp_connected_address": {
+        "method": "getCPConnectedBTAddress",
+        "params": [],
+        "ret": "java.lang.String",
+        "static": false
+      },
+      "framework.pp_service.disconnect_pp": {
+        "method": "disconnectPP",
+        "params": [
+          "int",
+          "java.lang.String",
+          "java.lang.String",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.pp_service.on_wireless_connected": {
+        "method": "onWirelessConnected",
+        "params": [
+          "int",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.pp_service.on_wireless_disconnected": {
+        "method": "onWirelessDisconnected",
+        "params": [
+          "int",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.pp_service.send_connect_pp_from_bt": {
+        "method": "sendConnectPPFromBT",
+        "params": [
+          "java.lang.String",
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.regulation_manager": {
+        "class": "com.hkmc.regulation.RegulationActivityManager"
+      },
+      "framework.regulation_manager.get_instance": {
+        "method": "getInstance",
+        "params": [
+          "android.content.Context"
+        ],
+        "ret": "com.hkmc.regulation.RegulationActivityManager",
+        "static": true
+      },
+      "framework.regulation_manager.show_popup": {
+        "method": "showRegulationPopup",
+        "params": [
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.regulation_manager.status": {
+        "method": "getStatus",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.regulation_service": {
+        "class": "com.hkmc.regulation.IRegulationManager"
+      },
+      "framework.regulation_service.status": {
+        "method": "getStatus",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.regulation_service_stub": {
+        "class": "com.hkmc.regulation.IRegulationManager$Stub"
+      },
+      "framework.regulation_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.regulation.IRegulationManager",
+        "static": true
+      },
+      "framework.resources": {
+        "class": "android.content.res.Resources"
+      },
+      "framework.resources.get_drawable": {
+        "method": "getDrawable",
+        "params": [
+          "int"
+        ],
+        "ret": "android.graphics.drawable.Drawable",
+        "static": false
+      },
+      "framework.resources.get_text": {
+        "method": "getText",
+        "params": [
+          "int"
+        ],
+        "ret": "java.lang.CharSequence",
+        "static": false
+      },
+      "framework.runtime": {
+        "class": "java.lang.Runtime"
+      },
+      "framework.runtime.load": {
+        "method": "load",
+        "params": [
+          "java.lang.String",
+          "java.lang.ClassLoader"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.runtime.load_library": {
+        "method": "loadLibrary",
+        "params": [
+          "java.lang.String",
+          "java.lang.ClassLoader"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.service_manager": {
+        "class": "android.os.ServiceManager"
+      },
+      "framework.service_manager.get_service": {
+        "method": "getService",
+        "params": [
+          "java.lang.String"
+        ],
+        "ret": "android.os.IBinder",
+        "static": true
+      },
+      "framework.system_properties": {
+        "class": "android.os.SystemProperties"
+      },
+      "framework.system_properties.get_int": {
+        "method": "getInt",
+        "params": [
+          "java.lang.String",
+          "int"
+        ],
+        "ret": "int",
+        "static": true
+      },
+      "framework.system_service": {
+        "class": "com.hkmc.micom.ISystemService"
+      },
+      "framework.system_service.gear_p_status": {
+        "method": "getGearPStatus",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.system_service.parking_brake_status": {
+        "method": "getEPBStatus",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.system_service.sml_configuration": {
+        "method": "setSMLConfiguration",
+        "params": [
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.system_service.sml_rgb": {
+        "method": "setSMLRGB",
+        "params": [
+          "byte[]",
+          "byte[]",
+          "byte[]"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.system_service.sml_status": {
+        "method": "requestSMLStatus",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "framework.system_service_stub": {
+        "class": "com.hkmc.micom.ISystemService$Stub"
+      },
+      "framework.system_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.micom.ISystemService",
+        "static": true
+      },
+      "framework.turn_list": {
+        "class": "com.hkmc.cluster.NavigationCluster$TurnList"
+      },
+      "framework.turn_list.direction": {
+        "field": "direction",
+        "type": "int",
+        "static": false
+      },
+      "framework.turn_list.distance": {
+        "field": "distance",
+        "type": "float",
+        "static": false
+      },
+      "framework.turn_list.exit_number": {
+        "field": "exitNumber",
+        "type": "java.lang.String",
+        "static": false
+      },
+      "framework.turn_list.name": {
+        "field": "name",
+        "type": "java.lang.String",
+        "static": false
+      },
+      "framework.turn_list.new": {
+        "ctor": []
+      },
+      "framework.turn_list.no": {
+        "field": "no",
+        "type": "int",
+        "static": false
+      },
+      "framework.turn_list.traffic": {
+        "field": "traffic",
+        "type": "int",
+        "static": false
+      },
+      "framework.turn_list.type": {
+        "field": "type",
+        "type": "int",
+        "static": false
+      },
+      "framework.turn_list.unit": {
+        "field": "unit",
+        "type": "int",
+        "static": false
+      },
+      "framework.usm_manager": {
+        "class": "com.hkmc.usm.USMManager"
+      },
+      "framework.usm_manager.distance_speed_unit": {
+        "method": "getDistanceSpeedUnit",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.usm_manager.new": {
+        "ctor": [
+          "android.content.Context"
+        ]
+      },
+      "framework.usm_service": {
+        "class": "com.hkmc.usm.IUSMService"
+      },
+      "framework.usm_service.seat_heat_driver": {
+        "method": "setFrontSeatHeatDrvStep",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.usm_service.seat_heat_driver_option": {
+        "method": "getFrontSeatHeat_DrvOption",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.usm_service.seat_heat_driver_state": {
+        "method": "getFrontSeatHeat_DrvState",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.usm_service.seat_heat_passenger": {
+        "method": "setFrontSeatHeatAstStep",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.usm_service.seat_heat_passenger_option": {
+        "method": "getFrontSeatHeat_AstOption",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.usm_service.seat_heat_passenger_state": {
+        "method": "getFrontSeatHeat_AstState",
+        "params": [],
+        "ret": "int",
+        "static": false
+      },
+      "framework.usm_service.seat_heat_rear_left": {
+        "method": "setRearSeatHeatLeftStep",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.usm_service.seat_heat_rear_right": {
+        "method": "setRearSeatHeatRightStep",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.usm_service_stub": {
+        "class": "com.hkmc.usm.IUSMService$Stub"
+      },
+      "framework.usm_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.usm.IUSMService",
+        "static": true
+      },
+      "framework.vr_service": {
+        "class": "com.hkmc.vr.IVRService"
+      },
+      "framework.vr_service.wheel_heat": {
+        "method": "set_StrgWhlHeated_Cmd_AVN",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "framework.vr_service_stub": {
+        "class": "com.hkmc.vr.IVRService$Stub"
+      },
+      "framework.vr_service_stub.as_interface": {
+        "method": "asInterface",
+        "params": [
+          "android.os.IBinder"
+        ],
+        "ret": "com.hkmc.vr.IVRService",
+        "static": true
+      },
+      "framework.wifi_configuration": {
+        "class": "android.net.wifi.WifiConfiguration"
+      },
+      "framework.wifi_configuration.ap_mode": {
+        "field": "apMode",
+        "type": "int",
+        "static": false
+      },
+      "framework.wifi_configuration.connectivity_psk": {
+        "field": "ConnectivityPSK",
+        "type": "java.lang.String",
+        "static": false
+      },
+      "framework.wifi_configuration.connectivity_ssid": {
+        "field": "ConnectivitySSID",
+        "type": "java.lang.String",
+        "static": false
+      },
+      "framework.wifi_configuration.is_24ghz_band": {
+        "field": "is24GHzBand",
+        "type": "boolean",
+        "static": false
+      },
+      "framework.window_manager_service": {
+        "class": "com.android.server.wm.WindowManagerService"
+      },
+      "framework.window_manager_service.intercept_key": {
+        "method": "interceptKey",
+        "params": [
+          "android.view.KeyEvent"
+        ],
+        "ret": "int",
+        "static": false
+      },
+      "gpm.cluster_type": {
+        "class": "com.google.android.projection.proto.Protos$NavigationStatusService$InstrumentClusterType"
+      },
+      "gpm.cluster_type.enum": {
+        "field": "ENUM",
+        "type": "com.google.android.projection.proto.Protos$NavigationStatusService$InstrumentClusterType",
+        "static": true
+      },
+      "gpm.cluster_type.image": {
+        "field": "IMAGE",
+        "type": "com.google.android.projection.proto.Protos$NavigationStatusService$InstrumentClusterType",
+        "static": true
+      },
+      "gpm.connection_manager": {
+        "class": "com.google.android.projection.service.GalConnectionManager"
+      },
+      "gpm.connection_manager.send_byebye": {
+        "method": "sessionSendByeByeRequest",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.navigation_status": {
+        "class": "com.google.android.projection.protocol.NavigationStatus"
+      },
+      "gpm.navigation_status.init": {
+        "method": "init",
+        "params": [
+          "int",
+          "long",
+          "int",
+          "com.google.android.projection.proto.Protos$NavigationStatusService$InstrumentClusterType",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "boolean",
+        "static": false
+      },
+      "gpm.navigation_status.next_turn": {
+        "method": "navigationNextTurnCallback",
+        "params": [
+          "java.lang.String",
+          "int",
+          "int",
+          "byte[]",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.navigation_status.next_turn_distance": {
+        "method": "navigationNextTurnDistanceCallback",
+        "params": [
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.navigation_status.receiver": {
+        "field": "mGalReceiver",
+        "type": "com.google.android.projection.protocol.GalReceiver",
+        "static": false
+      },
+      "gpm.navigation_status.status": {
+        "method": "navigationStatusCallback",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.receiver": {
+        "class": "com.google.android.projection.protocol.GalReceiver"
+      },
+      "gpm.receiver.destroy": {
+        "method": "destroy",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.receiver.focus_native": {
+        "field": "NAVIGATION_FOCUS_STATE_NATIVE",
+        "type": "int",
+        "static": true
+      },
+      "gpm.receiver.send_navigation_focus": {
+        "method": "sendNavigationFocusState",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.receiver_service": {
+        "class": "com.google.android.projection.service.GalReceiverService"
+      },
+      "gpm.receiver_service.connect_wireless_session": {
+        "method": "connectWirelessSession",
+        "params": [
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.receiver_service.connection_manager": {
+        "field": "mConnectionManager",
+        "type": "com.google.android.projection.service.GalConnectionManager",
+        "static": false
+      },
+      "gpm.receiver_service.disconnected": {
+        "method": "onDisconnected",
+        "params": [
+          "int",
+          "boolean",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.receiver_service.on_create": {
+        "method": "onCreate",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.receiver_service.wireless_explorer": {
+        "field": "mWirelessExplorer",
+        "type": "com.google.android.projection.protocol.WirelessExplorer",
+        "static": false
+      },
+      "gpm.sensor_source": {
+        "class": "com.google.android.projection.protocol.SensorSource"
+      },
+      "gpm.sensor_source.init": {
+        "method": "init",
+        "params": [
+          "int",
+          "long",
+          "int[]",
+          "int",
+          "int[]",
+          "int[]"
+        ],
+        "ret": "boolean",
+        "static": false
+      },
+      "gpm.sensor_source.speed": {
+        "field": "SENSOR_TYPE_SPEED",
+        "type": "int",
+        "static": true
+      },
+      "gpm.video_sink": {
+        "class": "com.google.android.projection.protocol.VideoSink"
+      },
+      "gpm.video_sink.nearest": {
+        "method": "nearestVideoConfiguration",
+        "params": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "gpm.wireless_explorer": {
+        "class": "com.google.android.projection.protocol.WirelessExplorer"
+      },
+      "gpm.wireless_explorer.connected_device": {
+        "method": "getConnectedDevice",
+        "params": [],
+        "ret": "java.lang.String",
+        "static": false
+      },
+      "homesetting.edit_entry": {
+        "class": "com.hkmc.system.app.homesetting.allmenuedit.c"
+      },
+      "homesetting.edit_entry.get_class_name": {
+        "method": "getClassName",
+        "params": [],
+        "ret": "java.lang.String",
+        "static": false
+      },
+      "homesetting.edit_entry.new": {
+        "ctor": [
+          "com.hkmc.system.app.homesetting.allmenuedit.z",
+          "android.content.Context",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "int",
+          "int"
+        ]
+      },
+      "homesetting.edit_list": {
+        "class": "com.hkmc.system.app.homesetting.allmenuedit.z"
+      },
+      "homesetting.edit_list.get_context": {
+        "method": "getContext",
+        "params": [],
+        "ret": "android.content.Context",
+        "static": false
+      },
+      "homesetting.edit_list.items": {
+        "field": "cu",
+        "type": "java.util.List",
+        "static": true
+      },
+      "homesetting.edit_list.load": {
+        "method": "load",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "iap2.init_info": {
+        "class": "com.tcc.iap2server.Iap2InitInformationMsg"
+      },
+      "iap2.init_info.check_supports_features": {
+        "method": "checkSupportsFeatures",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "iap2.init_info.route_guidance": {
+        "field": "iAP2UsedRouteGuidance",
+        "type": "int",
+        "static": true
+      },
+      "iap2.init_info.use_vehicle_information": {
+        "field": "iAP2UsedVehicelInformation",
+        "type": "int",
+        "static": true
+      },
+      "iap2.init_info.use_vehicle_status": {
+        "field": "iAP2UsedVehicleStatus",
+        "type": "int",
+        "static": true
+      },
+      "iap2.service": {
+        "class": "com.tcc.iap2server.Iap2Service"
+      },
+      "iap2.service.get_component": {
+        "method": "getComponent",
+        "params": [],
+        "ret": "int",
+        "static": true
+      },
+      "iap2.service.is_connected": {
+        "method": "isConnected",
+        "params": [],
+        "ret": "boolean",
+        "static": true
+      },
+      "iap2.service.native_handle": {
+        "field": "mHandleIap2",
+        "type": "long",
+        "static": true
+      },
+      "iap2.service.native_lock": {
+        "field": "mLock",
+        "type": "java.lang.Object",
+        "static": true
+      },
+      "iap2.service.on_bind": {
+        "method": "onBind",
+        "params": [
+          "android.content.Intent"
+        ],
+        "ret": "android.os.IBinder",
+        "static": false
+      },
+      "iap2.service.on_create": {
+        "method": "onCreate",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "iap2.service.on_destroy": {
+        "method": "onDestroy",
+        "params": [],
+        "ret": "void",
+        "static": false
+      },
+      "iap2.service.receive_connect": {
+        "method": "receiveConnect",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "iap2.service.receive_disconnect": {
+        "method": "receiveDisconnect",
+        "params": [
+          "int"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "iap2.service.set_device_serial": {
+        "method": "setDeviceSerial",
+        "params": [
+          "java.lang.String"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "iap2.service_receiver": {
+        "class": "com.tcc.iap2server.Iap2Service$1"
+      },
+      "iap2.service_receiver.on_receive": {
+        "method": "onReceive",
+        "params": [
+          "android.content.Context",
+          "android.content.Intent"
+        ],
+        "ret": "void",
+        "static": false
+      },
+      "iap2.service_receiver.service": {
+        "field": "this$0",
+        "type": "com.tcc.iap2server.Iap2Service",
+        "static": false
+      },
+      "launcher.menu_entry": {
+        "class": "com.android.launcher3.view.a.Q"
+      },
+      "launcher.menu_entry.new": {
+        "ctor": [
+          "com.android.launcher3.view.a.g",
+          "android.content.Context",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "int",
+          "int"
+        ]
+      },
+      "launcher.menu_list": {
+        "class": "com.android.launcher3.view.a.g"
+      },
+      "launcher.menu_list.get_context": {
+        "method": "getContext",
+        "params": [],
+        "ret": "android.content.Context",
+        "static": false
+      },
+      "launcher.menu_list.items": {
+        "field": "by",
+        "type": "java.util.List",
+        "static": false
+      },
+      "launcher.menu_list.load": {
+        "method": "load",
+        "params": [],
+        "ret": "boolean",
+        "static": false
+      },
+      "launcher.menu_list.lock": {
+        "field": "mLock",
+        "type": "java.lang.Object",
+        "static": false
+      },
+      "panel.home": {
+        "class": "com.mobis.splitscreen.right.SplitScreenHome"
+      },
+      "panel.home.build_views": {
+        "method": "b",
+        "params": [
+          "int",
+          "boolean",
+          "int"
+        ],
+        "ret": "void",
+        "static": false,
+        "sig": "1d313de826db318d"
+      },
+      "panel.home.page_for_id": {
+        "method": "aS",
+        "params": [
+          "int"
+        ],
+        "ret": "com.mobis.splitscreen.right.k",
+        "static": false
+      },
+      "panel.home.test_page": {
+        "field": "pq",
+        "type": "com.mobis.splitscreen.right.subviewExample.a",
+        "static": false
+      },
+      "panel.page": {
+        "class": "com.mobis.splitscreen.right.k"
+      },
+      "panel.page.context": {
+        "field": "mContext",
+        "type": "android.content.Context",
+        "static": false
+      },
+      "panel.page.handler": {
+        "field": "mHandler",
+        "type": "android.os.Handler",
+        "static": false
+      },
+      "panel.page.view": {
+        "field": "mView",
+        "type": "android.view.View",
+        "static": false
+      },
+      "panel.page.view_id": {
+        "field": "viewId",
+        "type": "int",
+        "static": false
+      },
+      "panel.test_gate": {
+        "class": "com.mobis.splitscreen.right.n.v"
+      },
+      "panel.test_gate.on": {
+        "method": "pz",
+        "params": [],
+        "ret": "boolean",
+        "static": true,
+        "sig": "c65792efa099ac9e"
+      },
+      "panel.test_page": {
+        "class": "com.mobis.splitscreen.right.subviewExample.a"
+      },
+      "panel.test_page.get_view": {
+        "method": "getView",
+        "params": [],
+        "ret": "android.view.View",
+        "static": false
+      },
+      "settings.split_screen": {
+        "class": "com.android.settings.util.SplitScreenUtils"
+      },
+      "settings.split_screen.supported": {
+        "method": "isSupportViewId",
+        "params": [
+          "android.content.Context",
+          "int"
+        ],
+        "ret": "boolean",
+        "static": true
+      },
+      "themesettings.split_item": {
+        "class": "com.android.themesettings.splitscreensettings.SplitScreenItem"
+      },
+      "themesettings.split_item.new": {
+        "ctor": [
+          "int",
+          "java.lang.String",
+          "boolean"
+        ]
+      },
+      "themesettings.split_item.type": {
+        "method": "gl",
+        "params": [],
+        "ret": "int",
+        "static": false,
+        "sig": "4425414b67eb43ee"
+      },
+      "themesettings.split_items": {
+        "class": "com.android.themesettings.splitscreensettings.e"
+      },
+      "themesettings.split_items.available": {
+        "method": "a",
+        "params": [
+          "int",
+          "android.content.Context"
+        ],
+        "ret": "boolean",
+        "static": true
+      },
+      "themesettings.split_items.make": {
+        "method": "a",
+        "params": [
+          "android.content.Context",
+          "java.util.LinkedHashMap"
+        ],
+        "ret": "java.util.ArrayList",
+        "static": true
+      },
+      "themesettings.split_items.string_id": {
+        "method": "s",
+        "params": [
+          "int"
+        ],
+        "ret": "int",
+        "static": true
+      },
+      "themesettings.split_items.view_name": {
+        "method": "d",
+        "params": [
+          "android.content.Context",
+          "int"
+        ],
+        "ret": "java.lang.String",
+        "static": true
+      }
+    },
+    "differs_from_map": [
+      "dipo.iap2.bt_address",
+      "dipo.iap2.set_notify_on",
+      "panel.home.build_views",
+      "panel.test_gate.on",
+      "themesettings.split_item.type"
+    ],
+    "found_here_missing_in_map": {
+      "btsettings.projection_helper": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.device_connections_available": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.open_device_connections": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.open_other_page": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)",
+      "btsettings.projection_helper.open_wireless_page": "not kept from the Car Report: its by-reference class com.android.settings2.bluetooth.iP has none of its 4 members here, so it is likely a different class with the same name (stock files or a newer Car Report map it)"
+    }
+  },
+  "verify_map": {
+    "folder": "hyundai/su2ifl/ind/260430",
+    "ok": true,
+    "points": 388,
+    "failed": [],
+    "date": "Fri Nov 20 11:23:35 GMT+05:30 2026"
+  },
+  "mods": [
+    {
+      "id": "adb",
+      "version": "1.0.1-rc.1",
+      "on": false,
+      "supports_this_car": true
+    },
+    {
+      "id": "nemesis-shortcut",
+      "version": "1.1.0",
+      "on": true,
+      "supports_this_car": true
+    },
+    {
+      "id": "wireless-carplay-aa",
+      "version": "2.2.0-creta",
+      "on": true,
+      "supports_this_car": true,
+      "hooks_not_loaded": "hook point dipo.carplay.disable_bluetooth is mapped on this car only, which is enough for observe hooks: a replace hook needs it in HMG-API's map, or the owner's \"Try unchecked maps\""
+    }
+  ],
+  "errors": [
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat hmgapi.mods.wireless.Wireless.appLoaded(Wireless.java:63)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat hmgapi.hook.Mods.appLoaded(Mods.java:448)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat hmgapi.hook.HmgApi.appLoaded(HmgApi.java:167)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat hmgapi.hook.HmgApi$1.afterHookedMethod(HmgApi.java:105)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat hmgapi.hook.Bridge.handleHookedMethod(Bridge.java:141)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat android.app.ActivityThread.handleBindApplication(Native Method)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat android.app.ActivityThread.access$1500(ActivityThread.java:138)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat android.app.ActivityThread$H.handleMessage(ActivityThread.java:1259)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat android.os.Handler.dispatchMessage(Handler.java:102)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat android.os.Looper.loop(Looper.java:136)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat android.app.ActivityThread.main(ActivityThread.java:5119)",
+    "11-16 16:14:43.160 E/HMG-API ( 1946): \tat java.lang.reflect.Method.invokeNative(Native M",
+    "01-01 15:00:09.690 E/HMG-API (  935): [wireless-carplay-aa] native patch libautoreceiver_infobank.so not applied; aa-tbt-48ee793a: not this library's stock bytes (0xb1a1e:other 0xb6808:other 0x144eea:other); aa-tbt-a0bea1c4: not this library's stock bytes (0xb89a2:other 0xbdccc:other 0x144e8a:other); aa-tbt-dbfe7bd2: not this library's stock bytes (0xb3e8a:other 0xb7f28:other 0x144eaa:other 0xa7128:other 0xa5e68:other 0xacfd4:other 0xb7d84:other 0xb7e50:other)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): [wireless-carplay-aa] appLoaded in com.android.btsettings: java.lang.IllegalStateException: wireless-carplay-aa: hook point btsettings.projection_helper.open_wireless_page isn't declared in mod.json",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat hmgapi.hook.ModContext.hook(ModContext.java:45)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat hmgapi.mods.wireless.Wireless.phoneProjectionMenu(Wireless.java:322)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat hmgapi.mods.wireless.Wireless.appLoaded(Wireless.java:63)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat hmgapi.hook.Mods.appLoaded(Mods.java:448)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat hmgapi.hook.HmgApi.appLoaded(HmgApi.java:167)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat hmgapi.hook.HmgApi$1.afterHookedMethod(HmgApi.java:105)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat hmgapi.hook.Bridge.handleHookedMethod(Bridge.java:141)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat android.app.ActivityThread.handleBindApplication(Native Method)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat android.app.ActivityThread.access$1500(ActivityThread.java:138)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat android.app.ActivityThread$H.handleMessage(ActivityThread.java:1259)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat android.os.Handler.dispatchMessage(Handler.java:102)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat android.os.Looper.loop(Looper.java:136)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat android.app.ActivityThread.main(ActivityThread.java:5119)",
+    "11-20 11:00:15.190 E/HMG-API ( 2046): \tat java.lang.reflect.Method.invokeNative(Native M",
+    "01-01 15:00:09.580 E/HMG-API (  976): [wireless-carplay-aa] native patch libautoreceiver_infobank.so not applied; aa-tbt-48ee793a: not this library's stock bytes (0xb1a1e:other 0xb6808:other 0x144eea:other); aa-tbt-a0bea1c4: not this library's stock bytes (0xb89a2:other 0xbdccc:other 0x144e8a:other); aa-tbt-dbfe7bd2: not this library's stock bytes (0xb3e8a:other 0xb7f28:other 0x144eaa:other 0xa7128:other 0xa5e68:other 0xacfd4:other 0xb7d84:other 0xb7e50:other)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): [wireless-carplay-aa] appLoaded in com.android.btsettings: java.lang.IllegalStateException: wireless-carplay-aa: hook point btsettings.projection_helper.open_wireless_page isn't declared in mod.json",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat hmgapi.hook.ModContext.hook(ModContext.java:45)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat hmgapi.mods.wireless.Wireless.phoneProjectionMenu(Wireless.java:322)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat hmgapi.mods.wireless.Wireless.appLoaded(Wireless.java:63)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat hmgapi.hook.Mods.appLoaded(Mods.java:448)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat hmgapi.hook.HmgApi.appLoaded(HmgApi.java:167)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat hmgapi.hook.HmgApi$1.afterHookedMethod(HmgApi.java:105)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat hmgapi.hook.Bridge.handleHookedMethod(Bridge.java:141)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat android.app.ActivityThread.handleBindApplication(Native Method)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat android.app.ActivityThread.access$1500(ActivityThread.java:138)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat android.app.ActivityThread$H.handleMessage(ActivityThread.java:1259)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat android.os.Handler.dispatchMessage(Handler.java:102)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat android.os.Looper.loop(Looper.java:136)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat android.app.ActivityThread.main(ActivityThread.java:5119)",
+    "11-20 11:01:30.000 E/HMG-API ( 1923): \tat java.lang.reflect.Method.invokeNative(Native M",
+    "01-01 15:00:09.750 E/HMG-API ( 1072): [wireless-carplay-aa] native patch libautoreceiver_infobank.so not applied; aa-tbt-48ee793a: not this library's stock bytes (0xb1a1e:other 0xb6808:other 0x144eea:other); aa-tbt-a0bea1c4: not this library's stock bytes (0xb89a2:other 0xbdccc:other 0x144e8a:other); aa-tbt-dbfe7bd2: not this library's stock bytes (0xb3e8a:other 0xb7f28:other 0x144eaa:other 0xa7128:other 0xa5e68:other 0xacfd4:other 0xb7d84:other 0xb7e50:other)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): [wireless-carplay-aa] appLoaded in com.android.btsettings: java.lang.IllegalStateException: wireless-carplay-aa: hook point btsettings.projection_helper.open_wireless_page isn't declared in mod.json",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat hmgapi.hook.ModContext.hook(ModContext.java:45)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat hmgapi.mods.wireless.Wireless.phoneProjectionMenu(Wireless.java:322)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat hmgapi.mods.wireless.Wireless.appLoaded(Wireless.java:63)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat hmgapi.hook.Mods.appLoaded(Mods.java:448)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat hmgapi.hook.HmgApi.appLoaded(HmgApi.java:167)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat hmgapi.hook.HmgApi$1.afterHookedMethod(HmgApi.java:105)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat hmgapi.hook.Bridge.handleHookedMethod(Bridge.java:141)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat android.app.ActivityThread.handleBindApplication(Native Method)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat android.app.ActivityThread.access$1500(ActivityThread.java:138)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat android.app.ActivityThread$H.handleMessage(ActivityThread.java:1259)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat android.os.Handler.dispatchMessage(Handler.java:102)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat android.os.Looper.loop(Looper.java:136)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat android.app.ActivityThread.main(ActivityThread.java:5119)",
+    "11-20 11:19:39.260 E/HMG-API ( 1969): \tat java.lang.reflect.Method.invokeNative(Native M"
+  ],
+  "network": {
+    "firewall_services": [
+      {
+        "service": "load_iptrules",
+        "rc": "init.rc",
+        "command": "/vendor/bin/load_iptrules.sh",
+        "state": null
+      }
+    ],
+    "iptables": {
+      "4 filter": "-P INPUT ACCEPT\n-P FORWARD ACCEPT\n-P OUTPUT ACCEPT\n-N NV_G5W_OUT\n-N NV_G5W_UID\n-N bw_FORWARD\n-N bw_INPUT\n-N bw_OUTPUT\n-N bw_costly_rmnet0\n-N bw_costly_rmnet2\n-N bw_costly_shared\n-N bw_happy_box\n-N bw_penalty_box\n-N fw_FORWARD\n-N fw_INPUT\n-N fw_OUTPUT\n-N fw_wlan_INPUT\n-N natctrl_FORWARD\n-N natctrl_tether_counters\n-N oem_fwd\n-N oem_out\n-N smarttube_net\n-N st_filter_OUTPUT\n-A INPUT -j bw_INPUT\n-A INPUT -j fw_INPUT\n-A INPUT -j fw_wlan_INPUT\n-A FORWARD -j oem_fwd\n-A FORWARD -j fw_FORWARD\n-A FORWARD -j bw_FORWARD\n-A FORWARD -j natctrl_FORWARD\n-A OUTPUT -j NV_G5W_UID\n-A OUTPUT -j smarttube_net\n-A OUTPUT -j oem_out\n-A OUTPUT -j fw_OUTPUT\n-A OUTPUT -j bw_OUTPUT\n-A OUTPUT -j st_filter_OUTPUT\n-A NV_G5W_OUT -o wlan0 -j RETURN\n-A NV_G5W_OUT -j REJECT --reject-with icmp-port-unreachable\n-A NV_G5W_UID -m owner --uid-owner 10207 -j NV_G5W_OUT\n-A NV_G5W_UID -m mark --mark 0x4a4627df -j NV_G5W_OUT\n-A NV_G5W_UID -j RETURN\n-A bw_INPUT -m quota2 ! --name globalAlert  --quota 2097152 \n-A bw_INPUT -i rmnet0 -j bw_costly_rmnet0\n-A bw_INPUT -i rmnet2 -j bw_costly_rmnet2\n-A bw_INPUT -m owner --socket-exists\n-A bw_OUTPUT -m quota2 ! --name globalAlert  --quota 2097152 \n-A bw_OUTPUT -o rmnet0 -j bw_costly_rmnet0\n-A bw_OUTPUT -o rmnet2 -j bw_costly_rmnet2\n-A bw_OUTPUT -m owner --socket-exists\n-A bw_costly_rmnet0 -j bw_penalty_box\n-A bw_costly_rmnet0 -m quota2 ! --name rmnet0  --quota 9223372036854775807  -j REJECT --reject-with icmp-port-unreachable\n-A bw_costly_rmnet2 -j bw_penalty_box\n-A bw_costly_rmnet2 -m quota2 ! --name rmnet2  --quota 9223372036854775807  -j REJECT --reject-with icmp-port-unreachable\n-A bw_costly_shared -j bw_penalty_box\n-A natctrl_FORWARD -j DROP\n-A smarttube_net -m owner ! --uid-owner 10205 -j RETURN\n-A smarttube_net -o lo -j RETURN\n-A smarttube_net -o wlan+ -j RETURN\n-A smarttube_net -o bnep+ -j RETURN\n-A smarttube_net -o bt-pan+ -j RETURN\n-A smarttube_net -o usb+ -j RETURN\n-A smarttube_net -o rndis+ -j RETURN\n-A smarttube_net -j REJECT --reject-with icmp-port-unreachable\n",
+      "4 nat": "-P PREROUTING ACCEPT\n-P INPUT ACCEPT\n-P OUTPUT ACCEPT\n-P POSTROUTING ACCEPT\n-N natctrl_nat_POSTROUTING\n-N oem_nat_pre\n-N st_nat_POSTROUTING\n-A PREROUTING -j oem_nat_pre\n-A POSTROUTING -j natctrl_nat_POSTROUTING\n-A POSTROUTING -j st_nat_POSTROUTING\n-A st_nat_POSTROUTING -o nvg5wnet -m mark --mark 0x3c -j MASQUERADE\n",
+      "4 mangle": "-P PREROUTING ACCEPT\n-P INPUT ACCEPT\n-P FORWARD ACCEPT\n-P OUTPUT ACCEPT\n-P POSTROUTING ACCEPT\n-N NV_G5W_DNS\n-N bw_mangle_POSTROUTING\n-N idletimer_mangle_POSTROUTING\n-N st_mangle_EXEMPT\n-N st_mangle_OUTPUT\n-N st_mangle_POSTROUTING\n-N st_mangle_nvg5wnet_OUTPUT\n-A OUTPUT -j NV_G5W_DNS\n-A OUTPUT -j st_mangle_EXEMPT\n-A OUTPUT -j st_mangle_OUTPUT\n-A POSTROUTING -j bw_mangle_POSTROUTING\n-A POSTROUTING -j idletimer_mangle_POSTROUTING\n-A POSTROUTING -j st_mangle_POSTROUTING\n-A NV_G5W_DNS -m mark --mark 0x3c -j MARK --set-xmark 0x4a4627df/0xffffffff\n-A NV_G5W_DNS -m mark --mark 0x4a4627df -j ACCEPT\n-A NV_G5W_DNS -j RETURN\n-A bw_mangle_POSTROUTING -m owner --socket-exists\n-A st_mangle_EXEMPT -d 10.31.69.64/32 -j MARK --set-xmark 0x1/0xffffffff\n-A st_mangle_EXEMPT -d 10.110.4.47/32 -j MARK --set-xmark 0x1/0xffffffff\n-A st_mangle_EXEMPT -d 10.110.4.214/32 -j MARK --set-xmark 0x1/0xffffffff\n-A st_mangle_EXEMPT -d 10.110.3.141/32 -j MARK --set-xmark 0x1/0xffffffff\n-A st_mangle_EXEMPT -d 10.117.231.68/32 -j MARK --set-xmark 0x1/0xffffffff\n-A st_mangle_EXEMPT -d 108.159.61.54/32 -j MARK --set-xmark 0x1/0xffffffff\n-A st_mangle_EXEMPT -d 103.85.81.106/32 -j MARK --set-xmark 0x1/0xffffffff\n-A st_mangle_OUTPUT -m mark --mark 0x1 -j RETURN\n-A st_mangle_OUTPUT -m owner --uid-owner 1016 -j RETURN\n-A st_mangle_OUTPUT -m mark --mark 0x3c -g st_mangle_nvg5wnet_OUTPUT\n-A st_mangle_OUTPUT -m owner --uid-owner 10207 -g st_mangle_nvg5wnet_OUTPUT\n-A st_mangle_POSTROUTING -o nvg5wnet -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu\n-A st_mangle_nvg5wnet_OUTPUT -j MARK --set-xmark 0x0/0xffffffff\n",
+      "4 counters": "Chain INPUT (policy ACCEPT 0 packets, 0 bytes)\n    pkts      bytes target     prot opt in     out     source               destination         \n     362   259943 bw_INPUT   all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n     362   259943 fw_INPUT   all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n     362   259943 fw_wlan_INPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n\nChain FORWARD (policy ACCEPT 0 packets, 0 bytes)\n    pkts      bytes target     prot opt in     out     source               destination         \n       2      636 oem_fwd    all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n       2      636 fw_FORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n       2      636 bw_FORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n       2      636 natctrl_FORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n\nChain OUTPUT (policy ACCEPT 0 packets, 0 bytes)\n    pkts      bytes target     prot opt in     out     source               destination         \n     345    59901 NV_G5W_UID  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n     345    59901 smarttube_net  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n     345    59901 oem_out    all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n     345    59901 fw_OUTPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n     345    59901 bw_OUTPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n     345    59901 st_filter_OUTPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n\nChain NV_G5W_OUT (2 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 RETURN     all  --  *      wlan0   0.0.0.0/0            0.0.0.0/0           \n       0        0 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable\n\nChain NV_G5W_UID (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 NV_G5W_OUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0            owner UID match 10207\n       0        0 NV_G5W_OUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0            mark match 0x4a4627df\n     345    59901 RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n\nChain bw_FORWARD (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain bw_INPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0            all  --  *      *       0.0.0.0/0            0.0.0.0/0            ! quota globalAlert: 2097152 bytes \n     287   228208 bw_costly_rmnet0  all  --  rmnet0 *       0.0.0.0/0            0.0.0.0/0           \n      23     9028 bw_costly_rmnet2  all  --  rmnet2 *       0.0.0.0/0            0.0.0.0/0           \n     308   256943            all  --  *      *       0.0.0.0/0            0.0.0.0/0            owner socket exists\n\nChain bw_OUTPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0            all  --  *      *       0.0.0.0/0            0.0.0.0/0            ! quota globalAlert: 2097152 bytes \n     253    43240 bw_costly_rmnet0  all  --  *      rmnet0  0.0.0.0/0            0.0.0.0/0           \n      28     5156 bw_costly_rmnet2  all  --  *      rmnet2  0.0.0.0/0            0.0.0.0/0           \n     337    59526            all  --  *      *       0.0.0.0/0            0.0.0.0/0            owner socket exists\n\nChain bw_costly_rmnet0 (2 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n     540   271448 bw_penalty_box  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n       0        0 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ! quota rmnet0: 9223372036854775807 bytes  reject-with icmp-port-unreachable\n\nChain bw_costly_rmnet2 (2 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n      51    14184 bw_penalty_box  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n       0        0 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ! quota rmnet2: 9223372036854775807 bytes  reject-with icmp-port-unreachable\n\nChain bw_costly_shared (0 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 bw_penalty_box  all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n\nChain bw_happy_box (0 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain bw_penalty_box (3 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_FORWARD (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_INPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_OUTPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_wlan_INPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain natctrl_FORWARD (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       2      636 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0           \n\nChain natctrl_tether_counters (0 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain oem_fwd (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain oem_out (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain smarttube_net (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n     345    59901 RETURN     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ! owner UID match 10205\n       0        0 RETURN     all  --  *      lo      0.0.0.0/0            0.0.0.0/0           \n       0        0 RETURN     all  --  *      wlan+   0.0.0.0/0            0.0.0.0/0           \n       0        0 RETURN     all  --  *      bnep+   0.0.0.0/0            0.0.0.0/0           \n       0        0 RETURN     all  --  *      bt-pan+  0.0.0.0/0            0.0.0.0/0           \n       0        0 RETURN     all  --  *      usb+    0.0.0.0/0            0.0.0.0/0           \n       0        0 RETURN     all  --  *      rndis+  0.0.0.0/0            0.0.0.0/0           \n       0        0 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable\n\nChain st_filter_OUTPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n",
+      "6 filter": "-P INPUT ACCEPT\n-P FORWARD ACCEPT\n-P OUTPUT ACCEPT\n-N NV_G5W_OUT\n-N NV_G5W_UID\n-N bw_FORWARD\n-N bw_INPUT\n-N bw_OUTPUT\n-N bw_costly_rmnet0\n-N bw_costly_rmnet2\n-N bw_costly_shared\n-N bw_happy_box\n-N bw_penalty_box\n-N fw_FORWARD\n-N fw_INPUT\n-N fw_OUTPUT\n-N fw_wlan_INPUT\n-N natctrl_FORWARD\n-N oem_fwd\n-N oem_out\n-N smarttube_net\n-N st_filter_OUTPUT\n-A INPUT -j bw_INPUT\n-A INPUT -j fw_INPUT\n-A INPUT -j fw_wlan_INPUT\n-A FORWARD -j oem_fwd\n-A FORWARD -j fw_FORWARD\n-A FORWARD -j bw_FORWARD\n-A FORWARD -j natctrl_FORWARD\n-A OUTPUT -j NV_G5W_UID\n-A OUTPUT -j smarttube_net\n-A OUTPUT -j oem_out\n-A OUTPUT -j fw_OUTPUT\n-A OUTPUT -j bw_OUTPUT\n-A OUTPUT -j st_filter_OUTPUT\n-A NV_G5W_OUT -o wlan0 -j RETURN\n-A NV_G5W_OUT -j REJECT --reject-with icmp6-port-unreachable\n-A NV_G5W_UID -m owner --uid-owner 10207 -j NV_G5W_OUT\n-A NV_G5W_UID -m mark --mark 0x4a4627df -j NV_G5W_OUT\n-A NV_G5W_UID -j RETURN\n-A bw_INPUT -m quota2 ! --name globalAlert  --quota 2097152 \n-A bw_INPUT -i rmnet0 -j bw_costly_rmnet0\n-A bw_INPUT -i rmnet2 -j bw_costly_rmnet2\n-A bw_INPUT -m owner --socket-exists\n-A bw_OUTPUT -m quota2 ! --name globalAlert  --quota 2097152 \n-A bw_OUTPUT -o rmnet0 -j bw_costly_rmnet0\n-A bw_OUTPUT -o rmnet2 -j bw_costly_rmnet2\n-A bw_OUTPUT -m owner --socket-exists\n-A bw_costly_rmnet0 -j bw_penalty_box\n-A bw_costly_rmnet0 -m quota2 ! --name rmnet0  --quota 9223372036854775807  -j REJECT --reject-with icmp6-port-unreachable\n-A bw_costly_rmnet2 -j bw_penalty_box\n-A bw_costly_rmnet2 -m quota2 ! --name rmnet2  --quota 9223372036854775807  -j REJECT --reject-with icmp6-port-unreachable\n-A bw_costly_shared -j bw_penalty_box\n-A smarttube_net -m owner ! --uid-owner 10205 -j RETURN\n-A smarttube_net -o lo -j RETURN\n-A smarttube_net -o wlan+ -j RETURN\n-A smarttube_net -o bnep+ -j RETURN\n-A smarttube_net -o bt-pan+ -j RETURN\n-A smarttube_net -o usb+ -j RETURN\n-A smarttube_net -o rndis+ -j RETURN\n-A smarttube_net -j REJECT --reject-with icmp6-port-unreachable\n-A st_filter_OUTPUT -m mark --mark 0x3c -j REJECT --reject-with icmp6-port-unreachable\n",
+      "6 mangle": "-P PREROUTING ACCEPT\n-P INPUT ACCEPT\n-P FORWARD ACCEPT\n-P OUTPUT ACCEPT\n-P POSTROUTING ACCEPT\n-N NV_G5W_DNS\n-N bw_mangle_POSTROUTING\n-N idletimer_mangle_POSTROUTING\n-N st_mangle_EXEMPT\n-N st_mangle_OUTPUT\n-N st_mangle_POSTROUTING\n-N st_mangle_nvg5wnet_OUTPUT\n-A OUTPUT -j NV_G5W_DNS\n-A OUTPUT -j st_mangle_EXEMPT\n-A OUTPUT -j st_mangle_OUTPUT\n-A POSTROUTING -j bw_mangle_POSTROUTING\n-A POSTROUTING -j idletimer_mangle_POSTROUTING\n-A POSTROUTING -j st_mangle_POSTROUTING\n-A NV_G5W_DNS -m mark --mark 0x3c -j MARK --set-xmark 0x4a4627df/0xffffffff\n-A NV_G5W_DNS -m mark --mark 0x4a4627df -j ACCEPT\n-A NV_G5W_DNS -j RETURN\n-A bw_mangle_POSTROUTING -m owner --socket-exists\n-A st_mangle_OUTPUT -m mark --mark 0x1 -j RETURN\n-A st_mangle_OUTPUT -m owner --uid-owner 1016 -j RETURN\n-A st_mangle_OUTPUT -m mark --mark 0x3c -g st_mangle_nvg5wnet_OUTPUT\n-A st_mangle_OUTPUT -m owner --uid-owner 10207 -g st_mangle_nvg5wnet_OUTPUT\n-A st_mangle_POSTROUTING -o nvg5wnet -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu\n-A st_mangle_nvg5wnet_OUTPUT -j MARK --set-xmark 0x0/0xffffffff\n",
+      "6 counters": "Chain INPUT (policy ACCEPT 0 packets, 0 bytes)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 bw_INPUT   all      *      *       ::/0                 ::/0                \n       0        0 fw_INPUT   all      *      *       ::/0                 ::/0                \n       0        0 fw_wlan_INPUT  all      *      *       ::/0                 ::/0                \n\nChain FORWARD (policy ACCEPT 0 packets, 0 bytes)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 oem_fwd    all      *      *       ::/0                 ::/0                \n       0        0 fw_FORWARD  all      *      *       ::/0                 ::/0                \n       0        0 bw_FORWARD  all      *      *       ::/0                 ::/0                \n       0        0 natctrl_FORWARD  all      *      *       ::/0                 ::/0                \n\nChain OUTPUT (policy ACCEPT 0 packets, 0 bytes)\n    pkts      bytes target     prot opt in     out     source               destination         \n      27     1712 NV_G5W_UID  all      *      *       ::/0                 ::/0                \n      27     1712 smarttube_net  all      *      *       ::/0                 ::/0                \n      27     1712 oem_out    all      *      *       ::/0                 ::/0                \n      27     1712 fw_OUTPUT  all      *      *       ::/0                 ::/0                \n      27     1712 bw_OUTPUT  all      *      *       ::/0                 ::/0                \n      27     1712 st_filter_OUTPUT  all      *      *       ::/0                 ::/0                \n\nChain NV_G5W_OUT (2 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 RETURN     all      *      wlan0   ::/0                 ::/0                \n       0        0 REJECT     all      *      *       ::/0                 ::/0                 reject-with icmp6-port-unreachable\n\nChain NV_G5W_UID (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 NV_G5W_OUT  all      *      *       ::/0                 ::/0                 owner UID match 10207\n       0        0 NV_G5W_OUT  all      *      *       ::/0                 ::/0                 mark match 0x4a4627df\n      27     1712 RETURN     all      *      *       ::/0                 ::/0                \n\nChain bw_FORWARD (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain bw_INPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0            all      *      *       ::/0                 ::/0                 ! quota globalAlert: 2097152 bytes \n       0        0 bw_costly_rmnet0  all      rmnet0 *       ::/0                 ::/0                \n       0        0 bw_costly_rmnet2  all      rmnet2 *       ::/0                 ::/0                \n       0        0            all      *      *       ::/0                 ::/0                 owner socket exists\n\nChain bw_OUTPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0            all      *      *       ::/0                 ::/0                 ! quota globalAlert: 2097152 bytes \n       5      320 bw_costly_rmnet0  all      *      rmnet0  ::/0                 ::/0                \n       7      432 bw_costly_rmnet2  all      *      rmnet2  ::/0                 ::/0                \n      27     1712            all      *      *       ::/0                 ::/0                 owner socket exists\n\nChain bw_costly_rmnet0 (2 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       5      320 bw_penalty_box  all      *      *       ::/0                 ::/0                \n       0        0 REJECT     all      *      *       ::/0                 ::/0                 ! quota rmnet0: 9223372036854775807 bytes  reject-with icmp6-port-unreachable\n\nChain bw_costly_rmnet2 (2 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       7      432 bw_penalty_box  all      *      *       ::/0                 ::/0                \n       0        0 REJECT     all      *      *       ::/0                 ::/0                 ! quota rmnet2: 9223372036854775807 bytes  reject-with icmp6-port-unreachable\n\nChain bw_costly_shared (0 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 bw_penalty_box  all      *      *       ::/0                 ::/0                \n\nChain bw_happy_box (0 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain bw_penalty_box (3 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_FORWARD (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_INPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_OUTPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain fw_wlan_INPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain natctrl_FORWARD (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain oem_fwd (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain oem_out (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n\nChain smarttube_net (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n      21     1296 RETURN     all      *      *       ::/0                 ::/0                 ! owner UID match 10205\n       0        0 RETURN     all      *      lo      ::/0                 ::/0                \n       0        0 RETURN     all      *      wlan+   ::/0                 ::/0                \n       0        0 RETURN     all      *      bnep+   ::/0                 ::/0                \n       0        0 RETURN     all      *      bt-pan+  ::/0                 ::/0                \n       0        0 RETURN     all      *      usb+    ::/0                 ::/0                \n       0        0 RETURN     all      *      rndis+  ::/0                 ::/0                \n       0        0 REJECT     all      *      *       ::/0                 ::/0                 reject-with icmp6-port-unreachable\n\nChain st_filter_OUTPUT (1 references)\n    pkts      bytes target     prot opt in     out     source               destination         \n       0        0 REJECT     all      *      *       ::/0                 ::/0                 mark match 0x3c reject-with icmp6-port-unreachable\n"
+    },
+    "interfaces": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN \\    link/loopback [removed] brd [removed]\n1: lo    inet 127.0.0.1/8 scope host lo\\       valid_lft forever preferred_lft forever\n1: lo    inet6 ::1/128 scope host \\       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN qlen 1000\\    link/ether [removed] brd [removed]\n3: rmnet0: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000\\    link/ether [removed] brd [removed]\n3: rmnet0    inet 10.31.69.63/25 brd 10.31.69.127 scope global rmnet0\\       valid_lft forever preferred_lft forever\n3: rmnet0    inet6 fe80::[removed]/64 scope link \\       valid_lft forever preferred_lft forever\n4: rmnet1: <BROADCAST,MULTICAST,NOARP> mtu 1500 qdisc noop state DOWN qlen 1000\\    link/ether [removed] brd [removed]\n5: rmnet2: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000\\    link/ether [removed] brd [removed]\n5: rmnet2    inet 10.117.231.67/29 brd 10.117.231.71 scope global rmnet2\\       valid_lft forever preferred_lft forever\n5: rmnet2    inet6 fe80::[removed]/64 scope link \\       valid_lft forever preferred_lft forever\n6: rmnet3: <BROADCAST,MULTICAST,NOARP> mtu 1500 qdisc noop state DOWN qlen 1000\\    link/ether [removed] brd [removed]\n7: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000\\    link/ether [removed] brd [removed]\n7: wlan0    inet 192.168.0.1/24 brd 192.168.0.255 scope global wlan0\\       valid_lft forever preferred_lft forever\n7: wlan0    inet6 fe80::[removed]/64 scope link \\       valid_lft forever preferred_lft forever\n",
+    "links": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT \\    link/loopback [removed] brd [removed]\n2: eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000\\    link/ether [removed] brd [removed]\n3: rmnet0: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT qlen 1000\\    link/ether [removed] brd [removed]\n4: rmnet1: <BROADCAST,MULTICAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000\\    link/ether [removed] brd [removed]\n5: rmnet2: <BROADCAST,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT qlen 1000\\    link/ether [removed] brd [removed]\n6: rmnet3: <BROADCAST,MULTICAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000\\    link/ether [removed] brd [removed]\n7: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT qlen 1000\\    link/ether [removed] brd [removed]\n",
+    "routes": {
+      "4": "default via 10.31.69.64 dev rmnet0  table 61 \n10.31.69.64 dev rmnet0  table 61 \ndefault via 10.117.231.68 dev rmnet2  table 62 \n10.117.231.68 dev rmnet2  table 62 \ndefault via 10.31.69.64 dev rmnet0 \ndefault via 10.31.69.64 dev rmnet0  metric 203 \n8.8.x.x via 10.117.231.68 dev rmnet2 \n10.31.69.0/25 dev rmnet0  proto kernel  scope link  src 10.31.69.63  metric 203 \n10.31.69.64 dev rmnet0  scope link \n10.110.3.141 via 10.31.69.64 dev rmnet0 \n10.110.4.47 via 10.31.69.64 dev rmnet0 \n10.110.4.214 via 10.31.69.64 dev rmnet0 \n10.117.231.64/29 dev rmnet2  proto kernel  scope link  src 10.117.231.67  metric 205 \n10.117.231.68 dev rmnet2  scope link \n10.169.30.245 via 10.117.231.68 dev rmnet2 \n103.85.x.x via 10.117.231.68 dev rmnet2 \n108.159.x.x via 10.117.231.68 dev rmnet2 \n192.168.0.0/24 dev wlan0  proto kernel  scope link  src 192.168.0.1 \nbroadcast 10.31.69.0 dev rmnet0  table local  proto kernel  scope link  src 10.31.69.63 \nlocal 10.31.69.63 dev rmnet0  table local  proto kernel  scope host  src 10.31.69.63 \nbroadcast 10.31.69.127 dev rmnet0  table local  proto kernel  scope link  src 10.31.69.63 \nbroadcast 10.117.231.64 dev rmnet2  table local  proto kernel  scope link  src 10.117.231.67 \nlocal 10.117.231.67 dev rmnet2  table local  proto kernel  scope host  src 10.117.231.67 \nbroadcast 10.117.231.71 dev rmnet2  table local  proto kernel  scope link  src 10.117.231.67 \nbroadcast 127.0.0.0 dev lo  table local  proto kernel  scope link  src 127.0.0.1 \nlocal 127.0.0.0/8 dev lo  table local  proto kernel  scope host  src 127.0.0.1 \nlocal 127.0.0.1 dev lo  table local  proto kernel  scope host  src 127.0.0.1 \nbroadcast 127.255.255.255 dev lo  table local  proto kernel  scope link  src 127.0.0.1 \nbroadcast 192.168.0.0 dev wlan0  table local  proto kernel  scope link  src 192.168.0.1 \nlocal 192.168.0.1 dev wlan0  table local  proto kernel  scope host  src 192.168.0.1 \nbroadcast 192.168.0.255 dev wlan0  table local  proto kernel  scope link  src 192.168.0.1 \n",
+      "6": "unreachable default dev lo  table 0  proto kernel  metric 4294967295  error -101\nunreachable default dev lo  table 0  proto kernel  metric 4294967295  error -101\nfe80::[removed]/64 dev wlan0  proto kernel  metric 256 \nfe80::[removed]/64 dev rmnet0  proto kernel  metric 256 \nfe80::[removed]/64 dev rmnet2  proto kernel  metric 256 \nunreachable default dev lo  table 0  proto kernel  metric 4294967295  error -101\nlocal ::1 dev lo  table local  proto none  metric 0 \nlocal fe80::[removed] dev lo  table local  proto none  metric 0 \nlocal fe80::[removed] dev lo  table local  proto none  metric 0 \nlocal fe80::[removed] dev lo  table local  proto none  metric 0 \nff00::/8 dev wlan0  table local  metric 256 \nff00::/8 dev rmnet0  table local  metric 256 \nff00::/8 dev rmnet2  table local  metric 256 \nunreachable default dev lo  table 0  proto kernel  metric 4294967295  error -101\n"
+    },
+    "route_rules": {
+      "4": "0:\tfrom all lookup local \n99:\tfrom all to 10.31.69.64 lookup main \n99:\tfrom all to 10.110.4.47 lookup main \n99:\tfrom all to 10.110.4.214 lookup main \n99:\tfrom all to 10.110.3.141 lookup main \n99:\tfrom all to 10.117.231.68 lookup main \n99:\tfrom all to 108.159.x.x lookup main \n99:\tfrom all to 103.85.x.x lookup main \n100:\tfrom all fwmark 0x3c lookup 60 \n32766:\tfrom all lookup main \n32767:\tfrom all lookup default \n",
+      "6": "0:\tfrom all lookup local \n100:\tfrom all fwmark 0x3c lookup 60 \n32766:\tfrom all lookup main \n32767:\tfrom all lookup default \n"
+    },
+    "sysctl": {
+      "net.ipv4.ip_forward": "1",
+      "net.ipv6.conf.all.forwarding": "0",
+      "net.ipv6.conf.wlan0.disable_ipv6": "0",
+      "net.ipv6.conf.wlan0.accept_ra": "2",
+      "net.ipv4.conf.wlan0.rp_filter": "0",
+      "net.ipv4.conf.all.rp_filter": "0"
+    },
+    "drops": [],
+    "hmgapi": {
+      "rules_in": 0,
+      "keeper_log": []
+    },
+    "summary": "firewall load_iptrules (null); IPv4 input ACCEPT, 20 chains; IPv6 input ACCEPT, 19 chains; HMG-API rules in: 0; drops logged: 0"
+  }
+}

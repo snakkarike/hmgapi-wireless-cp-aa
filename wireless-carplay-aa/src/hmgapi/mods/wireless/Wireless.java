@@ -406,6 +406,7 @@ public final class Wireless extends ModEntry {
     private void phoneProjectionMenu(final ModContext mod, LoadedApp app) {
         int region = Car.region();
         if (region != Car.REGION_US && region != Car.REGION_CANADA) return;   // other regions: stock choice
+        if (!Points.has(HELPER + ".open_wireless_page")) return;
         final ClassLoader cl = app.classLoader;
         mod.hook(cl, HELPER + ".open_wireless_page", new MethodHook() {
             @Override
