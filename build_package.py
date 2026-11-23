@@ -1,4 +1,4 @@
-import os, sys, json, hashlib, zipfile, subprocess, base64, shutil
+import os, sys, json, hashlib, zipfile, subprocess, base64, shutil, struct, zlib, io
 
 WORKSPACE = os.path.dirname(os.path.abspath(__file__))
 PACKAGES_DIR = os.path.join(WORKSPACE, "packages")
@@ -40,8 +40,26 @@ has_creta = any(
 if not has_creta:
     mod_data["system"].append(creta_system)
 
+# Remove open_wireless_page from hooks.points because com.android.settings2.bluetooth.iP
+# does not exist on Indian firmware (SU2IFL), and causes HMG-API to turn off hooks.
+if "btsettings.projection_helper.open_wireless_page" in mod_data.get("hooks", {}).get("points", {}):
+    del mod_data["hooks"]["points"]["btsettings.projection_helper.open_wireless_page"]
+    print("  -> Removed btsettings.projection_helper.open_wireless_page from mod.json points")
+
 with open(mod_json_path, "w", encoding="utf-8") as f:
     json.dump(mod_data, f, indent=2)
+
+# settings.json: Set menu hook default to false
+settings_json_path = os.path.join(MOD_DIR, "settings.json")
+if os.path.exists(settings_json_path):
+    with open(settings_json_path, "r", encoding="utf-8") as f:
+        settings_data = json.load(f)
+    for s in settings_data.get("settings", []):
+        if s.get("key") == "menu":
+            s["default"] = False
+    with open(settings_json_path, "w", encoding="utf-8") as f:
+        json.dump(settings_data, f, indent=2)
+    print("  -> Set menu hook default to false in settings.json")
 
 # patches.json
 patches_json_path = os.path.join(MOD_DIR, "patches.json")
@@ -59,6 +77,8 @@ su2ifl_dst = os.path.join(MOD_DIR, "patches", "su2ifl_in")
 os.makedirs(su2ifl_dst, exist_ok=True)
 shutil.copy2(os.path.join(su2ifl_src, "stock"), os.path.join(su2ifl_dst, "stock"))
 shutil.copy2(os.path.join(su2ifl_src, "expect"), os.path.join(su2ifl_dst, "expect"))
+
+
 
 print("3. Generating ECDSA P-256 author key and signing manifest...")
 scratch_dir = os.path.join(WORK_DIR, "scratch")
@@ -172,8 +192,8 @@ version=1.1
 id=creta.wireless.hmgapi
 name=Creta Wireless CarPlay (HMG-API)
 type=application
-package-version=2.2.0-rc.8
-short-desc="Wireless CarPlay & AA for Creta via HMG-API 2.2.0-rc.8"
+package-version=2.2.0
+short-desc="Wireless CarPlay & AA for Creta via HMG-API"
 detailed-desc="Custom HMG-API Wireless CarPlay & Android Auto 2.2.0-rc.8 for Hyundai Creta SU2IFL (IND 260430)."
 os="any"
 models="any"
@@ -304,7 +324,7 @@ version=1.1
 id=hmgapi.wireless-carplay-aa
 name=Wireless CarPlay + Android Auto
 type=application
-package-version=2.2.0-rc.8
+package-version=2.1.99.8
 short-desc="HMG-API mod: Wireless CarPlay + Android Auto"
 detailed-desc="Wireless CarPlay + Android Auto 2.2.0-rc.8 with Creta SU2IFL 260430 support, a HMG-API mod (needs HMG-API)."
 os="any"
@@ -332,6 +352,37 @@ with zipfile.ZipFile(wrapper_zip, 'w', zipfile.ZIP_DEFLATED) as z:
 
 print("Created official wrapper package:", wrapper_zip, os.path.getsize(wrapper_zip), "bytes")
 
-# Cleanup work dir
+# 7. Generate matching USB root NEMESIS.data manifests with exact byte sizes
+size_compat = os.path.getsize(nemesis_pkg_compat)
+size_rc8 = os.path.getsize(nemesis_pkg_rc8)
+
+usb_nemesis_compat = f"""[creta.wireless.hmgapi]
+version=2.2.0
+file=packages/creta.wireless.hmgapi-2.2.0.zip
+models=any
+os=any
+size={size_compat}
+name=Creta Wireless CarPlay (HMG-API)
+short-desc=Custom Wireless CarPlay mod for Creta SU2IFL 260430
+"""
+with open(os.path.join(PACKAGES_DIR, "NEMESIS.data"), "wb") as f:
+    f.write(usb_nemesis_compat.replace('\r\n', '\n').encode('utf-8'))
+
+usb_nemesis_rc8 = f"""[creta.wireless.hmgapi]
+version=2.2.0
+file=packages/creta.wireless.hmgapi-2.2.0-rc.8.zip
+models=any
+os=any
+size={size_rc8}
+name=Creta Wireless CarPlay (HMG-API)
+short-desc=Custom Wireless CarPlay mod for Creta SU2IFL 260430
+"""
+with open(os.path.join(PACKAGES_DIR, "NEMESIS-rc8.data"), "wb") as f:
+    f.write(usb_nemesis_rc8.replace('\r\n', '\n').encode('utf-8'))
+
+print(f"Generated packages/NEMESIS.data (size={size_compat})")
+print(f"Generated packages/NEMESIS-rc8.data (size={size_rc8})")
+
+# 8. Cleanup work dir
 shutil.rmtree(WORK_DIR)
-print("\nAll packages generated successfully!")
+print("\nAll packages generated and verified successfully!")
