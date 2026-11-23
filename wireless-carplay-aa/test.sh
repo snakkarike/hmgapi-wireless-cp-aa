@@ -55,7 +55,7 @@ if grep -q 'connectivity.androidauto_wireless.xml' $S/onebin/$ONEBIN/featurexml.
 else
     has "feature flag: AA wireless file" '<feature name="com.hkmc.software.connectivity.androidauto_wireless" />' "$(cat $R/system/etc/permissions/com.hkmc.software.connectivity.androidauto_wireless.xml 2>/dev/null)"
 fi
-# the hotspot feature, asked of HMG-API ("wifi": {"hotspot": true}): this test's /system has
+# the hotspot feature, asked of HMG-API ("wifi": {"projection": true}): this test's /system has
 # no stock file, so HMG-API's own goes in (on a car with the stock file, only its line changes)
 has "hotspot feature: HMG-API's file" '<feature name="com.hkmc.software.wifihotspot" />' "$(cat $R/system/etc/permissions/com.hkmc.software.wifihotspot.xml 2>/dev/null)"
 check "featurexml: hotspot line not live" "" "$(grep -x -- '-/system/etc/permissions/com.hkmc.software.wifihotspot.xml' $R/system/onebin/$ONEBIN/featurexml.cfg || true)"

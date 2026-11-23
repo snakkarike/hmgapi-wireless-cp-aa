@@ -31,13 +31,7 @@ public final class AaSupportTest {
 
     private static void rejectsGpm(File library) {
         ModContext mod = enabled();
-        int parks = Park.starts;
         new Wireless(library).appLoaded(mod, new LoadedApp(Wireless.GPM));
-        check(Park.starts == parks + 1, "the park teardown starts in GPM (setting park, on by default)");
-        ModContext noPark = enabled();
-        noPark.settings.put("park", false);
-        new Wireless(library).appLoaded(noPark, new LoadedApp(Wireless.GPM));
-        check(Park.starts == parks + 1, "park=false: no park teardown");
         check(mod.natives.isEmpty(), "unverified AA must not request a native patch");
         check(mod.hooks.size() == 1 && mod.hooks.containsKey("framework.context_impl.start_service"),
                 "unverified AA keeps only the independent USB hook, without navigation/callback hooks");

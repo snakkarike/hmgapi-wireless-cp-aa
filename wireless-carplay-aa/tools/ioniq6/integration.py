@@ -191,6 +191,11 @@ def transaction_and_network(temp, sdk):
             "CAN 260206 plan passes both selectors without overrides and leaves /system unchanged")
     unit.engine("apply")
     require(unit.cfg.read_text() == PATCHED_CFG, "apply keeps unrelated feature lines intact")
+    require("projection wireless-carplay-aa" in unit.state("wifi.txt").splitlines(),
+            "apply requests the projection AP from HMG-API")
+    require(any(service.startswith("hmgapi wifi root boot yes ")
+                for service in unit.state("services.txt").splitlines()),
+            "HMG-API starts its Wi-Fi keeper at boot")
     for feature in FEATURES[1:]:
         path = unit.root / "system/etc/permissions" / (feature + ".xml")
         require(f'<feature name="{feature}" />' in path.read_text(), "wireless feature is installed: " + feature)
@@ -235,6 +240,8 @@ def transaction_and_network(temp, sdk):
     fw.once()
     fw.restored()
     require(snapshot(unit.root / "system") == before, "disabling restores every original /system byte")
+    require("projection wireless-carplay-aa" not in unit.state("wifi.txt").splitlines(),
+            "disabling withdraws the projection AP request")
     require(not (unit.root / "settings.txt").read_text(), "disabling restores original properties")
 
     (unit.mod / ".disabled").unlink()

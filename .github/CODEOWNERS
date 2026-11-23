@@ -3,5 +3,5 @@
 *                               @Open-HMG/maintainers
 
 # CI, releases and signing; native code (libraries patched or loaded on the car): the maintainer.
-/.github/                       @VysseCodes
+/.github/                       @VysseCodes @Open-HMG/releasers
 /wireless-carplay-aa/native/    @VysseCodes

@@ -22,4 +22,4 @@ jobs:
       - run: python3 .github/check-pin.py
 
   mod:
-    uses: Open-HMG/HMG-API/.github/workflows/mod.yml@2f78351309cb8deb95c64ec58546c40ace78e7a3
+    uses: Open-HMG/HMG-API/.github/workflows/mod.yml@a1830a83a8ad4bf3377be32e9064c5018947a2f6

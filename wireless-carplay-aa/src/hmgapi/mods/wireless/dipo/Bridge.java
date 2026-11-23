@@ -3,7 +3,6 @@ package hmgapi.mods.wireless.dipo;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiConfiguration;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -18,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import hmgapi.hook.Points;
+import hmgapi.hook.Wifi;
 
 /**
  * Wireless CarPlay's Bluetooth bridge, in DiPO (from the bridge build, com.ev6.cpwl).
@@ -199,12 +199,6 @@ final class Bridge {
 
     static void onSppUp(final String addr) {
         if (addr == null || sSession) return;
-        Context cx = context;
-        if (cx != null && !Choice.allowed(cx.getContentResolver(), Choice.CARPLAY, addr)) {   // the projection manager: another phone is chosen, or one is on
-            log("iPhone " + addr + " on Bluetooth: not starting CarPlay (" + (Choice.busy(cx.getContentResolver()) ? "a session is starting or on"
-                    : "the chosen phone is another: " + Choice.describe(cx.getContentResolver())) + ")");
-            return;
-        }
         sAddr = addr;
         if (sCpClient || sCpWireless || !enabled() || sUsb) return;
         sSession = true;
@@ -218,7 +212,8 @@ final class Bridge {
                         sSession = false;
                         return;
                     }
-                    ensureHotspot(c);
+                    // the projection AP for the iPhone to join: HMG-API's (the car may have turned it off since boot)
+                    Wifi.projectionAp(c, "wireless-carplay-aa");
                     Intent i = new Intent(ACTION_ATTACH);
                     i.setPackage(IAP2_PKG);
                     i.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
@@ -631,36 +626,6 @@ final class Bridge {
             if (!m.IbtcmSppOutPutStreamWrite(addr, data)) log("SPP write failed, " + data.length + " bytes");
         } catch (Throwable t) {
             error("writeSpp", t);
-        }
-    }
-
-    /** the head unit's hotspot in mode 2 (for connectivity), which wireless CarPlay joins */
-    static void ensureHotspot(Context c) {
-        try {
-            Object wifi = c.getSystemService(Context.WIFI_SERVICE);
-            if (wifi == null) return;
-            Class<?> k = wifi.getClass();
-            boolean on = false;
-            int mode;
-            try {
-                on = (Boolean) k.getMethod("isWifiApEnabled").invoke(wifi);
-            } catch (Throwable t) {
-                // no such call: treat as off
-            }
-            try {
-                mode = (Integer) k.getMethod("getWifiApMode").invoke(wifi);
-            } catch (Throwable t) {
-                mode = -1;
-            }
-            if (on && mode == 2) {
-                log("hotspot already up (mode 2)");
-                return;
-            }
-            Object conf = k.getMethod("getWifiApConfiguration").invoke(wifi);
-            Object r = k.getMethod("setWifiApEnabledForConnectivity", WifiConfiguration.class, boolean.class).invoke(wifi, conf, true);
-            log("setWifiApEnabledForConnectivity -> " + r + " (was on=" + on + " mode=" + mode + ")");
-        } catch (Throwable t) {
-            error("ensureHotspot", t);
         }
     }
 

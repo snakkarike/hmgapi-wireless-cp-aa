@@ -102,13 +102,6 @@ public final class Dipo {
             m.nativePatch(a, "libCarPlayUtils.so");   // its AudioConverter calls go to libleafiaaac.so
         }
         if (tbt) turnByTurn();
-        if (bridge && m.settingBoolean("park", true)) {
-            try {
-                ParkCp.start(m, a);   // ends wireless CarPlay when you park and leave (HMG-API's car events)
-            } catch (Throwable t) {   // an HMG-API without car events
-                error("CarPlay: no teardown when you park", t);
-            }
-        }
         if (!tbt && !bridge) return;
         rgWatch();
         if (bridge) bridge();

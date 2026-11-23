@@ -25,7 +25,6 @@ The firewall workarounds are off by default; the other settings below are on:
 | Song, artist and album art on wireless CarPlay | A hook in DiPO: asks the phone for Now Playing again once wireless CarPlay's session is up, for the cluster and the split screen |
 | Settings > Phone Projection opens Device Connections | A hook in the Settings app (US/Canada) |
 | USB drives and hubs don't start wired Android Auto | A hook in the Android Auto app: a USB stick no longer blocks wireless Android Auto |
-| End wireless CarPlay and Android Auto when you park and leave | HMG-API's car events: when the car is parked (by the owner's rule in HMG-API's Settings > Vehicle; by default off, in P, once you get out and close the door) and before the head unit shuts down, the wireless session ends the way CarPlay and Android Auto end one (Android Auto's ByeBye, DiPO's disconnect), so the phone lets go at once. Switched on again (or back from a QuickBoot suspend), the phone is asked back. USB sessions are never ended |
 | Allow wireless Android Auto through the hotspot firewall | **Off by default.** Experimental Ioniq 6 workaround: new IPv4 TCP connections on hotspot port 40515 |
 | Allow wireless CarPlay through the hotspot firewall | **Off by default.** Needed on the US Ioniq 6 260507 and the Elantra N (`CN7NPE`) 260903: CarPlay's ports (TCP and UDP, both ways), mDNS and ICMPv6 from the hotspot |
 
@@ -157,9 +156,6 @@ HMGAPI_SDK=$HMGAPI_SDK sh wireless-carplay-aa/tools/cpturns/test.sh
 ```
 ```
 sh wireless-carplay-aa/tools/reattach/test.sh
-```
-```
-ANDROID_HOME=$ANDROID_HOME sh wireless-carplay-aa/tools/projection/test.sh
 ```
 ```
 HMGAPI_SDK=$HMGAPI_SDK sh wireless-carplay-aa/tools/recipes/test.sh

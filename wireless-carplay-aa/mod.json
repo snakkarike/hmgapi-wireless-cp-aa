@@ -1,8 +1,8 @@
 {
   "id": "wireless-carplay-aa",
   "name": "Wireless CarPlay + Android Auto",
-  "version": "2.2.0-rc.8",
-  "hmgapi": ">=1.1.0-rc.6",
+  "version": "2.2.0-rc.9",
+  "hmgapi": ">=1.1.0-rc.8",
   "authors": ["VysseCodes"],
   "license": "AGPL-3.0",
   "nemesis_conflicts": ["wireless.projection", "projection.tbt", "enhanced.projection"],
@@ -145,13 +145,7 @@
   ],
   "feature_flags": ["com.hkmc.software.connectivity.carplay_wireless", "com.hkmc.software.connectivity.androidauto_wireless"],
   "wifi": {
-    "hotspot": true
-  },
-  "car_events": {
-    "parked": {},
-    "unparked": {},
-    "shutdown": {},
-    "wake": {}
+    "projection": true
   },
   "logs": {
     "tags": ["DiPO", "GPM", "Iap2", "GalReceiver"],
@@ -200,14 +194,6 @@
       "dipo.session_listener.session_details": "observe",
       "dipo.iap2.bt_address": "change",
       "dipo.bt.set_carplay_bt_address": "replace",
-      "gpm.receiver_service.on_create": "observe",
-      "gpm.receiver_service.disconnected": "observe",
-      "framework.pp_service.connect_pp": "observe",
-      "framework.pp_service.send_connect_pp_from_bt": "observe",
-      "framework.pp_service.disconnect_pp": "observe",
-      "framework.pp_service.cancel_connection_pp": "observe",
-      "framework.pp_service.on_wireless_connected": "observe",
-      "framework.pp_service.on_wireless_disconnected": "observe",
       "framework.activity.start_activity_for_result": "change"
     },
     "native": {

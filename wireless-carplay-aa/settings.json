@@ -64,14 +64,6 @@
       "description": "A hook in the Android Auto app (no files changed). Without it, a USB drive can block wireless Android Auto until the head unit restarts."
     },
     {
-      "key": "park",
-      "type": "toggle",
-      "default": true,
-      "apply": "restart",
-      "title": "End wireless CarPlay and Android Auto when you park and leave",
-      "description": "When HMG-API says the car is parked (off, in P, and by your rule in HMG-API's Settings > Vehicle; by default once you get out and close the door) and before the head unit shuts down, the phone's wireless session ends the way CarPlay and Android Auto end one, so the phone takes its audio and calls back at once. Switch the car on again and the phone is asked back. USB sessions are never ended. Needs an HMG-API with car events. Takes effect when the head unit restarts."
-    },
-    {
       "key": "aa_firewall",
       "type": "toggle",
       "default": false,
