@@ -1,0 +1,4 @@
+[nemesis]
+version=1.0
+type=install
+path=packages/creta.wireless.hmgapi-2.2.0.zip
