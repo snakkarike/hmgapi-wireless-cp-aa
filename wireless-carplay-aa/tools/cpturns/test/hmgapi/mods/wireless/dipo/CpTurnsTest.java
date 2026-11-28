@@ -71,6 +71,39 @@ public final class CpTurnsTest {
                 8, ENUM, i(side), 9, ENUM, i(junction), 11, U8, i(exit));
     }
 
+    /**
+     * HMG-API's log, with standard turns off (issue #24): the source, each route change and
+     * each maneuver with its icon, 0 included, so a Car Report shows whether a navigation
+     * app's maneuvers came and why nothing reached the cluster. Numbers and the app's name
+     * only, no road names; nothing repeated.
+     */
+    static void routeLogs() {
+        c = new Cluster();
+        CpTurns t = new CpTurns(new android.content.Context(), c, null);
+        Dipo.lines.clear();
+        t.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(1), 11, STR, s("0.5"), 12, ENUM, i(1), 13, U16, i(0, 1), 19, STR, s("Google Maps")));
+        t.maneuver(maneuver(0, 1, 0, 0, -87, "Secret Rd", 800));
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("0.4")));
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("0.3")));
+        t.maneuver(maneuver(1, 2, 0, 0, 90, "Other Rd", 900));
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("0.1"), 13, U16, i(1)));
+        t.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(0)));
+        String want = String.join("\n",
+                "CarPlay: route guidance source Google Maps",
+                "CarPlay route: component 1 state 1, maneuver 0 (no details yet) of 2, distance sent",
+                "CarPlay route: component 1 state 1, maneuver 0 of 2, distance sent",
+                "CarPlay turn: type 1 side 0 junction 0 exit -87 -> icon 0",
+                "CarPlay route: component 1 state 1, maneuver 1 of 1, distance sent",
+                "CarPlay turn: type 2 side 0 junction 0 exit 90 -> icon 67",
+                "CarPlay: hud list type 67 next 0",
+                "CarPlay route: component 1 state 0, maneuver 1 of 1, distance sent");
+        String got = String.join("\n", Dipo.lines);
+        check("log: source, route changes and every maneuver with its icon (0 too), once each, no road names"
+                + (got.equals(want) ? "" : "\n  wanted:\n    " + want.replace("\n", "\n    ") + "\n  got:\n    " + got.replace("\n", "\n    ")),
+                got.equals(want) && !got.contains("Rd"));
+        Dipo.lines.clear();
+    }
+
     /** Public, synthetic fixtures for the ordinary turns observed on India 260430.
      * No car dumps or private route strings are needed for this regression. */
     static void indiaTurns() {
@@ -234,9 +267,106 @@ public final class CpTurnsTest {
         check("lane angles: 0 straight, 90 right, -45 slight left, 180 back",
                 CpTurns.laneIcon(0) == 1 && CpTurns.laneIcon(90) == 3 && CpTurns.laneIcon(-45) == 8 && CpTurns.laneIcon(180) == 5
                         && CpTurns.laneIcon(270) == 7);
+        routeLogs();
         indiaTurns();
         standardTurns();
+        evergreenFixes();
+        sideStreets();
         System.exit(fail);
+    }
+
+    /**
+     * Fixes ported from Evergreen's CarPlay AR builds (1.2.0.103-1.2.0.112, a US EV6 on
+     * 260507): maneuver types the build's icon table left without an icon, the previous turn
+     * cleared when the next maneuver has none, and a turn sent once its late details arrive.
+     */
+    static void evergreenFixes() {
+        check("off ramp with no side (8): the exit angle's side, else the traffic side",
+                CpTurns.icon(8, 0, 0, 0, 1) == 81 && CpTurns.icon(8, 1, 0, 0, 1) == 82
+                        && CpTurns.icon(8, 0, 0, -30, 1) == 82 && CpTurns.icon(8, 1, 0, 45, 1) == 81
+                        && CpTurns.icon(8, 0, 0, 180, 1) == 81 && CpTurns.icon(8, 0, 1, 0, 1) == 0
+                        && CpTurns.icon(8, 2, 0, 0, 1) == 0);
+        check("exitSide: 5-175 right, 185-355 left (negative angles too), else the traffic side",
+                CpTurns.exitSide(0, 5) == 1 && CpTurns.exitSide(0, 175) == 1 && CpTurns.exitSide(0, -5) == -1
+                        && CpTurns.exitSide(0, 4) == 1 && CpTurns.exitSide(1, 4) == -1 && CpTurns.exitSide(1, 0) == -1
+                        && CpTurns.exitSide(0, 270) == -1);
+        check("highway off-ramps 22/23 with an exit angle, and in left-hand traffic",
+                CpTurns.icon(22, 0, 0, -30, 1) == 82 && CpTurns.icon(23, 0, 0, 30, 1) == 81
+                        && CpTurns.icon(22, 1, 0, 0, 1) == 82 && CpTurns.icon(23, 0, 1, 0, 1) == 0);
+        check("keep left/right (13/14) and change highway (52/53) are forks, either traffic side",
+                CpTurns.icon(13, 0, 0, 0, 1) == 174 && CpTurns.icon(14, 1, 0, 0, 1) == 173
+                        && CpTurns.icon(52, 1, 0, 0, 1) == 174 && CpTurns.icon(53, 0, 0, 20, 1) == 173
+                        && CpTurns.icon(13, 0, 1, 0, 1) == 0);
+        check("left/right at the end of the road (20/21) and U-turn when possible (26)",
+                CpTurns.icon(20, 0, 0, 0, 1) == 70 && CpTurns.icon(21, 0, 0, 0, 1) == 67 && CpTurns.icon(21, 0, 0, 120, 1) == 68
+                        && CpTurns.icon(26, 0, 0, 0, 1) == 72 && CpTurns.icon(26, 1, 0, 0, 1) == 73);
+        check("standard: off ramp 8 as EXIT_RIGHT/EXIT_LEFT, keep left/right as forks, 20/21/26 as turns",
+                is(CpTurns.standard(8, 0, 0, 0, 81, 200), 17, 90, 40) && is(CpTurns.standard(8, 0, 0, -30, 82, 200), 18, 270, 40)
+                        && is(CpTurns.standard(8, 0, 0, 0, 81, 600), 81, 0, 0)
+                        && is(CpTurns.standard(13, 0, 0, 0, 174, 200), 25, 270, 40) && is(CpTurns.standard(14, 0, 0, 0, 173, 200), 25, 90, 40)
+                        && is(CpTurns.standard(20, 0, 0, 0, 70, 200), 13, 270, 40) && is(CpTurns.standard(21, 0, 0, 0, 67, 200), 13, 90, 40)
+                        && is(CpTurns.standard(26, 1, 0, 0, 73, 200), 31, 90, 40));
+
+        c = new Cluster();
+        CpTurns t = new CpTurns(new android.content.Context(), c, null);
+        t.maneuver(maneuver(0, 3, 0, 0, 0, "Hwy 1", 10));
+        t.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(1), 11, STR, s("10"), 12, ENUM, i(4), 13, U16, i(0)));
+        expect("straight 10 ft", "road [Hwy 1]", "tbt 65 0 0.0 10.0 0 0 3 0 0", "hud f201410000" + utf16("Hwy 1"),
+                "2c 3 0 10 0 0 0 0 0 0");
+        t.maneuver(maneuver(1, 9, 0, 1, 0, "Ramp", 1600));
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("1"), 12, ENUM, i(1), 13, U16, i(1)));
+        expect("next maneuver has no icon (on-ramp at a roundabout): the previous turn and the HUD are cleared",
+                "road [Ramp]", "tbt 0 0 0.0 0.0 -1 0 0 0 -1", "2c 0 0 0 0 0 0 0 0 0", "lanes f1", "hud f2", "hud f2");
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("0.9")));
+        expect("cleared once, not on every update", "road [Ramp]");
+        t.maneuver(maneuver(2, 19, 0, 1, -180, "Loop", 300));
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("300"), 12, ENUM, i(4), 13, U16, i(2)));
+        c.calls.clear();
+        t.maneuver(msg(0, U16, i(1), 1, U16, i(2), 5, U32, i(250)));
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("250")));
+        expect("the same maneuver losing its icon (no exit angle in this update) keeps what it showed", "road [Loop]");
+
+        t.maneuver(maneuver(3, 8, 0, 0, 0, "Exit 12", 1600));
+        c.calls.clear();
+        t.routeGuidance(msg(0, U16, i(1), 11, STR, s("1"), 12, ENUM, i(1), 13, U16, i(3)));
+        expect("off ramp with no side, 1 mi out: the exit right icon",
+                "road [Exit 12]", "tbt 81 0 0.0 1.0 0 0 2 0 0", "hud f201510000" + utf16("Exit 12"), "2c 2 0 1 0 0 0 0 0 0");
+
+        c = new Cluster();
+        t = new CpTurns(new android.content.Context(), c, null);
+        t.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(6), 4, STR, s("Home"), 11, STR, s("0.5"), 12, ENUM, i(1), 13, U16, i(0)));
+        expect("route update before its maneuver's details: only the destination", "dest 0 [Home]");
+        t.maneuver(maneuver(4, 2, 0, 0, 90, "Other Rd", 900));
+        expect("details of another maneuver: still waiting");
+        t.maneuver(maneuver(0, 2, 0, 0, 90, "First St", 800));
+        expect("the current maneuver's details arrive: the turn goes out without another route update",
+                "dest 0 [Home]", "road [First St]", "tbt 67 0 0.0 0.5 0 0 2 0 0", "hud f201430000" + utf16("First St"),
+                "2c 2 5 0 0 0 0 0 0 0");
+        t.maneuver(maneuver(0, 2, 0, 0, 90, "First St", 700));
+        expect("later details of a maneuver already sent: nothing extra (the next route update sends them)");
+
+        // the same, with details that name no component (index only): the waiting component has no
+        // maneuvers yet, and still gets its turn
+        Cluster c0 = c;
+        c = new Cluster();
+        CpTurns w = new CpTurns(new android.content.Context(), c, null);
+        w.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(1), 11, STR, s("0.5"), 12, ENUM, i(1), 13, U16, i(0)));
+        expect("first route update before any details: nothing yet");
+        w.maneuver(msg(1, U16, i(0), 3, ENUM, i(2), 4, STR, s("First St"), 5, U32, i(800),
+                8, ENUM, i(0), 9, ENUM, i(0), 11, U8, i(90)));
+        expect("index-only details of the waited-for maneuver: the turn goes out",
+                "road [First St]", "tbt 67 0 0.0 0.5 0 0 2 0 0", "hud f201430000" + utf16("First St"),
+                "2c 2 5 0 0 0 0 0 0 0");
+        c = c0;
+
+        // after a reset (another app, a disconnect) a no-icon maneuver at the same index and type
+        // still clears what the old route left on the main display
+        t.reset();
+        t.maneuver(maneuver(0, 2, 0, 1, 77, "Circle", 300));   // a roundabout angle with no icon
+        c.calls.clear();
+        t.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(1), 11, STR, s("300"), 12, ENUM, i(4), 13, U16, i(0)));
+        check("after a reset, a no-icon maneuver at the old index clears the old turn: " + c.calls,
+                c.calls.contains("tbt 0 0 0.0 0.0 -1 0 0 0 -1"));
     }
 
     static boolean is(int[] got, int type, int dir, int bar) {
@@ -290,5 +420,68 @@ public final class CpTurnsTest {
         check("roundaboutDir: the clockwise set (+96), and -1 for 103, 106 and turn icons",
                 CpTurns.roundaboutDir(195) == 90 && CpTurns.roundaboutDir(103) == -1 && CpTurns.roundaboutDir(106) == -1
                         && CpTurns.roundaboutDir(67) == -1);
+    }
+
+    /** a RouteGuidanceManeuverUpdate for component 1 with the junction's angles (item 10); exit null: no item 11 */
+    static Iap2NotiMsg junction(int index, int type, Integer exit, int[] angles, String after) {
+        Iap2NotiMsg m = msg(0, U16, i(1), 1, U16, i(index), 3, ENUM, i(type), 4, STR, s(after), 8, ENUM, i(0), 9, ENUM, i(0));
+        if (angles != null) m.getItemGroup().add(10, U8, angles);
+        if (exit != null) m.getItemGroup().add(11, U8, i(exit));
+        return m;
+    }
+
+    /** setting tbt_side_streets: the iPhone's junction as the cluster's side streets */
+    static void sideStreets() {
+        check("roadBit: ahead within 12, right 90 bit 4, left 270 bit 11, behind none, sector edges",
+                CpTurns.roadBit(0) == 1 && CpTurns.roadBit(11) == 1 && CpTurns.roadBit(-11) == 1 && CpTurns.roadBit(12) == 2
+                        && CpTurns.roadBit(90) == 1 << 4 && CpTurns.roadBit(-90) == 1 << 11 && CpTurns.roadBit(270) == 1 << 11
+                        && CpTurns.roadBit(180) == 0 && CpTurns.roadBit(-180) == 0 && CpTurns.roadBit(170) == 0
+                        && CpTurns.roadBit(168) == 1 << 7 && CpTurns.roadBit(192) == 1 << 8 && CpTurns.roadBit(-12) == 1 << 14);
+        check("a 4-way crossroad, right turn: 0x811 (ahead, right, left; Korean cars' own navigation)",
+                CpTurns.sideStreets(2, 0, true, 90, i(0, 90, -90, 180)) == 0x811);
+        check("a T junction, left turn: the left road and the road ahead, the exit included",
+                CpTurns.sideStreets(1, 0, true, -90, i(0, -90)) == (1 | 1 << 11));
+        check("slight right with a road ahead and a sharp left",
+                CpTurns.sideStreets(50, 0, true, 45, i(0, 45, -135)) == (1 | 1 << 2 | 1 << 9));
+        check("straight through a crossroad (exit within 22 degrees)",
+                CpTurns.sideStreets(3, 0, true, 5, i(5, 90, -90)) == 0x811);
+        check("no junction angles, no exit angle in this update, a roundabout: 0",
+                CpTurns.sideStreets(2, 0, true, 90, null) == 0 && CpTurns.sideStreets(2, 0, true, 90, new int[0]) == 0
+                        && CpTurns.sideStreets(2, 0, false, 0, i(0, 90)) == 0 && CpTurns.sideStreets(2, 1, true, 90, i(0, 90)) == 0);
+        check("an exit on the wrong side, straight with a turning exit, an angle out of range, other types: 0",
+                CpTurns.sideStreets(2, 0, true, -90, i(0, -90)) == 0 && CpTurns.sideStreets(1, 0, true, 0, i(0, 90)) == 0
+                        && CpTurns.sideStreets(3, 0, true, 45, i(0, 45)) == 0 && CpTurns.sideStreets(2, 0, true, 90, i(0, 200)) == 0
+                        && CpTurns.sideStreets(4, 0, true, 180, i(0, 180)) == 0 && CpTurns.sideStreets(23, 0, true, 30, i(0, 30)) == 0);
+
+        // a drive: standard turns with side streets on
+        c = new Cluster();
+        CpTurns t = new CpTurns(new android.content.Context(), c, null);
+        t.standardTurns = true;
+        t.sideStreets = true;
+        t.maneuver(junction(0, 2, 90, i(0, 90, -90, 180), "Main St"));
+        t.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(1), 10, U32, i(900), 11, STR, s("900"), 12, ENUM, i(2), 13, U16, i(0)));
+        expect("side streets: 900 m out it's the icon, no side streets",
+                "road [Main St]", "tbt 67 0 0.0 900.0 0 0 0 0 0",
+                "hud f201430000" + utf16("Main St"), "2c 0 0 900 0 0 0 0 0 0");
+        t.routeGuidance(msg(0, U16, i(1), 10, U32, i(300), 11, STR, s("300")));
+        expect("side streets: 300 m out, TURN 90 with the crossroad's side streets (0x811 = 2065)",
+                "road [Main St]", "tbt 13 2065 90.0 300.0 0 0 0 60 0", "2c 0 0 300 0 0 0 0 0 0");
+        t.maneuver(junction(0, 2, null, i(0, 90, -90, 180), "Main St"));
+        t.routeGuidance(msg(0, U16, i(1), 10, U32, i(250), 11, STR, s("250")));
+        expect("side streets: an update without the exit angle draws the plain turn",
+                "road [Main St]", "tbt 13 0 90.0 250.0 0 0 0 50 0", "2c 0 0 250 0 0 0 0 0 0");
+        t.maneuver(junction(1, 1, -90, null, "Oak Ave"));
+        t.routeGuidance(msg(0, U16, i(1), 10, U32, i(200), 11, STR, s("200"), 13, U16, i(1)));
+        expect("side streets: a turn without junction angles (Google Maps) draws the plain turn",
+                "road [Oak Ave]", "tbt 13 0 270.0 200.0 0 0 0 40 0",
+                "hud f201460000" + utf16("Oak Ave"), "2c 0 0 200 0 0 0 0 0 0");
+
+        c = new Cluster();
+        t = new CpTurns(new android.content.Context(), c, null);
+        t.standardTurns = true;
+        t.maneuver(junction(0, 2, 90, i(0, 90, -90, 180), "Main St"));
+        t.routeGuidance(msg(0, U16, i(1), 1, ENUM, i(1), 10, U32, i(300), 11, STR, s("300"), 12, ENUM, i(2), 13, U16, i(0)));
+        check("side streets off (the default): standard turns send 0: " + c.calls, c.calls.contains("tbt 13 0 90.0 300.0 0 0 0 60 0"));
+        check("side streets: off by default", !new CpTurns(new android.content.Context(), new Cluster(), null).sideStreets);
     }
 }

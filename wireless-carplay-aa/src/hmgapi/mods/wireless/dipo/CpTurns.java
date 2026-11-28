@@ -47,6 +47,8 @@ final class CpTurns {
     /** component id -> maneuver index -> maneuver (DiPO e/u.Am) */
     final LinkedHashMap<Integer, LinkedHashMap<Integer, Maneuver>> maneuvers = new LinkedHashMap<Integer, LinkedHashMap<Integer, Maneuver>>();
     String source;
+    /** the last route line logged (logRoute), so an unchanged route isn't logged again */
+    String lastRouteLog;
     /** last HUD list sent (type, next, road), so an unchanged one isn't resent */
     int hudType, hudNext;
     String hudRoad;
@@ -55,8 +57,26 @@ final class CpTurns {
      * navigation sends it (standard()); farther away, and in the HUD's turn list, the icons.
      */
     boolean standardTurns;
-    /** the last maneuver line logged (standard turns only), so a resent maneuver isn't logged again */
+    /**
+     * Setting tbt_side_streets (with tbt_standard): a TURN near a maneuver carries the side
+     * streets of the iPhone's junction (sideStreets()), so the cluster draws the intersection
+     * around the arrow as the car's own navigation does in Korea. Off: 0, no roads drawn.
+     */
+    boolean sideStreets;
+    /** the last maneuver line logged, so a resent maneuver isn't logged again */
     String lastLog;
+    /**
+     * What the main display shows: the component, maneuver index and type last sent with an
+     * icon (shownId -1: nothing). A new current maneuver with no icon clears it, so the
+     * previous turn doesn't stay up (Apple Maps' "straight, 10 ft" while it guided to an exit).
+     */
+    int shownId = -1, shownIndex = -1, shownType = -1;
+    /**
+     * component id -> the current maneuver's index, for a route update that came before that
+     * maneuver's details: when they arrive the turn goes out then, instead of at the next route
+     * update (none comes while the car stands, so a route started parked stayed blank).
+     */
+    final LinkedHashMap<Integer, Integer> waiting = new LinkedHashMap<Integer, Integer>();
     /** the car navigation's main-display types (Navigation.DisplayType), as AaTurns sends them */
     static final int TYPE_ARRIVED = 3, TYPE_TURN = 13, TYPE_EXIT_RIGHT = 17, TYPE_EXIT_LEFT = 18, TYPE_FORK = 25,
             TYPE_U_TURN = 31, TYPE_ROUNDABOUT_RIGHT = 32, TYPE_ROUNDABOUT_LEFT = 33;
@@ -140,6 +160,11 @@ final class CpTurns {
         }
         if (index < 0) return;
         if (ids == null) {
+            // a component waiting for this maneuver may have no maneuvers yet (its first route
+            // update came first): give it a map, or its turn stays blank until another update
+            for (Integer id : waiting.keySet()) {
+                if (maneuvers.get(id) == null) maneuvers.put(id, new LinkedHashMap<Integer, Maneuver>());
+            }
             for (Integer id : maneuvers.keySet()) {
                 LinkedHashMap<Integer, Maneuver> m = maneuvers.get(id);
                 if (m == null) continue;
@@ -147,6 +172,7 @@ final class CpTurns {
                 if (x != null) x.read(index, id, msg);
                 else m.put(index, new Maneuver(index, id, msg));
             }
+            for (Integer id : maneuvers.keySet().toArray(new Integer[0])) arrived(id, index);
             return;
         }
         for (int k = 0; k < ids.length; k++) {
@@ -162,6 +188,19 @@ final class CpTurns {
                 maneuvers.put(id, m);
             }
         }
+        for (int k = 0; k < ids.length; k++) arrived(ids[k], index);
+    }
+
+    /**
+     * A maneuver's details came in: if a route update for that component was waiting for this
+     * maneuver (it was the current one, with no details yet), send the turn now. Evergreen's
+     * 1.2.0.103 found the same wait in DiPO's own manager.
+     */
+    void arrived(Integer id, int index) {
+        Integer want = waiting.get(id);
+        if (want == null || want != index) return;
+        waiting.remove(id);
+        turn(id, updates.get(id));
     }
 
     /** LaneGuidance (the build's applyLanes): up to 8 lanes as the cluster's 0xF1 frame */
@@ -267,6 +306,11 @@ final class CpTurns {
         for (Update u : updates.values()) {
             if (u != null) u.clear();
         }
+        waiting.clear();
+        // what's shown stays (reset doesn't clear the main display), but no maneuver is the
+        // shown one any more: the next maneuver with no icon clears it, even at the same index
+        shownIndex = -1;
+        shownType = -1;
     }
 
     /** SourceName (item 19) changed: clear the old app's leftovers and have the phone resend */
@@ -281,6 +325,7 @@ final class CpTurns {
             if (s == null || s.length() == 0) continue;
             String was = source;
             source = s;
+            if (was == null) Dipo.log("CarPlay: route guidance source " + s);
             if (was == null || was.equals(s)) return;
             Dipo.log("CarPlay: route guidance source changed from " + was + " to " + s + ", clearing turn-by-turn");
             reset();
@@ -293,7 +338,9 @@ final class CpTurns {
     /** one component's update to the cluster (DiPO e/u.a(Integer, Object), with the build's changes) */
     void turn(Integer id, Update u) {
         if (id < 0 || u == null) return;
+        logRoute(id, u);
         if (u.state == 0) {
+            waiting.remove(id);
             stop();
             return;
         }
@@ -309,9 +356,16 @@ final class CpTurns {
         }
         if (u.state == 6) cluster.destinationName(0, u.destination);
         LinkedHashMap<Integer, Maneuver> m = maneuvers.get(id);
-        if (m == null || list == null) return;
-        Maneuver x = m.get(list[0]);
-        if (x == null) return;
+        if (list == null || list.length == 0) {
+            waiting.remove(id);
+            return;
+        }
+        Maneuver x = m == null ? null : m.get(list[0]);
+        if (x == null) {
+            waiting.put(id, list[0]);
+            return;
+        }
+        waiting.remove(id);
         int unit;
         switch (u.nextUnits) {
             case 0: unit = Cluster.UNIT_KM; break;
@@ -321,11 +375,18 @@ final class CpTurns {
             default: unit = Cluster.UNIT_M; break;
         }
         int icon = icon(x.type, x.side, x.junction, x.exit, u.state);
+        logTurn(x, icon);
         // StartRoute has no direction: clear the previous app's HUD arrow.
         if (x.type == 11 && icon == 1) hudBlank();
         cluster.crossroadName(x.afterRoad);
-        if (icon == 0) return;
-        int type = icon, dir = 0, bar = 0;
+        if (icon == 0) {
+            clearShown(id, list[0], x.type);
+            return;
+        }
+        shownId = id;
+        shownIndex = list[0];
+        shownType = x.type;
+        int type = icon, dir = 0, bar = 0, sides = 0;
         if (standardTurns) {
             // the phone's distance to this maneuver in meters (item 10), once it has sent one
             int meters = u.nextStr == null || u.nextStr.equals("") ? -1 : u.distNext;
@@ -333,13 +394,41 @@ final class CpTurns {
             type = s[0];
             dir = s[1];
             bar = s[2];
-            logTurn(x, icon);
+            if (sideStreets && type == TYPE_TURN) sides = sideStreets(x.type, x.junction, x.exitSent, x.exit, x.angles);
         }
-        cluster.tbtInfo(type, 0, dir, dist, 0, 0, unit, bar, 0);
+        cluster.tbtInfo(type, sides, dir, dist, 0, 0, unit, bar, 0);
         sendHud(icon, id, u);
         sendHudDist(dist, unit);
         sendTrip(u);
         sendAhead(id, u);
+    }
+
+    /**
+     * The current maneuver has no icon: if the main display still shows another maneuver of
+     * this component, clear it and the HUD (once). The same maneuver losing its icon (an update
+     * without its optional exit angle, say) keeps what it showed.
+     */
+    void clearShown(int id, int index, int type) {
+        if (shownId != id || (shownIndex == index && shownType == type)) return;
+        Dipo.log("CarPlay: maneuver type " + type + " has no icon, clearing the previous turn");
+        shownId = -1;
+        shownIndex = -1;
+        shownType = -1;
+        cluster.tbtInfo(0, 0, 0f, 0f, -1, 0, 0, 0, -1);
+        hudBlank();
+    }
+
+    /**
+     * A highway exit with no side (ManeuverType 8, "off ramp"): the exit angle's side when it
+     * has one, else the side traffic keeps to (right, or left in left-hand traffic).
+     * 1 right, -1 left. From Evergreen 1.2.0.108 (its exitSide), where Apple Maps sent the
+     * highway exits of a US EV6 drive this way.
+     */
+    static int exitSide(int side, int exit) {
+        int a = ((exit % 360) + 360) % 360;
+        if (a >= 5 && a <= 175) return 1;
+        if (a >= 185 && a <= 355) return -1;
+        return side == 1 ? -1 : 1;
     }
 
     /**
@@ -351,6 +440,7 @@ final class CpTurns {
         switch (type) {
             // Ordinary left/right types carry the direction even when the optional
             // exit angle is absent (the parser resets it to zero on every update).
+            case 20:  // left at the end of the road: a left turn
             case 1:   // left turn
                 if (junction == 0 && exit == -120) return 69;
                 if ((side == 0 || side == 1) && junction == 0 && (exit == -90 || exit == 0)) return 70;
@@ -360,6 +450,7 @@ final class CpTurns {
                 if (side == 1 && junction == 1 && exit == -90) return 105;
                 if (side == 1 && junction == 1 && exit == -30) return 107;
                 return 0;
+            case 21:  // right at the end of the road: a right turn
             case 2:   // right turn
                 if (junction == 0 && exit == 60) return 66;
                 if ((side == 0 || side == 1) && junction == 0 && (exit == 90 || exit == 0)) return 67;
@@ -373,10 +464,18 @@ final class CpTurns {
                 return 0;
             case 3:   // straight
                 return (side == 0 || side == 1) && junction == 0 && exit == 0 ? 65 : 0;
+            case 26:  // U-turn when possible: a U-turn
             case 4:   // U-turn
                 if (side == 0 && junction == 0) return 72;
                 if (side == 1 && junction == 0) return 73;
                 return 0;
+            case 8:   // off ramp, no side given: the side from exitSide()
+                if ((side != 0 && side != 1) || junction != 0) return 0;
+                return exitSide(side, exit) > 0 ? 81 : 82;
+            case 13:  // keep left / right: a fork, as 52/53
+                return (side == 0 || side == 1) && junction == 0 ? 174 : 0;
+            case 14:
+                return (side == 0 || side == 1) && junction == 0 ? 173 : 0;
             case 5:
             case 9:
                 return side == 0 && junction == 0 && exit == 0 ? 172 : 0;
@@ -388,8 +487,10 @@ final class CpTurns {
                 return (side == 0 || side == 1) && junction == 0 && exit == 0 ? 1 : 0;
             case 15: return side == 0 && junction == 0 && exit == 0 ? 176 : 0;
             case 19: return side == 0 && junction == 1 && exit == -180 ? 102 : 0;
-            case 22: return side == 0 && junction == 0 && exit == 0 ? 82 : 0;
-            case 23: return side == 0 && junction == 0 && exit == 0 ? 81 : 0;
+            // highway off-ramps: with or without an exit angle, either traffic side (the build
+            // took only exit 0 in right-hand traffic, so an exit with an angle showed nothing)
+            case 22: return (side == 0 || side == 1) && junction == 0 ? 82 : 0;
+            case 23: return (side == 0 || side == 1) && junction == 0 ? 81 : 0;
             case 24: return side == 0 && junction == 0 && exit == 0 ? 114 : 0;
             case 25: return side == 0 && junction == 0 && exit == 0 ? 113 : 0;
             case 28: return side == 0 && junction == 1 && exit == 135 ? 100 : 0;
@@ -412,23 +513,61 @@ final class CpTurns {
                 return 0;
             case 49: return junction == 0 && exit == -45 ? 71 : 0;
             case 50: return junction == 0 && exit == 45 ? 66 : 0;
-            case 52: return side == 0 && junction == 0 && exit == 0 ? 174 : 0;
-            case 53: return side == 0 && junction == 0 && exit == 0 ? 173 : 0;
+            case 52: return (side == 0 || side == 1) && junction == 0 ? 174 : 0;
+            case 53: return (side == 0 || side == 1) && junction == 0 ? 173 : 0;
             default: return 0;
         }
     }
 
     /**
-     * One line per maneuver in HMG-API's log with standard turns on: the iAP2 maneuver, its icon
-     * and what goes out near it. Numbers only, no road names; the phone resends a maneuver
-     * field by field, so a line equal to the last one isn't logged again.
+     * One line per maneuver in HMG-API's log: the iAP2 maneuver and its icon (0: nothing goes
+     * to the cluster for it), and with standard turns what goes out near it. Numbers only, no
+     * road names; the phone resends a maneuver field by field, so a line equal to the last one
+     * isn't logged again. Issue #24: with Google Maps nothing reached the cluster, and the log
+     * couldn't say whether its maneuvers had no icon or never came.
      */
     void logTurn(Maneuver x, int icon) {
-        int[] n = standard(x.type, x.side, x.junction, x.exit, icon, GUIDE_WINDOW);
-        String s = "CarPlay turn: type " + x.type + " side " + x.side + " junction " + x.junction + " exit " + x.exit
-                + " -> icon " + icon + ", near: type " + n[0] + " dir " + n[1];
+        String s = "CarPlay turn: type " + x.type + " side " + x.side + " junction " + x.junction + " exit ";
+        if (standardTurns) {
+            // the junction's angles are logged whether side streets are on or not: which apps send them
+            s += (x.exitSent ? String.valueOf(x.exit) : "none")
+                    + " angles " + (x.angles == null ? "none" : java.util.Arrays.toString(x.angles));
+        } else {
+            s += x.exit;
+        }
+        s += " -> icon " + icon;
+        if (standardTurns) {
+            int[] n = standard(x.type, x.side, x.junction, x.exit, icon, GUIDE_WINDOW);
+            s += ", near: type " + n[0] + " dir " + n[1];
+            if (n[0] == TYPE_TURN) {
+                s += " sides 0x" + Integer.toHexString(sideStreets(x.type, x.junction, x.exitSent, x.exit, x.angles))
+                        + (sideStreets ? "" : " (off)");
+            }
+        }
         if (s.equals(lastLog)) return;
         lastLog = s;
+        Dipo.log(s);
+    }
+
+    /**
+     * One line when a component's route changes: its state (RouteGuidanceState: 0 none, 1
+     * active, 2 arrived, 3 loading, 4 locating, 5 rerouting, 6 proceed to route), the
+     * current maneuver's index, whether its details have come, how many maneuvers the list
+     * has, and whether the phone sent a distance to it. Numbers only.
+     */
+    void logRoute(Integer id, Update u) {
+        int[] list = u.list;
+        LinkedHashMap<Integer, Maneuver> m = maneuvers.get(id);
+        String now;
+        if (list == null || list.length == 0) {
+            now = "no maneuver";
+        } else {
+            now = "maneuver " + list[0] + (m != null && m.get(list[0]) != null ? "" : " (no details yet)") + " of " + list.length;
+        }
+        String s = "CarPlay route: component " + id + " state " + u.state + ", " + now + ", distance "
+                + (u.nextStr == null || u.nextStr.length() == 0 ? "none" : "sent");
+        if (s.equals(lastRouteLog)) return;
+        lastRouteLog = s;
         Dipo.log(s);
     }
 
@@ -458,8 +597,10 @@ final class CpTurns {
             case 3:            // straight ahead
                 return new int[] { TYPE_TURN, 0, bar };
             case 1:            // left turn: the exit angle's step, if it has one
+            case 20:
                 return new int[] { TYPE_TURN, turnDir(exit, false), bar };
             case 2:            // right turn
+            case 21:
                 return new int[] { TYPE_TURN, turnDir(exit, true), bar };
             case 49:           // slight left / right
                 return new int[] { TYPE_TURN, 315, bar };
@@ -470,11 +611,16 @@ final class CpTurns {
             case 48:
                 return new int[] { TYPE_TURN, 135, bar };
             case 4:            // U-turn: toward the middle of the road
+            case 26:
                 return new int[] { TYPE_U_TURN, side == 1 ? 90 : 270, bar };
-            case 52:           // change highway left / right: a fork
+            case 52:           // change highway left / right, keep left / right: a fork
+            case 13:
                 return new int[] { TYPE_FORK, 270, bar };
             case 53:
+            case 14:
                 return new int[] { TYPE_FORK, 90, bar };
+            case 8:            // off ramp: the side icon() gave it
+                return icon == 82 ? new int[] { TYPE_EXIT_LEFT, 270, bar } : new int[] { TYPE_EXIT_RIGHT, 90, bar };
             case 22:           // highway off-ramp left / right
                 return new int[] { TYPE_EXIT_LEFT, 270, bar };
             case 23:
@@ -482,6 +628,51 @@ final class CpTurns {
             default:           // on-ramps, ferries: the icon, with the bar
                 return new int[] { icon, 0, bar };
         }
+    }
+
+    /**
+     * The side streets (updateTBTInfo's 16-bit sideStreet) for a TURN at an intersection, from
+     * the iPhone's junction: one bit per road leaving it, the exit included, as the car's own
+     * navigation sets them (libExSLNavi SetSideStreetBit; Korean cars' 4-way crossroad is 0x811:
+     * ahead, right, left). 0 (no roads drawn) unless every part is there and agrees: an
+     * intersection (junction 0), an exit angle this update carried on the maneuver's side
+     * (|exit| <= 22 going straight), and junction angles all in -180..180.
+     * type: iAP2 ManeuverType (1/20/47/49 left, 2/21/48/50 right, 3 straight); exit and angles
+     * in degrees, right positive.
+     * Sector algorithm after ch0iiih/HMG_Phone_Projection_TBT PhoneJunction (AGPL-3.0), itself
+     * adapted from BeegSchmooze/Lambda-Carplay-AA-Bridge LeafiaCpTurn (GPL-3.0).
+     */
+    static int sideStreets(int type, int junction, boolean exitSent, int exit, int[] angles) {
+        if (junction != 0 || !exitSent || angles == null || angles.length == 0 || exit < -180 || exit > 180) return 0;
+        boolean left = type == 1 || type == 20 || type == 47 || type == 49;
+        boolean right = type == 2 || type == 21 || type == 48 || type == 50;
+        if (left ? exit >= 0 : right ? exit <= 0 : type != 3 || Math.abs(exit) > 22) return 0;
+        int roads = roadBit(exit);
+        for (int a : angles) {
+            if (a < -180 || a > 180) return 0;
+            roads |= roadBit(a);
+        }
+        return roads;
+    }
+
+    /**
+     * A road's side-street bit, from its angle (degrees clockwise from straight ahead): bit 0
+     * ahead (within 12 degrees), bits 1-7 the right side and 8-14 the left in 22.5 degree
+     * sectors from 12 and 192 degrees, none for the road behind (169-192, the one we come in on).
+     */
+    static int roadBit(int angle) {
+        int cw = ((angle % 360) + 360) % 360;
+        if (cw < 12 || cw > 348) return 1;
+        int lo = 12, bit = 1;
+        for (int k = 0; k < 15; k++) {
+            int hi = lo + (k % 2 == 0 ? 22 : 23);
+            if (k != 7) {
+                if (cw >= lo && cw < hi) return 1 << bit;
+                bit++;
+            }
+            lo = hi;
+        }
+        return 0;
     }
 
     /**
@@ -844,6 +1035,8 @@ final class CpTurns {
         int index, type, distance, distUnits, side, junction, exit, linkedLane;
         String description, afterRoad, distStr;
         int[] angles;
+        /** this update carried JunctionElementExitAngle (item 11): exit 0 is then straight on, not absent */
+        boolean exitSent;
 
         Maneuver(int index, int id, Iap2NotiMsg msg) {
             if (msg == null) return;
@@ -863,6 +1056,7 @@ final class CpTurns {
             junction = 0;
             angles = null;
             exit = 0;
+            exitSent = false;
             linkedLane = 0;
         }
 
@@ -871,6 +1065,7 @@ final class CpTurns {
             Iap2NotiMsg.Iap2ObjGroup g = msg.getItemGroup();
             this.index = index;
             exit = 0;
+            exitSent = false;
             for (int k = 0; k < g.getItemCnt(); k++) {
                 Iap2NotiMsg.Iap2ObjItem it = g.getObjItem(k);
                 int item = it.getItemId(), n = it.getItemObjCount();
@@ -886,6 +1081,7 @@ final class CpTurns {
                             }
                         } else if (item == 11 && v != null) {
                             exit = v[0];
+                            exitSent = true;
                         }
                         break;
                     }

@@ -144,6 +144,14 @@ def notification(road):
     return field(1, step) + field(2, field(1, b'Home'))
 
 
+def whole(road):
+    # at most 96 bytes, cut on a whole UTF-8 character (the parser's string cut, tools/aa-text)
+    n = min(len(road), 96)
+    while len(road) > 96 and n > 0 and road[n] & 0xc0 == 0x80:
+        n -= 1
+    return road[:n].decode()
+
+
 def run():
     checks = 0
     for patched, packet in [(False, '000100010004'), (True, '000100010006')]:
@@ -167,11 +175,12 @@ def run():
         assert machine.route(0x8005, legacy_distance) == (0, [('distance', 100, 10, 100, 1)])
         checks += 2
     for segment in (0x1000, 0x1c4120, 0x300120, 0x700120):
-        for road in (b'Main Street', b'A' * 512):
+        for road in (b'Main Street', b'A' * 512, '무령로'.encode(), 'Allée'.encode(),
+                     b'A' * 95 + 'é'.encode(), ('가' * 40).encode()):
             machine = Machine(seg=segment)
             result, events = machine.route(0x8006, notification(road))
             assert result == 0
-            assert ('turn', road[:96].decode(), 2, 4, -1, -1, '') in events
+            assert ('turn', whole(road), 2, 4, -1, -1, '') in events
             assert ('turn', 'Home', 0, 32, -1, 0, '') in events
             checks += 1
         machine = Machine(seg=segment)

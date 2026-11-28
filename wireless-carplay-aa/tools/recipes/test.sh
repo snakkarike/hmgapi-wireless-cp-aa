@@ -8,9 +8,27 @@ R=$(cd "$(dirname "$0")/../../recipes" && pwd)
 SDK=$(cd "${HMGAPI_SDK:?set HMGAPI_SDK to the unpacked HMG-API mod SDK}" && pwd)
 CP=$(mktemp -d); trap 'rm -rf "$CP"' EXIT
 H=$HOME/hmg-private
+# The file-patched AA builds keep the parser's old string cut; the recipes have it fixed
+# (segment +0x17a, tools/aa-text). Compare against a copy of each build with the same fix.
+fixcut() {
+    python3 - "$1" "$2" <<'PY'
+import sys
+old = bytes.fromhex('6029024628bf602108460139535c03f0c003802b00d070470029f5d108467047')
+new = bytes.fromhex('602901d8084670476021435c03f0c003802b01d10139f8d10846704700bf00bf')
+b = open(sys.argv[1], 'rb').read()
+assert b.count(old) == 1, sys.argv[1] + ': the old string cut not found exactly once'
+open(sys.argv[2], 'wb').write(b.replace(old, new))
+PY
+}
 set --
-[ -f $H/stock/ev6/lib/libautoreceiver_infobank.so ] && set -- "$@" $H/stock/ev6/lib/libautoreceiver_infobank.so $H/builds/2_tbt/files/libautoreceiver_infobank.so $R/aa-tbt-48ee793a.recipe
-[ -f $H/stock/neev-can-260206/lib/libautoreceiver_infobank.so ] && set -- "$@" $H/stock/neev-can-260206/lib/libautoreceiver_infobank.so $H/builds-neev_ca/2_tbt/files_neev_ca/libautoreceiver_infobank.so $R/aa-tbt-a0bea1c4.recipe
+if [ -f $H/stock/ev6/lib/libautoreceiver_infobank.so ]; then
+    fixcut $H/builds/2_tbt/files/libautoreceiver_infobank.so $CP/aa-48ee793a.so
+    set -- "$@" $H/stock/ev6/lib/libautoreceiver_infobank.so $CP/aa-48ee793a.so $R/aa-tbt-48ee793a.recipe
+fi
+if [ -f $H/stock/neev-can-260206/lib/libautoreceiver_infobank.so ]; then
+    fixcut $H/builds-neev_ca/2_tbt/files_neev_ca/libautoreceiver_infobank.so $CP/aa-a0bea1c4.so
+    set -- "$@" $H/stock/neev-can-260206/lib/libautoreceiver_infobank.so $CP/aa-a0bea1c4.so $R/aa-tbt-a0bea1c4.recipe
+fi
 # the CarPlay recipes (lpatch recipes, used as they are): against lpatch's own result on the file
 L=$SDK/bin/lpatch-host
 for x in core:carplay-core-wifi audio:carplay-audio-formats utils:carplay-utils-converter; do

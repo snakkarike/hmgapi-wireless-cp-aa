@@ -31,7 +31,7 @@ main display:
 | U-turn | `U_TURN` 31 | 270 (90 for left-hand traffic) |
 | on-ramp (Android Auto's ON_RAMP; the car's navigation has no ramp type, it's a turn point) | `TURN` 13 | 45 / 315 (0 with no side) |
 | fork | `FORK_2` 25 | 90 / 270 |
-| highway exit right / left | `EXIT_RIGHT` 17 / `EXIT_LEFT` 18 (`*_COMBI_1` 19/20 when another maneuver follows) | 90 / 270 |
+| highway exit right / left | `EXIT_RIGHT` 17 / `EXIT_LEFT` 18 (`EXIT_RIGHT_COMBI_1` 19 / `EXIT_LEFT_COMBI_1` 21 when another maneuver follows) | 90 / 270 |
 | roundabout | `EXIT_ROUNDABOUT_TRS_RIGHT` 32 (33 for left-hand traffic) | the exit's direction |
 | destination ahead / right / left | icon 112 / 113 / 114, no bar | 0 |
 | arrived | `ARRIVED` 3 | 0 |
@@ -54,6 +54,24 @@ turn of the drive. `dumpsys` prints 0 as every index "0 1 ... 15" and 65535 as "
 its check is inverted. 65535 is what the projection icons always carried, and with a
 `TURN` type it draws a road in every direction, so the mod sends 0 with the car's own
 types and 65535 with the icons.
+
+The bits, from the engine's `SetSideStreetBit`: bit 0 a road ahead (within 12 degrees),
+bits 1-7 the right side in 22.5 degree sectors from 12 degrees, bits 8-14 the left side
+from 192 degrees, and no bit for the road the car comes in on (169-192). Every road
+leaving the junction gets its bit, **the one the route takes included**: Korean cars' own
+navigation sends 0x811 (ahead, right, left) for an ordinary crossroad. The US engine has
+the same code, but it's switched off outside Korea (`IsSupportSideStreet()` is "the
+nation is Korea"), which is why the US car sent 0.
+
+**CarPlay's side streets** (setting `tbt_side_streets`, with `tbt_standard`): the iPhone
+sends each maneuver's junction, the angle of every road there and of the exit
+(RouteGuidanceManeuverUpdate items 10 and 11). Near a turn, `CpTurns.sideStreets()` turns
+them into these bits for the `TURN` frame. It only does so for an intersection (junction 0)
+whose exit angle came in that update, on the maneuver's side (within 22 degrees of straight
+for "straight"), with every angle in range; anything else sends 0, the plain arrow. Apple
+Maps sends junctions for many city turns, Google Maps mostly not. Android Auto sends no
+junction at all. The sectors are ch0iiih's `PhoneJunction` (HMG_Phone_Projection_TBT),
+itself from Lambda Bridge's `LeafiaCpTurn`.
 
 CarPlay's turns follow the same format with the setting on; [ar-hud.md](ar-hud.md#carplay) has its mapping from iAP2 maneuvers.
 

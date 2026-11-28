@@ -12,7 +12,8 @@ new = lines('aa-tbt-dbfe7bd2.recipe')
 old = lines('aa-tbt-48ee793a.recipe')
 code = bytearray.fromhex(next(x[2] for x in new if x[0] == 'segment'))
 reference = bytearray.fromhex(next(x[2] for x in old if x[0] == 'segment'))
-assert hashlib.sha256(reference).hexdigest() == '82cbb8050483009b1913e9079768c5181d2760a68b9d9e1205eb7be797612ac6'
+# 82cbb805... as inherited; c2c4be09... with the string cut at +0x17a fixed (tools/aa-text)
+assert hashlib.sha256(reference).hexdigest() == 'c2c4be0939099d55183d268f1ba776afb47597942aff2a7f3d987dffe51b253f'
 assert len(code) == len(reference) == 5546
 assert code[:0x40] == reference[:0x40] and code[0x54:] == reference[0x54:]
 imports = [0xa7211, 0xa715b, 0xacfd5, 0xa5e69, 0xb7f3d]

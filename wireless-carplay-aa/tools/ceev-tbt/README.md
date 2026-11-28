@@ -10,8 +10,10 @@ the off-car checks alone do not prove phone negotiation or physical display beha
 ## Derivation
 
 The parser is the existing `aa-tbt-48ee793a.recipe` payload, byte-for-byte except
-for its five relative import-table words. Its original 5,546 bytes have SHA256
-`82cbb8050483009b1913e9079768c5181d2760a68b9d9e1205eb7be797612ac6`.
+for its five relative import-table words. Its original 5,546 bytes had SHA256
+`82cbb8050483009b1913e9079768c5181d2760a68b9d9e1205eb7be797612ac6`; with the string cut
+at +0x17a fixed in all three recipes (`tools/aa-text`), they have SHA256
+`c2c4be0939099d55183d268f1ba776afb47597942aff2a7f3d987dffe51b253f`.
 The CEEV port does not change the protobuf parser or cluster event encoding.
 
 Dynamic symbols and local disassembly in the private stock copy establish:
@@ -63,7 +65,8 @@ callback bodies, libc imports and platform atomic helpers mocked.
 
 The bounded ARM corpus covers the exact protocol packet, active/inactive/rerouting
 statuses, unchanged legacy turns/distances, modern right turns and destinations,
-a long road name (bounded to 96 bytes by the inherited parser), modern distance and
+a long road name (bounded to 96 bytes by the inherited parser), road names ending in
+multi-byte UTF-8 (kept whole; the inherited cut damaged their last character), modern distance and
 remaining trip, unknown message types, four code placements, truncated messages,
 varint/length overflows and invalid declared buffer lengths. It checks r4–r11 and
 stack preservation on every call. Input reads are bounded, with an unmapped page

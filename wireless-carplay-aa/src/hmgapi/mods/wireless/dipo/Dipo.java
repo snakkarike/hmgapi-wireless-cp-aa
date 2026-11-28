@@ -147,12 +147,16 @@ public final class Dipo {
             }
         });
         turns.standardTurns = mod.settingBoolean("tbt_standard", false);
-        if (turns.standardTurns) log("CarPlay: turns in the car's own format near a maneuver (standard turns)");
+        turns.sideStreets = turns.standardTurns && mod.settingBoolean("tbt_side_streets", false);
+        if (turns.standardTurns) log("CarPlay: turns in the car's own format near a maneuver (standard turns)"
+                + (turns.sideStreets ? ", with the iPhone's side streets" : ""));
         rg = new RgListener();
         mod.hook(app.classLoader, "dipo.iap2_proxy.stop_route_guidance", new MethodHook() {
             @Override
             protected void beforeHookedMethod(Param p) {
                 if (OWN.get() != null) return;
+                // logged every time (issue #24): a stop mid-route ends the phone's updates
+                log("CarPlay: DiPO stopped route guidance");
                 RgWatch w = rgWatch;
                 if (w != null) w.stopped();
                 post(new Runnable() {
