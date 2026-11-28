@@ -23,6 +23,7 @@ enabled HMG-API hook map. [HMG-API supported cars and hook maps](https://github.
 | Hyundai Ioniq 6 (`CEEV`) | USA | `260507`, `260903` |
 | Hyundai Ioniq 6 (`CEEV`) | Canada | `260206`, `260903` |
 | Hyundai Elantra N (`CN7NPE`) | USA | `260903` |
+| Hyundai Creta (`SU2IFL`) | India | `260430` |
 | Kia K5 | USA | `260507` |
 
 For the full list of model codes and firmware the installer accepts, see

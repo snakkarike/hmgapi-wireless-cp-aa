@@ -156,7 +156,8 @@
     "SG2PHEV.CAN.": "kia_ca",
     "SK3EPE.CAN.": "kia_ca",
     "SK3PE.CAN.": "kia_ca",
-    "SP2PE.CAN.": "kia_ca"
+    "SP2PE.CAN.": "kia_ca",
+    "SU2IFL.IND.0000.V010.001.260430": "su2ifl_in"
   },
   "stock": "patches/{set}/stock",
   "expect": "patches/{set}/expect",
